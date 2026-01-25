@@ -26,7 +26,9 @@ This project is built using a robust and modern technology stack:
 -   **AI Integration**: [Google Generative AI](https://pub.dev/packages/google_generative_ai) (Gemini API)
 -   **Dependency Injection**: [get_it](https://pub.dev/packages/get_it)
 -   **Typography**: [google_fonts](https://pub.dev/packages/google_fonts)
--   **Linting**: `very_good_analysis` for strict code quality.
+-   **Code Quality**:
+    -   `very_good_analysis` for strict linting.
+    -   [Husky](https://pub.dev/packages/husky) & [lint_staged](https://pub.dev/packages/lint_staged) for pre-commit hooks.
 
 ## 🏁 Getting Started
 
@@ -89,14 +91,21 @@ flutter test integration_test/app_test.dart
 
 The project follows Clean Architecture principles with feature-based organization.
 
-- `assets/`: App-wide assets (images, fonts, translations).
+- `assets/`: App-wide assets (images, fonts).
 - `docs/`: Detailed project documentation.
-- `l10n/`: Localization files (ARB).
-- `lib/core/`: Common utilities, themes, errors, and DI.
+- `lib/l10n/`: Localization files (ARB) and generated code.
+- `lib/core/`: Shared utilities, themes, errors, and DI.
+    - `config/`: App configuration (environment variables).
+    - `constants/`: Global constants.
+    - `di/`: Dependency injection setup.
+    - `router/`: Navigation and routing logic.
+    - `services/`: Core platform services.
+    - `theme/`: App styling and themes.
 - `lib/features/`: Feature-based logic.
     - `onboarding/`: Onboarding flow logic and UI.
-    - `chat/`: Core chat functionality.
-- `test/`: Comprehensive unit, widget, and integration tests mirroring the `lib` structure.
+    - `chat/`: AI-powered chat functionality.
+- `test/`: Comprehensive unit and widget tests mirroring the `lib` structure.
+- `integration_test/`: End-to-end integration tests.
 
 Refer to [architecture.md](docs/architecture.md) for a deep dive into the patterns used.
 
