@@ -1,0 +1,53 @@
+name: Flutter Quality & Test Suite
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  quality-and-tests:
+    name: Analyze and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code
+      - name: 📚 Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Setup Flutter with Caching enabled
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          # Caches the Flutter SDK and Pub tool to speed up builds
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+
+      # 3. Install Dependencies
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      # 4. Check for Vulnerabilities/Outdated Packages
+      - name: 🛡️ Security & Dependency Audit
+        run: dart pub outdated --severity=high
+
+      # 5. Verify Formatting (Fails if not formatted)
+      - name: ✨ Verify Formatting
+        run: dart format --set-exit-if-changed .
+
+      # 6. Static Analysis (Using your analysis_options.yaml)
+      - name: 🔍 Static Analysis
+        run: flutter analyze
+
+      # 7. Run Tests with Coverage
+      - name: 🧪 Run Tests
+        run: flutter test --coverage
+
+      # 8. (Optional) Check Code Coverage threshold
+      # You can use a tool like 'lcov' to enforce a minimum % 
+      - name: 📊 Check Coverage
+        run: |
+          sudo apt-get install -y lcov
+          genhtml coverage/lcov.info -o coverage/html

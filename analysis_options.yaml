@@ -1,0 +1,44 @@
+# This includes the Very Good Analysis ruleset
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/generated/**"
+  
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+  errors:
+    # Treat all lints as errors for maximum strictness
+    invalid_annotation_target: ignore
+    
+linter:
+  rules:
+    # Code organization
+    always_use_package_imports: true
+    directives_ordering: true
+    sort_pub_dependencies: true
+    
+    # Performance & Best Practices  
+    avoid_dynamic_calls: true
+    avoid_slow_async_io: true
+    cancel_subscriptions: true
+    close_sinks: true
+    unnecessary_await_in_return: true
+    
+    # Formatting & Readability
+    require_trailing_commas: true
+    use_build_context_synchronously: true
+    
+    # Safety
+    no_adjacent_strings_in_list: true
+    throw_in_finally: true
+    # unsafe_html removed in Dart 3.7.0
+    
+    # Documentation
+    # package_api_docs and public_member_api_docs were removed in Dart 3.7.0
+

@@ -27,3 +27,42 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Merged Flutter rules
+# Android
+.gradle/
+local.properties
+*.keystore
+*.jks
+project.properties
+
+# iOS
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+DerivedData/
+*.moved-aside
+*.xcuserstate
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Flutter.podspec
+ios/Flutter/.last_build_id
+ServiceDefinitions.json
+
+# Web
+.dart_tool/
+build/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Heap dumps
+*.hprof
