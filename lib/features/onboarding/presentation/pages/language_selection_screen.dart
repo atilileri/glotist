@@ -234,8 +234,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   ),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
-                    context.push('/choice');
+                  onPressed: () async {
+                    await context.push('/choice');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.primary,

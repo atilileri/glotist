@@ -2,8 +2,12 @@ import 'package:glotist_app/features/chat/data/datasources/chat_remote_data_sour
 import 'package:glotist_app/features/chat/domain/entities/message.dart';
 import 'package:glotist_app/features/chat/domain/repositories/chat_repository.dart';
 
+/// Implementation of [ChatRepository].
 class ChatRepositoryImpl implements ChatRepository {
+  /// Creates a [ChatRepositoryImpl] instance.
   ChatRepositoryImpl(this.remoteDataSource);
+
+  /// The remote data source used for chat operations.
   final ChatRemoteDataSource remoteDataSource;
 
   @override

@@ -74,7 +74,7 @@ class _OnboardingConversationScreenState
       setState(() {
         _messages.add(response);
       });
-    } catch (e) {
+    } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: $e')),

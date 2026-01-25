@@ -11,17 +11,17 @@ class MockChatRemoteDataSource extends Mock implements ChatRemoteDataSource {}
 void main() {
   late MockChatRemoteDataSource mockChatDataSource;
 
-  setUp(() {
+  setUp(() async {
     mockChatDataSource = MockChatRemoteDataSource();
     final getIt = GetIt.instance;
     if (getIt.isRegistered<ChatRemoteDataSource>()) {
-      getIt.unregister<ChatRemoteDataSource>();
+      await getIt.unregister<ChatRemoteDataSource>();
     }
     getIt.registerSingleton<ChatRemoteDataSource>(mockChatDataSource);
   });
 
-  tearDown(() {
-    GetIt.instance.reset();
+  tearDown(() async {
+    await GetIt.instance.reset();
   });
 
   Widget createWidgetUnderTest() {
@@ -35,9 +35,12 @@ void main() {
     await tester.pumpAndSettle(); // Wait for any initial animations if any
 
     expect(
-        find.text(
-            "Hello! I'm your Onboarding Agent. Let's create your personalized curriculum. What languages do you know?"),
-        findsOneWidget);
+      find.text(
+        "Hello! I'm your Onboarding Agent. Let's create your "
+        'personalized curriculum. What languages do you know?',
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Onboarding Assistant'), findsOneWidget);
   });
 

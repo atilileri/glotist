@@ -4,8 +4,10 @@ import 'package:glotist_app/features/chat/data/datasources/chat_remote_data_sour
 import 'package:glotist_app/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:glotist_app/features/chat/domain/repositories/chat_repository.dart';
 
+/// Service locator instance.
 final GetIt sl = GetIt.instance;
 
+/// Initializes the dependency injection container.
 Future<void> init() async {
   // Services
   await SupabaseConfig.initialize();

@@ -23,16 +23,16 @@ class OnboardingChoiceScreen extends StatelessWidget {
                     'Chat with our AI agent to tailor the curriculum to '
                     'your interests and level.',
                 icon: Icons.chat_bubble_outline,
-                onTap: () {
-                  context.push('/conversation');
+                onTap: () async {
+                  await context.push('/conversation');
                 },
               ),
               const SizedBox(height: 24),
               _buildChoiceCard(
                 context,
                 title: 'Quick Start',
-                description:
-                    'Jump right into a lesson. We will refine your profile later.',
+                description: 'Jump right into a lesson. We will refine your '
+                    'profile later.',
                 icon: Icons.flash_on,
                 isPrimary: false,
                 onTap: () {
