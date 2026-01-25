@@ -79,7 +79,26 @@ flutter test integration_test/app_test.dart
 
 ## 📂 Project Structure
 
--   `lib/core`: Core utilities, DI setup, and shared services.
--   `lib/features`: Feature-based architecture (Clean Architecture).
-    -   `onboarding`: Onboarding flow screens and logic.
-    -   `chat`: Chat functionality for AI interaction.
+The project follows Clean Architecture principles with feature-based organization.
+
+- `assets/`: App-wide assets (images, fonts, translations).
+- `docs/`: Detailed project documentation.
+- `l10n/`: Localization files (ARB).
+- `lib/core/`: Common utilities, themes, errors, and DI.
+- `lib/features/`: Feature-based logic.
+    - `onboarding/`: Onboarding flow logic and UI.
+    - `chat/`: Core chat functionality.
+- `test/`: Comprehensive unit, widget, and integration tests mirroring the `lib` structure.
+
+Refer to [architecture.md](docs/architecture.md) for a deep dive into the patterns used.
+
+## 🌍 Internationalization
+
+We support English as the base language, with Turkish and Dutch ready for implementation.
+
+To generate localization files:
+```bash
+flutter gen-l10n
+```
+
+See the [l10n directory](l10n/) for translation files.

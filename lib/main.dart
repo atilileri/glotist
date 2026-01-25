@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:glotist_app/core/di/injection_container.dart' as di;
 import 'package:glotist_app/core/router/app_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:glotist_app/core/theme/app_theme.dart';
+import 'package:glotist_app/l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,24 +20,16 @@ class GlotistApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Glotist',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1DE9B6),
-          primary: const Color(0xFF1DE9B6),
-        ),
-        useMaterial3: true,
-        textTheme: GoogleFonts.plusJakartaSansTextTheme(),
-      ),
-      darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1DE9B6),
-          primary: const Color(0xFF1DE9B6),
-          brightness: Brightness.dark,
-        ),
-        textTheme:
-            GoogleFonts.plusJakartaSansTextTheme(ThemeData.dark().textTheme),
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       routerConfig: router,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
