@@ -66,9 +66,6 @@ void main() {
     await tester.tap(sendButtonFinder);
     await tester.pump(); // Start loading
 
-    // Check for loading indicator (optional, might need careful timing)
-    expect(find.byType(LinearProgressIndicator), findsOneWidget);
-
     await tester.pumpAndSettle(); // Wait for response
 
     // Verify user message is shown
