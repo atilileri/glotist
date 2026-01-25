@@ -31,7 +31,7 @@ jobs:
 
       # 4. Check for Vulnerabilities/Outdated Packages
       - name: 🛡️ Security & Dependency Audit
-        run: dart pub outdated --severity=high
+        run: dart pub outdated
 
       # 5. Verify Formatting (Fails if not formatted)
       - name: ✨ Verify Formatting
