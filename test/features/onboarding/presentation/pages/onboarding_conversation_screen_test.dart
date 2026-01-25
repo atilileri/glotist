@@ -34,7 +34,10 @@ void main() {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle(); // Wait for any initial animations if any
 
-    expect(find.text("Hello! I'm your Onboarding Agent. Let's create your personalized curriculum. What languages do you know?"), findsOneWidget);
+    expect(
+        find.text(
+            "Hello! I'm your Onboarding Agent. Let's create your personalized curriculum. What languages do you know?"),
+        findsOneWidget);
     expect(find.text('Onboarding Assistant'), findsOneWidget);
   });
 
@@ -46,7 +49,8 @@ void main() {
       timestamp: DateTime.now(),
     );
 
-    when(() => mockChatDataSource.sendMessage(any())).thenAnswer((_) async => responseMessage);
+    when(() => mockChatDataSource.sendMessage(any()))
+        .thenAnswer((_) async => responseMessage);
 
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
@@ -61,7 +65,7 @@ void main() {
     // Tap send
     await tester.tap(sendButtonFinder);
     await tester.pump(); // Start loading
-    
+
     // Check for loading indicator (optional, might need careful timing)
     expect(find.byType(LinearProgressIndicator), findsOneWidget);
 
@@ -69,7 +73,7 @@ void main() {
 
     // Verify user message is shown
     expect(find.text('I know English and Spanish'), findsOneWidget);
-    
+
     // Verify response is shown
     expect(find.text('That sounds great!'), findsOneWidget);
   });

@@ -92,7 +92,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                         ),
                       ),
                       const SizedBox(
-                          width: 48,), // Spacer to balance back button
+                        width: 48,
+                      ), // Spacer to balance back button
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -148,7 +149,10 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                         return Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: _buildLanguageChip(
-                              lang['name']!, lang['flag']!, isDark,),
+                            lang['name']!,
+                            lang['flag']!,
+                            isDark,
+                          ),
                         );
                       }).toList(),
                     ),
@@ -174,7 +178,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       final lang = _learnableLanguages[index];
                       final isSelected = _targetLanguage == lang['name'];
                       return _buildTargetCard(
-                          lang, isSelected, isDark, colorScheme,);
+                        lang,
+                        isSelected,
+                        isDark,
+                        colorScheme,
+                      );
                     },
                   ),
                   const SizedBox(height: 24),
@@ -193,13 +201,15 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                             : Colors.black.withValues(alpha: 0.05),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                         textStyle: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
                   const SizedBox(
-                      height: 120,), // Bottom padding for sticky button
+                    height: 120,
+                  ), // Bottom padding for sticky button
                 ],
               ),
             ),
@@ -232,7 +242,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     foregroundColor: const Color(0xFF0F172A),
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                     elevation: 10,
                     shadowColor: colorScheme.primary.withValues(alpha: 0.4),
                   ).copyWith(
@@ -244,7 +255,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       Text(
                         'Continue',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w900,),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                       SizedBox(width: 8),
                       Icon(Icons.arrow_forward, weight: 900),
@@ -273,8 +286,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   }
 
   /// Builds a dropdown-style selector for language.
-  Widget _buildDropdownSelector(
-      {required IconData icon, required String value, required bool isDark,}) {
+  Widget _buildDropdownSelector({
+    required IconData icon,
+    required String value,
+    required bool isDark,
+  }) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -294,8 +310,10 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             ),
           ),
           const Spacer(),
-          Icon(Icons.expand_more,
-              color: isDark ? Colors.white38 : Colors.black38,),
+          Icon(
+            Icons.expand_more,
+            color: isDark ? Colors.white38 : Colors.black38,
+          ),
         ],
       ),
     );
@@ -311,17 +329,22 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             ? Colors.white.withValues(alpha: 0.05)
             : Colors.black.withValues(alpha: 0.02),
         border: Border.all(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.05)
-                : Colors.black.withValues(alpha: 0.05),),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.black.withValues(alpha: 0.05),
+        ),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.network(flagUrl,
-                width: 28, height: 28, fit: BoxFit.cover,),
+            child: Image.network(
+              flagUrl,
+              width: 28,
+              height: 28,
+              fit: BoxFit.cover,
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -335,17 +358,25 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          Icon(Icons.close,
-              size: 16, color: isDark ? Colors.white38 : Colors.black38,),
+          Icon(
+            Icons.close,
+            size: 16,
+            color: isDark ? Colors.white38 : Colors.black38,
+          ),
         ],
       ),
     );
   }
 
   /// Builds a selectable card for a target language.
-  Widget _buildTargetCard(Map<String, String> lang, bool isSelected,
-      bool isDark, ColorScheme colorScheme,) {
+  Widget _buildTargetCard(
+    Map<String, String> lang,
+    bool isSelected,
+    bool isDark,
+    ColorScheme colorScheme,
+  ) {
     return GestureDetector(
+      key: ValueKey('lang_${lang['name']}'),
       onTap: () => setState(() => _targetLanguage = lang['name']!),
       child: Container(
         decoration: BoxDecoration(

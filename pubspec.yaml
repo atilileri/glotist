@@ -89,10 +89,10 @@ flutter:
 lint_staged:
   'lib/**.dart':
     - dart format --set-exit-if-changed
-    - flutter analyze
+    - dart analyze
   'test/**.dart':
     - dart format --set-exit-if-changed
-    - flutter analyze
+    - dart analyze
   'integration_test/**.dart':
     - dart format --set-exit-if-changed
-    - flutter analyze
+    - dart analyze

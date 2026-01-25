@@ -23,7 +23,7 @@ class _OnboardingConversationScreenState
   bool _isLoading = false;
 
   /// Chat data source.
-  /// 
+  ///
   /// In a production app, this would be accessed via a Bloc/Cubit.
   late final ChatRemoteDataSource _chatSource;
 
