@@ -1,5 +1,4 @@
 
-check onboarding lang sel works?
 add dark light theme for all pages throughout the app.
 review code
 
