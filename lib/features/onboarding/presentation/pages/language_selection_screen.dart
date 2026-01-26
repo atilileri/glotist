@@ -1,3 +1,4 @@
+import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,13 +18,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   final List<Map<String, String>> _otherLanguages = [
     {
       'name': 'French',
-      'flag':
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuCRyuKgY5qKsT5AYIgDy9YDHPEAwES9ftff8Fz9o6HoDjaLw1Hp3muwnDzUWASOfzrRVSVhuPEm93y5YA7HHAZjJDqW8BSqsdqQpPtWHHSdX7logIehXkei6U2g3NQJfcXeLMdeQVSDDAw3oEvooFuf3zsq1Mo2FUR14ThG4kM7Q9oJCYHJWc31qtZ-Upjo5sR2xn7SKQs7S50ODXllrnVDEutorLR_cgmJWRx1OvtP46qKJbVZZWro44LOsNv5cL02eum89qfupf8N',
+      'isoCode': 'fr',
     },
     {
       'name': 'German',
-      'flag':
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuBRJj4TyXXwphJZkSK8jGJVdaufh5BEK35lvktnvObBa8bK5iH3YpOQ7mepeDmC_GbdTyNRBPv10Mx-m-2ROtNFVpmE6K7jTUNd0wKUSi--8A_uiauc4j98rEHOaDV4a07m2FQhb9SlAzLScF_ufG7OCVF5GW_Y2wRVk-NwF-BYhbyreV8Oh9ImliDB7_q0faJWP9W2pKX0HFzqh5mhanhJvHupWBKaV1qirBTqSMlzBCR2FL0OeV9h6_hQGmprwFdnyQms4B7Kwi3_',
+      'isoCode': 'de',
     },
   ];
 
@@ -33,26 +32,22 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     {
       'name': 'Japanese',
       'localName': '日本語',
-      'flag':
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuDwfKbzHPVNF7gxz6FZHxI76qtEkQOlEtf1IKvAeQq4pS5oDWXfzf8GNIqKd0HvzVxX1QvQiSp4q-vZZBoSq422an7uEEFsie4NiTHI5NWBC94rjAIgUxStnXop-F0hsnPYeY9EO-64hZPknBcJqnY5hrMgWuPEC-faecMp_YslFngvWXSBfFeoR9lxXB63KknqcMCVirzWeEUG3xQ9OtLl_tHCp8RhYuCL5xBvnO4qIoUt9iI817gxkNsaooikcbGVBVCoKHfoQab2',
+      'isoCode': 'jp',
     },
     {
       'name': 'Italian',
       'localName': 'Italiano',
-      'flag':
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuBlcckj2Kmha2BIesVlMmnOdtQe4wQmDcDAiSjS3VX1zckS072VEb5s3kozjy_ETYYywt7NFCBG4zXIvw_M5yN-Jep0ep2hQ_R8BLI2l-MxOEAOSypidDCspASO2KDPXrxqrQpBqVadpFP3xSb6Pv3zYipQjtstwHvrZX_bsjphWCxqAQzBKGi0Fwi0h_Q9O0AYwn8lmgUWPGBxwegDyLDcmqxl4r4jt_IXQilhSLo7Pjh8hFNu1wqWjWsIr8KHtRn9nh-O-XDQ13ce',
+      'isoCode': 'it',
     },
     {
       'name': 'Portuguese',
       'localName': 'Português',
-      'flag':
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuDpSuW_Pk8qf0w0LlOPK6_QDJK6YCXHkRHSorAPACTCXyFJs1wcpRH7rgDtZRmh4i1NUBAkZirJZvkoHMSCEFPuw07Sqm4tme47egjM4NQORJ8aYJBAuUWBO6TntdK_TzCmq54RZzPRl8pFCnJllxpkBLYZkuFYTTon1BGQNyh6-9R0Yd5g0SR0E9NYTZRxBYcoy1iawn3iP9SBHiDxQAv6G29dMFZWVXBLh_G6cIY0TO4d2PytIvltIIUKTTP_tUWuImVB8hEr-Idi',
+      'isoCode': 'pt',
     },
     {
       'name': 'Korean',
       'localName': '한국어',
-      'flag':
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuBbVeJUzk6ELjLVhnmnpBp4kRBWamASS1M3WnRbpAIJU6EQh1W1zAoTL2wudgeRCqr8UHAK-lW4zTXtUCBj0aLKlD-mGyJLVyRM4L7tsHWX9Pms84kAQg1oTU12xQX0C1k6aD6vJ2OdVQbDL-kDoaCGXgLmBS_voR2NymeHqqsETWgkTTH90S3H5tM_iWE5XYMo01W4Db4bvcPClUUTQ01Vtmu1sP33r7cJR1YnwOJRyZJ-r50benAMtSrXs8sJxqvVS52a1c0lrO9Y',
+      'isoCode': 'kr',
     },
   ];
 
@@ -150,7 +145,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           padding: const EdgeInsets.only(right: 12),
                           child: _buildLanguageChip(
                             lang['name']!,
-                            lang['flag']!,
+                            lang['isoCode']!,
                             isDark,
                           ),
                         );
@@ -320,7 +315,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   }
 
   /// Builds a chip widget for "Other Languages" list.
-  Widget _buildLanguageChip(String name, String flagUrl, bool isDark) {
+  Widget _buildLanguageChip(String name, String isoCode, bool isDark) {
     return Container(
       width: 145,
       padding: const EdgeInsets.all(10),
@@ -337,14 +332,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
       ),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.network(
-              flagUrl,
-              width: 28,
-              height: 28,
-              fit: BoxFit.cover,
-            ),
+          CircleFlag(
+            isoCode,
+            size: 28,
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -405,22 +395,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: ClipOval(
-                      child: Image.network(lang['flag']!, fit: BoxFit.cover),
-                    ),
+                  CircleFlag(
+                    lang['isoCode']!,
+                    size: 64,
                   ),
                   const SizedBox(height: 12),
                   Text(

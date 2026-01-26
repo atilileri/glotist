@@ -21,6 +21,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
+  circle_flags: ^5.0.1
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
