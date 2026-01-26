@@ -5,7 +5,8 @@ install
 - vs code with gh co-pilot
 - integrate claude code: https://gemini.google.com/share/1c97b6d8fb8a
 
-change Native Language to App Language. Also all languages in this dropdown should look in their own language, regardless of app language.
+change Native Language to App Language. Also all languages in this dropdown should look in their own language, regardless of app language. add small flags per dropdown list item.
+instead of "other languages", use title "languages I know/can speak". add a disclaimer "these language are used to enhance your learning experience with some tips and resemblances".
 
 Update "Native Language" section to look like a dropdown/input. make it with flags. app lang changes dynamically based on this selection.
 tests should run on gh pipeline. https://gemini.google.com/share/1cf35b5ad5f6
