@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:glotist_app/core/di/injection_container.dart' as di;
+import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/main.dart'; // Imports main to access dependencies
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,56 +9,42 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Theme toggle and persistence test', (WidgetTester tester) async {
-    // 1. Start App
+  testWidgets('Theme 3-state toggle and persistence test',
+      (WidgetTester tester) async {
+    // 1. Start App (Clean State)
     SharedPreferences.setMockInitialValues({});
     await di.init();
 
     await tester.pumpWidget(const GlotistApp());
     await tester.pumpAndSettle();
 
-    // 2. Determine Current Brightness
-    var currentContext = tester.element(find.byType(MaterialApp));
-    final initialTheme = Theme.of(currentContext);
-    final initialBrightness = initialTheme.brightness;
+    // Verify initial is System
+    expect(di.sl<ThemeCubit>().state, equals(ThemeMode.system));
 
-    debugPrint('Initial Brightness: $initialBrightness');
-
-    // 3. Find Theme Switch Button
-    final themeButton = find.byIcon(
-      initialBrightness == Brightness.dark ? Icons.light_mode : Icons.dark_mode,
-    );
-
-    if (themeButton.evaluate().isEmpty) {
-      // Fallback
-    }
-
-    // 4. Toggle to Opposite
-    debugPrint('Tapping theme button...');
+    // 2. Toggle to LIGHT
+    final themeButton = find.byType(IconButton).last; // Top right toggle
     await tester.tap(themeButton);
-    await tester.pump(); // Start animation
-    await tester.pump(const Duration(seconds: 1)); // Wait for animation
     await tester.pumpAndSettle();
+    expect(di.sl<ThemeCubit>().state, equals(ThemeMode.light));
 
-    currentContext = tester.element(find.byType(MaterialApp));
-    final newTheme = Theme.of(currentContext);
-    final newBrightness = newTheme.brightness;
+    // 3. Toggle to DARK
+    await tester.tap(themeButton);
+    await tester.pumpAndSettle();
+    expect(di.sl<ThemeCubit>().state, equals(ThemeMode.dark));
 
-    debugPrint('New Brightness: $newBrightness');
+    // 4. Persistence Test (Restart in Dark)
+    await tester.pumpWidget(const GlotistApp()); // Simulated restart
+    await tester.pumpAndSettle();
+    expect(di.sl<ThemeCubit>().state, equals(ThemeMode.dark));
 
-    // Verify it changed
-    expect(newBrightness, isNot(equals(initialBrightness)));
+    // 5. Toggle to SYSTEM
+    await tester.tap(themeButton);
+    await tester.pumpAndSettle();
+    expect(di.sl<ThemeCubit>().state, equals(ThemeMode.system));
 
-    // 5. Restart (Simulate)
+    // 6. Final Persistence Test (Restart in System)
     await tester.pumpWidget(const GlotistApp());
     await tester.pumpAndSettle();
-
-    final restartedContext = tester.element(find.byType(MaterialApp));
-    final restartedBrightness = Theme.of(restartedContext).brightness;
-
-    debugPrint('Restarted Brightness: $restartedBrightness');
-
-    // 6. Verify Brightness Persisted
-    expect(restartedBrightness, equals(newBrightness));
+    expect(di.sl<ThemeCubit>().state, equals(ThemeMode.system));
   });
 }

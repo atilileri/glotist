@@ -19,10 +19,20 @@ class ThemeCubit extends Cubit<ThemeMode> {
     }
   }
 
-  /// Toggles the current theme between light and dark.
+  /// Toggles the current theme between system, light, and dark.
   Future<void> toggleTheme() async {
     final current = state;
-    final next = current == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    ThemeMode next;
+
+    switch (current) {
+      case ThemeMode.system:
+        next = ThemeMode.light;
+      case ThemeMode.light:
+        next = ThemeMode.dark;
+      case ThemeMode.dark:
+        next = ThemeMode.system;
+    }
+
     await _prefs.setInt(_themeKey, next.index);
     emit(next);
   }

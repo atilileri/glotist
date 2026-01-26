@@ -123,10 +123,23 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           backgroundColor: cardColor,
                           padding: const EdgeInsets.all(8),
                         ),
-                        icon: Icon(
-                          isDark ? Icons.light_mode : Icons.dark_mode,
-                          color: AppColors.primary,
-                          size: 20,
+                        icon: BlocBuilder<ThemeCubit, ThemeMode>(
+                          builder: (context, themeMode) {
+                            IconData icon;
+                            switch (themeMode) {
+                              case ThemeMode.system:
+                                icon = Icons.brightness_auto;
+                              case ThemeMode.light:
+                                icon = Icons.light_mode;
+                              case ThemeMode.dark:
+                                icon = Icons.dark_mode;
+                            }
+                            return Icon(
+                              icon,
+                              color: AppColors.primary,
+                              size: 20,
+                            );
+                          },
                         ),
                       ),
                     ],
