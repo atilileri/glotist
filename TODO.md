@@ -5,6 +5,8 @@ install
 - vs code with gh co-pilot
 - integrate claude code: https://gemini.google.com/share/1c97b6d8fb8a
 
+add flutter instructions to all: https://docs.flutter.dev/ai/ai-rules
+
 change Native Language to App Language. Also all languages in this dropdown should look in their own language, regardless of app language. add small flags per dropdown list item.
 instead of "other languages", use title "languages I know/can speak". add a disclaimer "these language are used to enhance your learning experience with some tips and resemblances".
 
