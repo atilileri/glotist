@@ -5,7 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
 import 'app_localizations_nl.dart';
 import 'app_localizations_tr.dart';
 
@@ -95,7 +98,10 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('de'),
     Locale('en'),
+    Locale('es'),
+    Locale('fr'),
     Locale('nl'),
     Locale('tr')
   ];
@@ -105,6 +111,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Glotist'**
   String get appTitle;
+
+  /// No description provided for @step1of3.
+  ///
+  /// In en, this message translates to:
+  /// **'STEP 1 OF 3'**
+  String get step1of3;
+
+  /// No description provided for @pickYourLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your languages'**
+  String get pickYourLanguages;
+
+  /// No description provided for @helpUsCustomize.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us customize your experience to your level.'**
+  String get helpUsCustomize;
+
+  /// No description provided for @nativeLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'NATIVE LANGUAGE'**
+  String get nativeLanguage;
+
+  /// No description provided for @otherLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'OTHER LANGUAGES'**
+  String get otherLanguages;
+
+  /// No description provided for @iWantToLearn.
+  ///
+  /// In en, this message translates to:
+  /// **'I WANT TO LEARN'**
+  String get iWantToLearn;
+
+  /// No description provided for @seeAllLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'See all 40+ languages'**
+  String get seeAllLanguages;
+
+  /// No description provided for @continueAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueAction;
+
+  /// No description provided for @langEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get langEnglish;
+
+  /// No description provided for @langEnglishUS.
+  ///
+  /// In en, this message translates to:
+  /// **'English (United States)'**
+  String get langEnglishUS;
+
+  /// No description provided for @langSpanish.
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get langSpanish;
+
+  /// No description provided for @langFrench.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get langFrench;
+
+  /// No description provided for @langTurkish.
+  ///
+  /// In en, this message translates to:
+  /// **'Turkish'**
+  String get langTurkish;
+
+  /// No description provided for @langGerman.
+  ///
+  /// In en, this message translates to:
+  /// **'German'**
+  String get langGerman;
+
+  /// No description provided for @langDutch.
+  ///
+  /// In en, this message translates to:
+  /// **'Dutch'**
+  String get langDutch;
+
+  /// No description provided for @langJapanese.
+  ///
+  /// In en, this message translates to:
+  /// **'Japanese'**
+  String get langJapanese;
+
+  /// No description provided for @langItalian.
+  ///
+  /// In en, this message translates to:
+  /// **'Italian'**
+  String get langItalian;
+
+  /// No description provided for @langPortuguese.
+  ///
+  /// In en, this message translates to:
+  /// **'Portuguese'**
+  String get langPortuguese;
+
+  /// No description provided for @langKorean.
+  ///
+  /// In en, this message translates to:
+  /// **'Korean'**
+  String get langKorean;
 }
 
 class _AppLocalizationsDelegate
@@ -117,8 +237,14 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'nl', 'tr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+        'de',
+        'en',
+        'es',
+        'fr',
+        'nl',
+        'tr'
+      ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -127,8 +253,14 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'de':
+      return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
     case 'nl':
       return AppLocalizationsNl();
     case 'tr':

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/theme/app_colors.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
+import 'package:glotist_app/l10n/app_localizations.dart';
 
 /// Screen for selecting native and target languages.
 class LanguageSelectionScreen extends StatefulWidget {
@@ -17,62 +18,68 @@ class LanguageSelectionScreen extends StatefulWidget {
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
-  // Languages data
-  final List<Map<String, String>> _nativeLanguages = [
-    {'name': 'English (United States)', 'isoCode': 'us', 'locale': 'en'},
-    {'name': 'Spanish', 'isoCode': 'es', 'locale': 'es'},
-    {'name': 'French', 'isoCode': 'fr', 'locale': 'fr'},
-    {'name': 'Turkish', 'isoCode': 'tr', 'locale': 'tr'},
-    {'name': 'German', 'isoCode': 'de', 'locale': 'de'},
-    {'name': 'Dutch', 'isoCode': 'nl', 'locale': 'nl'},
-  ];
+  // Helper to generate Native Languages data
+  List<Map<String, String>> _getNativeLanguages(AppLocalizations l10n) {
+    return [
+      {'name': l10n.langEnglishUS, 'isoCode': 'us', 'locale': 'en'},
+      {'name': l10n.langSpanish, 'isoCode': 'es', 'locale': 'es'},
+      {'name': l10n.langFrench, 'isoCode': 'fr', 'locale': 'fr'},
+      {'name': l10n.langTurkish, 'isoCode': 'tr', 'locale': 'tr'},
+      {'name': l10n.langGerman, 'isoCode': 'de', 'locale': 'de'},
+      {'name': l10n.langDutch, 'isoCode': 'nl', 'locale': 'nl'},
+    ];
+  }
 
-  final List<Map<String, String>> _otherLanguagesData = [
-    {'name': 'French', 'isoCode': 'fr'},
-    {'name': 'German', 'isoCode': 'de'},
-    {'name': 'Turkish', 'isoCode': 'tr'},
-    {'name': 'Dutch', 'isoCode': 'nl'},
-    {'name': 'Spanish', 'isoCode': 'es'},
-  ];
+  // Helper to generate Other Languages data
+  List<Map<String, String>> _getOtherLanguages(AppLocalizations l10n) {
+    return [
+      {'name': l10n.langFrench, 'isoCode': 'fr'},
+      {'name': l10n.langGerman, 'isoCode': 'de'},
+      {'name': l10n.langTurkish, 'isoCode': 'tr'},
+      {'name': l10n.langDutch, 'isoCode': 'nl'},
+      {'name': l10n.langSpanish, 'isoCode': 'es'},
+    ];
+  }
 
-  final List<Map<String, String>> _learnableLanguagesData = [
-    {'name': 'Japanese', 'localName': '日本語', 'isoCode': 'jp'},
-    {'name': 'Italian', 'localName': 'Italiano', 'isoCode': 'it'},
-    {'name': 'Portuguese', 'localName': 'Português', 'isoCode': 'pt'},
-    {'name': 'Korean', 'localName': '한국어', 'isoCode': 'kr'},
-    {'name': 'Turkish', 'localName': 'Türkçe', 'isoCode': 'tr'},
-    {'name': 'Dutch', 'localName': 'Nederlands', 'isoCode': 'nl'},
-  ];
+  // Helper to generate Learnable Languages data
+  List<Map<String, String>> _getLearnableLanguages(AppLocalizations l10n) {
+    return [
+      {'name': l10n.langJapanese, 'localName': '日本語', 'isoCode': 'jp'},
+      {'name': l10n.langItalian, 'localName': 'Italiano', 'isoCode': 'it'},
+      {'name': l10n.langPortuguese, 'localName': 'Português', 'isoCode': 'pt'},
+      {'name': l10n.langKorean, 'localName': '한국어', 'isoCode': 'kr'},
+      {'name': l10n.langTurkish, 'localName': 'Türkçe', 'isoCode': 'tr'},
+      {'name': l10n.langDutch, 'localName': 'Nederlands', 'isoCode': 'nl'},
+    ];
+  }
 
   // State
-  late String _selectedNativeLanguage;
+  // _selectedNativeLanguage is derived from Localizations.localeOf(context)
   final Set<String> _selectedOtherLanguages = {};
-  String _targetLanguage = 'Japanese';
+  String _targetLanguage = 'jp'; // Store isoCode
 
   @override
   void initState() {
     super.initState();
-    _selectedNativeLanguage = _nativeLanguages.first['name']!;
   }
 
   void _onNativeLanguageChanged(String? newValue) {
     if (newValue == null) return;
-    setState(() {
-      _selectedNativeLanguage = newValue;
-    });
-
-    final lang = _nativeLanguages.firstWhere((l) => l['name'] == newValue);
-    if (lang.containsKey('locale')) {
-      unawaited(
-        context.read<LocalizationCubit>().changeLocale(lang['locale']!),
-      );
-    }
+    unawaited(
+      context.read<LocalizationCubit>().changeLocale(newValue),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    final currentLocale = Localizations.localeOf(context).languageCode;
+
+    final nativeLanguages = _getNativeLanguages(l10n);
+    final otherLanguages = _getOtherLanguages(l10n);
+    final learnableLanguages = _getLearnableLanguages(l10n);
 
     // Define styles based on theme
     final surfaceColor =
@@ -106,7 +113,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                         ),
                       ),
                       Text(
-                        'STEP 1 OF 3',
+                        l10n.step1of3,
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
@@ -169,7 +176,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Pick your languages',
+                      l10n.pickYourLanguages,
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
@@ -182,7 +189,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Help us customize your experience to your level.',
+                      l10n.helpUsCustomize,
                       style: TextStyle(
                         fontSize: 14,
                         color: subTextColor,
@@ -204,7 +211,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _sectionTitle('NATIVE LANGUAGE', subTextColor),
+                        _sectionTitle(l10n.nativeLanguage, subTextColor),
                         const SizedBox(height: 12),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -218,7 +225,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              value: _selectedNativeLanguage,
+                              value: currentLocale,
                               isExpanded: true,
                               dropdownColor: cardColor,
                               icon:
@@ -230,9 +237,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                                 fontFamily: 'Plus Jakarta Sans',
                               ),
                               onChanged: _onNativeLanguageChanged,
-                              items: _nativeLanguages.map((lang) {
+                              items: nativeLanguages.map((lang) {
                                 return DropdownMenuItem(
-                                  value: lang['name'],
+                                  value: lang['locale'],
                                   child: Row(
                                     children: [
                                       // Using a generic globe icon
@@ -258,25 +265,26 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   const SizedBox(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: _sectionTitle('OTHER LANGUAGES', subTextColor),
+                    child: _sectionTitle(l10n.otherLanguages, subTextColor),
                   ),
                   const SizedBox(height: 12),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
-                      children: _otherLanguagesData.map((lang) {
+                      children: otherLanguages.map((lang) {
                         final isSelected =
-                            _selectedOtherLanguages.contains(lang['name']);
+                            _selectedOtherLanguages.contains(lang['isoCode']);
                         return Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
                                 if (isSelected) {
-                                  _selectedOtherLanguages.remove(lang['name']);
+                                  _selectedOtherLanguages
+                                      .remove(lang['isoCode']);
                                 } else {
-                                  _selectedOtherLanguages.add(lang['name']!);
+                                  _selectedOtherLanguages.add(lang['isoCode']!);
                                 }
                               });
                             },
@@ -327,7 +335,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   const SizedBox(height: 40),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: _sectionTitle('I WANT TO LEARN', subTextColor),
+                    child: _sectionTitle(l10n.iWantToLearn, subTextColor),
                   ),
                   const SizedBox(height: 16),
                   GridView.builder(
@@ -341,14 +349,14 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       mainAxisSpacing: 16,
                       childAspectRatio: 0.85,
                     ),
-                    itemCount: _learnableLanguagesData.length,
+                    itemCount: learnableLanguages.length,
                     itemBuilder: (context, index) {
-                      final lang = _learnableLanguagesData[index];
-                      final isSelected = _targetLanguage == lang['name'];
+                      final lang = learnableLanguages[index];
+                      final isSelected = _targetLanguage == lang['isoCode'];
 
                       return GestureDetector(
                         onTap: () =>
-                            setState(() => _targetLanguage = lang['name']!),
+                            setState(() => _targetLanguage = lang['isoCode']!),
                         child: Container(
                           decoration: BoxDecoration(
                             color: isSelected
@@ -442,7 +450,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'See all 40+ languages',
+                            l10n.seeAllLanguages,
                             style: TextStyle(
                               color: subTextColor,
                               fontWeight: FontWeight.bold,
@@ -494,18 +502,18 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                 borderRadius: BorderRadius.circular(24),
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Continue',
-                  style: TextStyle(
+                  l10n.continueAction,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                SizedBox(width: 8),
-                Icon(Icons.arrow_forward_rounded, size: 20, weight: 800),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_rounded, size: 20, weight: 800),
               ],
             ),
           ),

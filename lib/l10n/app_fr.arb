@@ -1,0 +1,23 @@
+{
+  "@@locale": "fr",
+  "appTitle": "Glotist",
+  "step1of3": "ÉTAPE 1 SUR 3",
+  "pickYourLanguages": "Choisissez vos langues",
+  "helpUsCustomize": "Aidez-nous à personnaliser votre expérience.",
+  "nativeLanguage": "LANGUE MATERNELLE",
+  "otherLanguages": "AUTRES LANGUES",
+  "iWantToLearn": "JE VEUX APPRENDRE",
+  "seeAllLanguages": "Voir les 40+ langues",
+  "continueAction": "Continuer",
+  "langEnglish": "Anglais",
+  "langEnglishUS": "Anglais (États-Unis)",
+  "langSpanish": "Espagnol",
+  "langFrench": "Français",
+  "langTurkish": "Turc",
+  "langGerman": "Allemand",
+  "langDutch": "Néerlandais",
+  "langJapanese": "Japonais",
+  "langItalian": "Italien",
+  "langPortuguese": "Portugais",
+  "langKorean": "Coréen"
+}

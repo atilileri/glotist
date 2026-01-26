@@ -1,4 +1,23 @@
 {
   "@@locale": "nl",
-  "appTitle": "Glotist"
+  "appTitle": "Glotist",
+  "step1of3": "STAP 1 VAN 3",
+  "pickYourLanguages": "Kies je talen",
+  "helpUsCustomize": "Help ons je ervaring aan te passen.",
+  "nativeLanguage": "MOEDERTAAL",
+  "otherLanguages": "ANDERE TALEN",
+  "iWantToLearn": "IK WIL LEREN",
+  "seeAllLanguages": "Bekijk alle 40+ talen",
+  "continueAction": "Doorgaan",
+  "langEnglish": "Engels",
+  "langEnglishUS": "Engels (Verenigde Staten)",
+  "langSpanish": "Spaans",
+  "langFrench": "Frans",
+  "langTurkish": "Turks",
+  "langGerman": "Duits",
+  "langDutch": "Nederlands",
+  "langJapanese": "Japans",
+  "langItalian": "Italiaans",
+  "langPortuguese": "Portugees",
+  "langKorean": "Koreaans"
 }

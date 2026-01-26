@@ -10,4 +10,62 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get appTitle => 'Glotist';
+
+  @override
+  String get step1of3 => 'ADIM 1 / 3';
+
+  @override
+  String get pickYourLanguages => 'Dillerini seç';
+
+  @override
+  String get helpUsCustomize =>
+      'Deneyimini seviyene göre özelleştirmemize yardımcı ol.';
+
+  @override
+  String get nativeLanguage => 'ANA DİL';
+
+  @override
+  String get otherLanguages => 'DİĞER DİLLER';
+
+  @override
+  String get iWantToLearn => 'ÖĞRENMEK İSTİYORUM';
+
+  @override
+  String get seeAllLanguages => 'Tüm 40+ dili gör';
+
+  @override
+  String get continueAction => 'Devam Et';
+
+  @override
+  String get langEnglish => 'İngilizce';
+
+  @override
+  String get langEnglishUS => 'İngilizce (Amerika Birleşik Devletleri)';
+
+  @override
+  String get langSpanish => 'İspanyolca';
+
+  @override
+  String get langFrench => 'Fransızca';
+
+  @override
+  String get langTurkish => 'Türkçe';
+
+  @override
+  String get langGerman => 'Almanca';
+
+  @override
+  String get langDutch => 'Felemenkçe';
+
+  @override
+  String get langJapanese => 'Japonca';
+
+  @override
+  String get langItalian => 'İtalyanca';
+
+  @override
+  String get langPortuguese => 'Portekizce';
+
+  @override
+  String get langKorean => 'Korece';
 }

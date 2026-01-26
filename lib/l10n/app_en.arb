@@ -3,5 +3,24 @@
   "appTitle": "Glotist",
   "@appTitle": {
     "description": "The title of the application"
-  }
+  },
+  "step1of3": "STEP 1 OF 3",
+  "pickYourLanguages": "Pick your languages",
+  "helpUsCustomize": "Help us customize your experience to your level.",
+  "nativeLanguage": "NATIVE LANGUAGE",
+  "otherLanguages": "OTHER LANGUAGES",
+  "iWantToLearn": "I WANT TO LEARN",
+  "seeAllLanguages": "See all 40+ languages",
+  "continueAction": "Continue",
+  "langEnglish": "English",
+  "langEnglishUS": "English (United States)",
+  "langSpanish": "Spanish",
+  "langFrench": "French",
+  "langTurkish": "Turkish",
+  "langGerman": "German",
+  "langDutch": "Dutch",
+  "langJapanese": "Japanese",
+  "langItalian": "Italian",
+  "langPortuguese": "Portuguese",
+  "langKorean": "Korean"
 }
