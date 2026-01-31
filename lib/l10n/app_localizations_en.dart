@@ -25,6 +25,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nativeLanguage => 'NATIVE LANGUAGE';
 
   @override
+  String get nativeLanguageDisclaimer =>
+      'This will be used as the UI language and main conversation language throughout the app.';
+
+  @override
   String get otherLanguages => 'OTHER LANGUAGES';
 
   @override

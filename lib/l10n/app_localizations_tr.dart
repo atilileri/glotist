@@ -25,6 +25,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get nativeLanguage => 'ANA DİL';
 
   @override
+  String get nativeLanguageDisclaimer =>
+      'Uygulama genelinde arayüz dili ve ana sohbet dili olarak kullanılacaktır.';
+
+  @override
   String get otherLanguages => 'DİĞER DİLLER';
 
   @override

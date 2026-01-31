@@ -24,6 +24,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nativeLanguage => 'MOEDERTAAL';
 
   @override
+  String get nativeLanguageDisclaimer =>
+      'Dit wordt gebruikt als de interface-taal en hoofdgesprekstaal in de app.';
+
+  @override
   String get otherLanguages => 'ANDERE TALEN';
 
   @override

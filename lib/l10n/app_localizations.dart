@@ -136,6 +136,12 @@ abstract class AppLocalizations {
   /// **'NATIVE LANGUAGE'**
   String get nativeLanguage;
 
+  /// Disclaimer below native language picker
+  ///
+  /// In en, this message translates to:
+  /// **'This will be used as the UI language and main conversation language throughout the app.'**
+  String get nativeLanguageDisclaimer;
+
   /// No description provided for @otherLanguages.
   ///
   /// In en, this message translates to:

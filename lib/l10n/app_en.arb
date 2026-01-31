@@ -8,6 +8,10 @@
   "pickYourLanguages": "Pick your languages",
   "helpUsCustomize": "Help us customize your experience to your level.",
   "nativeLanguage": "NATIVE LANGUAGE",
+  "@nativeLanguageDisclaimer": {
+    "description": "Disclaimer below native language picker"
+  },
+  "nativeLanguageDisclaimer": "This will be used as the UI language and main conversation language throughout the app.",
   "otherLanguages": "OTHER LANGUAGES",
   "iWantToLearn": "I WANT TO LEARN",
   "seeAllLanguages": "See all 40+ languages",

@@ -24,6 +24,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nativeLanguage => 'MUTTERSPRACHE';
 
   @override
+  String get nativeLanguageDisclaimer =>
+      'Dies wird als Oberflächensprache und Hauptsprache für Gespräche in der App verwendet.';
+
+  @override
   String get otherLanguages => 'ANDERE SPRACHEN';
 
   @override
