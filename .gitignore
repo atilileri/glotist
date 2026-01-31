@@ -81,6 +81,9 @@ build/
 *.env
 supabase/.temp/
 
+# Private notes - may contain sensitive info (keys, personal TODOs)
+notes.private.md
+
 # iOS/Flutter ephemeral files
 ios/Flutter/ephemeral/
 ios/Flutter/Generated.xcconfig

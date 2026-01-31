@@ -31,6 +31,10 @@ Thank you for your interest in contributing to Glotist! This document provides g
 - Update `CHANGELOG.md` for significant changes.
 - Add/update files in the `docs/` directory for major architectural decisions.
 
+## Project Roadmap
+
+Check [TODO.md](TODO.md) for the current roadmap and how to add tasks.
+
 ## Directory Placeholders
 
 > [!IMPORTANT]
