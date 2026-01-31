@@ -1,12 +1,20 @@
 
 
-
+TODOs:
 change Native Language to App Language. Also all languages in this dropdown should look in their own language, regardless of app language. add small flags per dropdown list item.
-instead of "other languages", use title "languages I know/can speak". add a disclaimer "these language are used to enhance your learning experience with some tips and resemblances".
 
-Update "Native Language" section to look like a dropdown/input. make it with flags. app lang changes dynamically based on this selection.
+Let's check the UX inside @lib/features/onboarding/presentation/pages/language_selection_screen.dart . Few of my concerns:
+1. I'm not sure to about the native language title. So this language is going to be used as the primary language in the app both for UI and conversations throughout the language learning journey of the user. What are some alternative that I can call to this title. You can also suggest about the tip below the language selection dropdown. I am thinking of the title Main Language. Think about it.
+2- Pick your languages title. This page is the first page that user sees, so this title could be more welcoming and generic.
+3- other languages title. Let's remove it all together with all the text, translations and tests. Also let's add a todo to the @lib/features/onboarding/presentation/pages/onboarding_conversation_screen.dart  to implement to get this info from user through conversation (and his/her level in the specific language)
+4- I want to learn title. I want this to be subject-neutral. So no "I" in the title. I want this to sound natural in other languages, so come up with some suggestions for this as well.
+When we implement the change, make sure you update all the translations, variables
+
+Update "Native Language" section to look like a dropdown/input. make it with flags. these languages should be seen in their native languages, and should not be changed per selection. explain this better to AI.
 tests should run on gh pipeline. https://gemini.google.com/share/1cf35b5ad5f6
 fix warning while running flutter run.
+
+Issues:
 
 Warning: Pub installs executables into C:\Users\atil\AppData\Local\Pub\Cache\bin, which is not on your path.
 You can fix that by adding that directory to your system's "Path" environment variable.
