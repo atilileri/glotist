@@ -3,5 +3,4 @@ output-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
 nullable-metadata: false
-arb-translate-api-key: AIzaSyCGOs5uAZ30T8slJ2APP8qNz8Y1Z8CM29Q
 arb-translate-model: gemini-1.5-flash

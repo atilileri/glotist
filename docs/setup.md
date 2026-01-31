@@ -17,12 +17,17 @@ The application uses environment variables for configuration. Use the provided t
     ```bash
     cp .env.example .env
     ```
-2.  Fill in your Supabase and Gemini API credentials:
+2.  Fill in your Supabase, Google AI, and translation credentials:
     ```
     SUPABASE_URL=your_supabase_project_url
     SUPABASE_ANON_KEY=your_supabase_anon_key
-    GEMINI_API_KEY=your_gemini_api_key
+    GOOGLE_AI_API_KEY=your_gemini_api_key
+    ARB_TRANSLATE_API_KEY=your_gemini_or_arb_translate_key_here
     ```
+    `ARB_TRANSLATE_API_KEY` is required for running `arb_translate` to generate
+    translations for ARB files (and optionally for `flutter gen-l10n` when using
+    translation). Use the same Gemini API key as `GOOGLE_AI_API_KEY` or a
+    dedicated key; never commit it to the repo.
 
 ## Installation
 
@@ -52,3 +57,20 @@ For web development:
 ```bash
 flutter run -d chrome
 ```
+
+## Generating translations
+
+To translate ARB files with `arb_translate`, set `ARB_TRANSLATE_API_KEY` in your
+`.env` (see Environment Variables). Then either:
+
+- Run the helper script (loads `.env` and runs `arb_translate`):
+  ```powershell
+  .\scripts\translate.ps1
+  ```
+- Or set the variable and run manually:
+  ```powershell
+  $env:ARB_TRANSLATE_API_KEY = "your_key"
+  dart pub global run arb_translate
+  ```
+
+After translating, run `flutter gen-l10n` to regenerate Dart localizations.

@@ -1,6 +1,9 @@
 
 
 TODOs:
+
+remove todo from tracked files.
+
 change Native Language to App Language. Also all languages in this dropdown should look in their own language, regardless of app language. add small flags per dropdown list item.
 
 Let's check the UX inside @lib/features/onboarding/presentation/pages/language_selection_screen.dart . Few of my concerns:
