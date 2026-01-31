@@ -1,11 +1,5 @@
 
-install
-- Windsurf
-- Cursor
-- vs code with gh co-pilot
-- integrate claude code: https://gemini.google.com/share/1c97b6d8fb8a
 
-add flutter instructions to all: https://docs.flutter.dev/ai/ai-rules
 
 change Native Language to App Language. Also all languages in this dropdown should look in their own language, regardless of app language. add small flags per dropdown list item.
 instead of "other languages", use title "languages I know/can speak". add a disclaimer "these language are used to enhance your learning experience with some tips and resemblances".
@@ -18,6 +12,10 @@ Warning: Pub installs executables into C:\Users\atil\AppData\Local\Pub\Cache\bin
 You can fix that by adding that directory to your system's "Path" environment variable.
 A web search for "configure windows path" will show you how.
 
+D/FlutterJNI(31175): flutter (null) was loaded normally! why null?
+
+Error connecting to the service protocol: failed to connect to http://127.0.0.1:53534/bvYOGDFU_4g=/ HttpException: Connection closed before full header was received, uri =
+http://127.0.0.1:53534/bvYOGDFU_4g=/ws
 
 PS D:\atili\Glotist\glotist_app> arb_translate
 arb_translate : The term 'arb_translate' is not recognized as the name of a 
@@ -48,6 +46,7 @@ ui design onboarding discussion/chat
 - for onboarding conversation, user can speak/write in their own language, glotist will translate and try to teach the translation during discussion.
 - onboarding topics: basic info, learning goals, current levels, interests.
     - after info collection is done, give user an engaging story about the relationship between target and native languages.
+    - get other languages too.
 
 ui design main page
 
@@ -60,7 +59,15 @@ ui design profile page
 
 ui design curriculum page
 
+install
+- Windsurf
+- vs code with gh co-pilot
+
+add flutter instructions to all: https://docs.flutter.dev/ai/ai-rules
+
+
 Future improvements:
 - use GenUI SDK for Flutter packages in chats in the glotist app: https://docs.flutter.dev/ai/genui, https://youtu.be/K2p5Nrn2OSU?si=Ejg_rofqfNtWjiLf
 - Yapay Zeka Ajanları nasil konusacak mimarisi: https://gemini.google.com/share/d004dcd1ba3d
 - telaffuz mimarisi canlı iki katmanlı: https://gemini.google.com/app/6783dbd2cd02bbc9
+- sarkiyla ogrenme, karaoke. Replikle ogrenme de dusun.
