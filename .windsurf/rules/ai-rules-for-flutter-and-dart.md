@@ -1,6 +1,7 @@
 ---
-trigger: model_decision
+trigger: glob
 description: When working with Flutter and Dart
+globs: **/*.dart
 ---
 
 # AI rules for Flutter
