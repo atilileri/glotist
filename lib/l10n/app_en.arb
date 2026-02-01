@@ -5,15 +5,14 @@
     "description": "The title of the application"
   },
   "step1of3": "STEP 1 OF 3",
-  "pickYourLanguages": "Pick your languages",
-  "helpUsCustomize": "Help us customize your experience to your level.",
-  "nativeLanguage": "NATIVE LANGUAGE",
-  "@nativeLanguageDisclaimer": {
-    "description": "Disclaimer below native language picker"
+  "letsGetStarted": "Let's get started",
+  "refineExperience": "Refine your language learning experience",
+  "displayLanguage": "DISPLAY LANGUAGE",
+  "@displayLanguageDisclaimer": {
+    "description": "Disclaimer below display language picker"
   },
-  "nativeLanguageDisclaimer": "This will be used as the UI language and main conversation language throughout the app.",
-  "otherLanguages": "OTHER LANGUAGES",
-  "iWantToLearn": "I WANT TO LEARN",
+  "displayLanguageDisclaimer": "Will be used for interface and conversations",
+  "languageToLearn": "LANGUAGE TO LEARN",
   "seeAllLanguages": "See all 40+ languages",
   "continueAction": "Continue",
   "langEnglish": "English",

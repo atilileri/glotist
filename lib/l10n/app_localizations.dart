@@ -118,41 +118,35 @@ abstract class AppLocalizations {
   /// **'STEP 1 OF 3'**
   String get step1of3;
 
-  /// No description provided for @pickYourLanguages.
+  /// No description provided for @letsGetStarted.
   ///
   /// In en, this message translates to:
-  /// **'Pick your languages'**
-  String get pickYourLanguages;
+  /// **'Let\'s get started'**
+  String get letsGetStarted;
 
-  /// No description provided for @helpUsCustomize.
+  /// No description provided for @refineExperience.
   ///
   /// In en, this message translates to:
-  /// **'Help us customize your experience to your level.'**
-  String get helpUsCustomize;
+  /// **'Refine your language learning experience'**
+  String get refineExperience;
 
-  /// No description provided for @nativeLanguage.
+  /// No description provided for @displayLanguage.
   ///
   /// In en, this message translates to:
-  /// **'NATIVE LANGUAGE'**
-  String get nativeLanguage;
+  /// **'DISPLAY LANGUAGE'**
+  String get displayLanguage;
 
-  /// Disclaimer below native language picker
+  /// Disclaimer below display language picker
   ///
   /// In en, this message translates to:
-  /// **'This will be used as the UI language and main conversation language throughout the app.'**
-  String get nativeLanguageDisclaimer;
+  /// **'Will be used for interface and conversations'**
+  String get displayLanguageDisclaimer;
 
-  /// No description provided for @otherLanguages.
+  /// No description provided for @languageToLearn.
   ///
   /// In en, this message translates to:
-  /// **'OTHER LANGUAGES'**
-  String get otherLanguages;
-
-  /// No description provided for @iWantToLearn.
-  ///
-  /// In en, this message translates to:
-  /// **'I WANT TO LEARN'**
-  String get iWantToLearn;
+  /// **'LANGUAGE TO LEARN'**
+  String get languageToLearn;
 
   /// No description provided for @seeAllLanguages.
   ///

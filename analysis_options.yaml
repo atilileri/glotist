@@ -34,7 +34,8 @@ linter:
     # Formatting & Readability
     require_trailing_commas: true
     use_build_context_synchronously: true
-    
+    flutter_style_todos: true
+
     # Safety
     no_adjacent_strings_in_list: true
     throw_in_finally: true

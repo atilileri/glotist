@@ -15,24 +15,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get step1of3 => 'ADIM 1 / 3';
 
   @override
-  String get pickYourLanguages => 'Dillerini seç';
+  String get letsGetStarted => 'Haydi başlayalım';
 
   @override
-  String get helpUsCustomize =>
-      'Deneyimini seviyene göre özelleştirmemize yardımcı ol.';
+  String get refineExperience => 'Dil öğrenme deneyimini iyileştir.';
 
   @override
-  String get nativeLanguage => 'ANA DİL';
+  String get displayLanguage => 'GÖRÜNTÜLEME DİLİ';
 
   @override
-  String get nativeLanguageDisclaimer =>
-      'Uygulama genelinde arayüz dili ve ana sohbet dili olarak kullanılacaktır.';
+  String get displayLanguageDisclaimer =>
+      'Arayüz ve sohbetler için kullanılacaktır';
 
   @override
-  String get otherLanguages => 'DİĞER DİLLER';
-
-  @override
-  String get iWantToLearn => 'ÖĞRENMEK İSTİYORUM';
+  String get languageToLearn => 'ÖĞRENİLECEK DİL';
 
   @override
   String get seeAllLanguages => 'Tüm 40+ dili gör';

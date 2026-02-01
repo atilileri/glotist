@@ -15,23 +15,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get step1of3 => 'PASO 1 DE 3';
 
   @override
-  String get pickYourLanguages => 'Elige tus idiomas';
+  String get letsGetStarted => 'Empecemos';
 
   @override
-  String get helpUsCustomize => 'Ayúdanos a personalizar tu experiencia.';
+  String get refineExperience =>
+      'Refina tu experiencia de aprendizaje de idiomas.';
 
   @override
-  String get nativeLanguage => 'IDIOMA NATIVO';
+  String get displayLanguage => 'IDIOMA DE PANTALLA';
 
   @override
-  String get nativeLanguageDisclaimer =>
-      'Se usará como idioma de la interfaz y idioma principal de conversación en toda la app.';
+  String get displayLanguageDisclaimer =>
+      'Se usará para la interfaz y conversaciones';
 
   @override
-  String get otherLanguages => 'OTROS IDIOMAS';
-
-  @override
-  String get iWantToLearn => 'QUIERO APRENDER';
+  String get languageToLearn => 'IDIOMA PARA APRENDER';
 
   @override
   String get seeAllLanguages => 'Ver los 40+ idiomas';

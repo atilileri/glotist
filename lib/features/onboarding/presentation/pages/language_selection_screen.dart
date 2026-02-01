@@ -30,17 +30,6 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     ];
   }
 
-  // Helper to generate Other Languages data
-  List<Map<String, String>> _getOtherLanguages(AppLocalizations l10n) {
-    return [
-      {'name': l10n.langFrench, 'isoCode': 'fr'},
-      {'name': l10n.langGerman, 'isoCode': 'de'},
-      {'name': l10n.langTurkish, 'isoCode': 'tr'},
-      {'name': l10n.langDutch, 'isoCode': 'nl'},
-      {'name': l10n.langSpanish, 'isoCode': 'es'},
-    ];
-  }
-
   // Helper to generate Learnable Languages data
   List<Map<String, String>> _getLearnableLanguages(AppLocalizations l10n) {
     return [
@@ -54,8 +43,6 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   }
 
   // State
-  // _selectedNativeLanguage is derived from Localizations.localeOf(context)
-  final Set<String> _selectedOtherLanguages = {};
   String _targetLanguage = 'jp'; // Store isoCode
 
   @override
@@ -78,7 +65,6 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     final currentLocale = Localizations.localeOf(context).languageCode;
 
     final nativeLanguages = _getNativeLanguages(l10n);
-    final otherLanguages = _getOtherLanguages(l10n);
     final learnableLanguages = _getLearnableLanguages(l10n);
 
     // Define styles based on theme
@@ -112,13 +98,17 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                               : Colors.grey.shade300,
                         ),
                       ),
-                      Text(
-                        l10n.step1of3,
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.5,
-                          color: subTextColor,
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            l10n.step1of3,
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1.5,
+                              color: subTextColor,
+                            ),
+                          ),
                         ),
                       ),
                       // Theme Switch
@@ -176,7 +166,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      l10n.pickYourLanguages,
+                      l10n.letsGetStarted,
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
@@ -189,7 +179,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      l10n.helpUsCustomize,
+                      l10n.refineExperience,
                       style: TextStyle(
                         fontSize: 14,
                         color: subTextColor,
@@ -211,7 +201,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _sectionTitle(l10n.nativeLanguage, subTextColor),
+                        _sectionTitle(l10n.displayLanguage, subTextColor),
                         const SizedBox(height: 12),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -271,7 +261,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
-                                  l10n.nativeLanguageDisclaimer,
+                                  l10n.displayLanguageDisclaimer,
                                   style: TextStyle(
                                     fontSize: 11,
                                     height: 1.4,
@@ -287,81 +277,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     ),
                   ),
 
-                  // 2. Other Languages Section (Multi-select)
-                  const SizedBox(height: 32),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: _sectionTitle(l10n.otherLanguages, subTextColor),
-                  ),
-                  const SizedBox(height: 12),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Row(
-                      children: otherLanguages.map((lang) {
-                        final isSelected =
-                            _selectedOtherLanguages.contains(lang['isoCode']);
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (isSelected) {
-                                  _selectedOtherLanguages
-                                      .remove(lang['isoCode']);
-                                } else {
-                                  _selectedOtherLanguages.add(lang['isoCode']!);
-                                }
-                              });
-                            },
-                            child: Container(
-                              width: 145,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: cardColor,
-                                border: Border.all(
-                                  color: isSelected
-                                      ? AppColors.primary
-                                      : borderColor,
-                                  width: isSelected ? 2 : 1,
-                                ),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Row(
-                                children: [
-                                  CircleFlag(lang['isoCode']!, size: 28),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Text(
-                                      lang['name']!,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: textColor,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ),
-                                  if (isSelected)
-                                    Icon(
-                                      Icons.close,
-                                      size: 18,
-                                      color: subTextColor,
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-
-                  // 3. I want to learn Section
+                  // 2. LANGUAGE TO LEARN Section
                   const SizedBox(height: 40),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: _sectionTitle(l10n.iWantToLearn, subTextColor),
+                    child: _sectionTitle(l10n.languageToLearn, subTextColor),
                   ),
                   const SizedBox(height: 16),
                   GridView.builder(

@@ -15,24 +15,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get step1of3 => 'STEP 1 OF 3';
 
   @override
-  String get pickYourLanguages => 'Pick your languages';
+  String get letsGetStarted => 'Let\'s get started';
 
   @override
-  String get helpUsCustomize =>
-      'Help us customize your experience to your level.';
+  String get refineExperience => 'Refine your language learning experience';
 
   @override
-  String get nativeLanguage => 'NATIVE LANGUAGE';
+  String get displayLanguage => 'DISPLAY LANGUAGE';
 
   @override
-  String get nativeLanguageDisclaimer =>
-      'This will be used as the UI language and main conversation language throughout the app.';
+  String get displayLanguageDisclaimer =>
+      'Will be used for interface and conversations';
 
   @override
-  String get otherLanguages => 'OTHER LANGUAGES';
-
-  @override
-  String get iWantToLearn => 'I WANT TO LEARN';
+  String get languageToLearn => 'LANGUAGE TO LEARN';
 
   @override
   String get seeAllLanguages => 'See all 40+ languages';

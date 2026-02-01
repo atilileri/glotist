@@ -15,23 +15,20 @@ class AppLocalizationsNl extends AppLocalizations {
   String get step1of3 => 'STAP 1 VAN 3';
 
   @override
-  String get pickYourLanguages => 'Kies je talen';
+  String get letsGetStarted => 'Laten we beginnen';
 
   @override
-  String get helpUsCustomize => 'Help ons je ervaring aan te passen.';
+  String get refineExperience => 'Verfijn je taal leerervaring.';
 
   @override
-  String get nativeLanguage => 'MOEDERTAAL';
+  String get displayLanguage => 'WEERGAVETAAL';
 
   @override
-  String get nativeLanguageDisclaimer =>
-      'Dit wordt gebruikt als de interface-taal en hoofdgesprekstaal in de app.';
+  String get displayLanguageDisclaimer =>
+      'Wordt gebruikt voor interface en gesprekken';
 
   @override
-  String get otherLanguages => 'ANDERE TALEN';
-
-  @override
-  String get iWantToLearn => 'IK WIL LEREN';
+  String get languageToLearn => 'TAAL OM TE LEREN';
 
   @override
   String get seeAllLanguages => 'Bekijk alle 40+ talen';

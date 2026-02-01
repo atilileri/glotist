@@ -6,6 +6,13 @@ import 'package:glotist_app/features/chat/data/datasources/chat_remote_data_sour
 import 'package:glotist_app/features/chat/domain/entities/message.dart';
 
 /// Screen for the onboarding conversation with the AI agent.
+///
+// TODO(atilileri): Implement gathering additional language information and
+// proficiency levels through conversation that were previously collected in
+// the "Other Languages" section. This should ask users about:
+// - Additional languages they know
+// - Their proficiency level in each language
+// - Their learning goals for each language
 class OnboardingConversationScreen extends StatefulWidget {
   /// Creates an [OnboardingConversationScreen] instance.
   const OnboardingConversationScreen({super.key});
