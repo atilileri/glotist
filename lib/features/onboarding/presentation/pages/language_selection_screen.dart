@@ -83,110 +83,125 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             // --- Header ---
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Column(
                     children: [
-                      // Disabled Back Button
-                      IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: isDark
-                              ? Colors.grey.shade700
-                              : Colors.grey.shade300,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Disabled Back Button
+                          IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: isDark
+                                  ? Colors.grey.shade700
+                                  : Colors.grey.shade300,
+                            ),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                l10n.step1of3,
+                                style: TextStyle(
+                                  fontSize: constraints.maxWidth > 400
+                                      ? 10
+                                      : 8, // Responsive font
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.5,
+                                  color: subTextColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Theme Switch
+                          IconButton(
+                            onPressed: () {
+                              unawaited(
+                                  context.read<ThemeCubit>().toggleTheme());
+                            },
+                            style: IconButton.styleFrom(
+                              backgroundColor: cardColor,
+                              padding: const EdgeInsets.all(8),
+                            ),
+                            icon: BlocBuilder<ThemeCubit, ThemeMode>(
+                              builder: (context, themeMode) {
+                                IconData icon;
+                                switch (themeMode) {
+                                  case ThemeMode.system:
+                                    icon = Icons.brightness_auto;
+                                  case ThemeMode.light:
+                                    icon = Icons.light_mode;
+                                  case ThemeMode.dark:
+                                    icon = Icons.dark_mode;
+                                }
+                                return Icon(
+                                  icon,
+                                  color: AppColors.primary,
+                                  size: constraints.maxWidth > 400
+                                      ? 20
+                                      : 16, // Responsive icon
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            l10n.step1of3,
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 1.5,
-                              color: subTextColor,
+                      const SizedBox(height: 24),
+                      // Progress Bar
+                      Container(
+                        width: double.infinity,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: borderColor,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: FractionallySizedBox(
+                          alignment: Alignment.centerLeft,
+                          widthFactor: 0.33,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(100),
                             ),
                           ),
                         ),
                       ),
-                      // Theme Switch
-                      IconButton(
-                        onPressed: () {
-                          unawaited(context.read<ThemeCubit>().toggleTheme());
-                        },
-                        style: IconButton.styleFrom(
-                          backgroundColor: cardColor,
-                          padding: const EdgeInsets.all(8),
+                      const SizedBox(height: 32),
+                      // Title & Subtitle
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          l10n.letsGetStarted,
+                          style: TextStyle(
+                            fontSize: constraints.maxWidth > 600
+                                ? 28
+                                : constraints.maxWidth > 400
+                                    ? 24
+                                    : 20, // Responsive title
+                            fontWeight: FontWeight.w800,
+                            color: textColor,
+                            height: 1.1,
+                          ),
                         ),
-                        icon: BlocBuilder<ThemeCubit, ThemeMode>(
-                          builder: (context, themeMode) {
-                            IconData icon;
-                            switch (themeMode) {
-                              case ThemeMode.system:
-                                icon = Icons.brightness_auto;
-                              case ThemeMode.light:
-                                icon = Icons.light_mode;
-                              case ThemeMode.dark:
-                                icon = Icons.dark_mode;
-                            }
-                            return Icon(
-                              icon,
-                              color: AppColors.primary,
-                              size: 20,
-                            );
-                          },
+                      ),
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          l10n.refineExperience,
+                          style: TextStyle(
+                            fontSize: constraints.maxWidth > 400
+                                ? 14
+                                : 12, // Responsive subtitle
+                            color: subTextColor,
+                          ),
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 24),
-                  // Progress Bar
-                  Container(
-                    width: double.infinity,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: borderColor,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: 0.33,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  // Title & Subtitle
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      l10n.letsGetStarted,
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                        color: textColor,
-                        height: 1.1,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      l10n.refineExperience,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: subTextColor,
-                      ),
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
 
@@ -284,97 +299,118 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     child: _sectionTitle(l10n.languageToLearn, subTextColor),
                   ),
                   const SizedBox(height: 16),
-                  GridView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 0.85,
-                    ),
-                    itemCount: learnableLanguages.length,
-                    itemBuilder: (context, index) {
-                      final lang = learnableLanguages[index];
-                      final isSelected = _targetLanguage == lang['isoCode'];
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      // Calculate responsive crossAxisCount based on available width
+                      final crossAxisCount = constraints.maxWidth > 600
+                          ? 3
+                          : constraints.maxWidth > 400
+                              ? 2
+                              : 1;
+                      final itemWidth =
+                          (constraints.maxWidth - (crossAxisCount - 1) * 16) /
+                              crossAxisCount;
 
-                      return GestureDetector(
-                        onTap: () =>
-                            setState(() => _targetLanguage = lang['isoCode']!),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? AppColors.primary.withValues(alpha: 0.1)
-                                : cardColor,
-                            border: Border.all(
-                              color: isSelected
-                                  ? AppColors.primary
-                                  : Colors.transparent,
-                              width: 2,
-                            ),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black
-                                                .withValues(alpha: 0.2),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
-                                          ),
-                                        ],
-                                      ),
-                                      child: CircleFlag(
-                                        lang['isoCode']!,
-                                        size: 64,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      lang['name']!,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        color: textColor,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      lang['localName']!,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: isSelected
-                                            ? AppColors.primary
-                                            : subTextColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (isSelected)
-                                const Positioned(
-                                  top: 12,
-                                  right: 12,
-                                  child: Icon(
-                                    Icons.check_circle,
-                                    color: AppColors.primary,
-                                    size: 24,
-                                  ),
-                                ),
-                            ],
-                          ),
+                      return GridView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: itemWidth /
+                              (itemWidth * 1.2), // Responsive aspect ratio
                         ),
+                        itemCount: learnableLanguages.length,
+                        itemBuilder: (context, index) {
+                          final lang = learnableLanguages[index];
+                          final isSelected = _targetLanguage == lang['isoCode'];
+
+                          return GestureDetector(
+                            onTap: () => setState(
+                                () => _targetLanguage = lang['isoCode']!),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColors.primary.withValues(alpha: 0.1)
+                                    : cardColor,
+                                border: Border.all(
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : Colors.transparent,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withValues(alpha: 0.2),
+                                                blurRadius: 8,
+                                                offset: const Offset(0, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          child: CircleFlag(
+                                            lang['isoCode']!,
+                                            size: constraints.maxWidth > 400
+                                                ? 64
+                                                : 48, // Responsive flag size
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          lang['name']!,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: constraints.maxWidth > 400
+                                                ? 16
+                                                : 14, // Responsive font
+                                            color: textColor,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          lang['localName']!,
+                                          style: TextStyle(
+                                            fontSize: constraints.maxWidth > 400
+                                                ? 12
+                                                : 10, // Responsive font
+                                            fontWeight: FontWeight.w500,
+                                            color: isSelected
+                                                ? AppColors.primary
+                                                : subTextColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  if (isSelected)
+                                    const Positioned(
+                                      top: 12,
+                                      right: 12,
+                                      child: Icon(
+                                        Icons.check_circle,
+                                        color: AppColors.primary,
+                                        size: 24,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
@@ -404,7 +440,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           ),
                           const SizedBox(width: 8),
                           Icon(
-                            Icons.expand_more,
+                            Icons.arrow_forward,
                             color: subTextColor,
                             size: 20,
                           ),
