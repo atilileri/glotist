@@ -22,6 +22,8 @@ class MockLocalizationCubit extends Mock implements LocalizationCubit {}
 
 class MockThemeCubit extends Mock implements ThemeCubit {}
 
+Future<void> _noopClose(Invocation _) async {}
+
 void main() {
   setUpAll(() {
     GoogleFonts.config.allowRuntimeFetching = false;
@@ -99,13 +101,19 @@ void main() {
 
     // Setup mock behavior
     when(() => mockLocalizationCubit.state).thenReturn(const Locale('en'));
+    when(() => mockLocalizationCubit.stream)
+        .thenAnswer((_) => const Stream<Locale>.empty());
+    when(mockLocalizationCubit.close).thenAnswer(_noopClose);
     when(() => mockThemeCubit.state).thenReturn(ThemeMode.system);
+    when(() => mockThemeCubit.stream)
+        .thenAnswer((_) => const Stream<ThemeMode>.empty());
+    when(mockThemeCubit.close).thenAnswer(_noopClose);
 
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
-          BlocProvider.value(value: mockLocalizationCubit),
-          BlocProvider.value(value: mockThemeCubit),
+          BlocProvider<LocalizationCubit>.value(value: mockLocalizationCubit),
+          BlocProvider<ThemeCubit>.value(value: mockThemeCubit),
         ],
         child: const MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,

@@ -18,27 +18,73 @@ class LanguageSelectionScreen extends StatefulWidget {
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
-  // Helper to generate Native Languages data
-  List<Map<String, String>> _getNativeLanguages(AppLocalizations l10n) {
+  // Static mapping for native language names
+  static const Map<String, String> _nativeLanguageNames = {
+    // Display languages (native interface languages)
+    'en': 'English (United States)',
+    'es': 'Español',
+    'fr': 'Français',
+    'tr': 'Türkçe',
+    'de': 'Deutsch',
+    'nl': 'Nederlands',
+
+    // Target languages (languages to learn)
+    'jp': '日本語',
+    'it': 'Italiano',
+    'pt': 'Português',
+    'kr': '한국어',
+  };
+
+  // Helper to get native language name
+  static String _getLanguageNameLocale(String localeCode) {
+    return _nativeLanguageNames[localeCode] ?? localeCode.toUpperCase();
+  }
+
+  // Helper to generate Display Languages data
+  List<Map<String, String>> _getDisplayLanguages() {
     return [
-      {'name': l10n.langEnglishUS, 'isoCode': 'us', 'locale': 'en'},
-      {'name': l10n.langSpanish, 'isoCode': 'es', 'locale': 'es'},
-      {'name': l10n.langFrench, 'isoCode': 'fr', 'locale': 'fr'},
-      {'name': l10n.langTurkish, 'isoCode': 'tr', 'locale': 'tr'},
-      {'name': l10n.langGerman, 'isoCode': 'de', 'locale': 'de'},
-      {'name': l10n.langDutch, 'isoCode': 'nl', 'locale': 'nl'},
+      {'name': _getLanguageNameLocale('en'), 'isoCode': 'us', 'locale': 'en'},
+      {'name': _getLanguageNameLocale('es'), 'isoCode': 'es', 'locale': 'es'},
+      {'name': _getLanguageNameLocale('fr'), 'isoCode': 'fr', 'locale': 'fr'},
+      {'name': _getLanguageNameLocale('tr'), 'isoCode': 'tr', 'locale': 'tr'},
+      {'name': _getLanguageNameLocale('de'), 'isoCode': 'de', 'locale': 'de'},
+      {'name': _getLanguageNameLocale('nl'), 'isoCode': 'nl', 'locale': 'nl'},
     ];
   }
 
   // Helper to generate Learnable Languages data
-  List<Map<String, String>> _getLearnableLanguages(AppLocalizations l10n) {
+  List<Map<String, String>> _getTargetLanguages(AppLocalizations l10n) {
     return [
-      {'name': l10n.langJapanese, 'localName': '日本語', 'isoCode': 'jp'},
-      {'name': l10n.langItalian, 'localName': 'Italiano', 'isoCode': 'it'},
-      {'name': l10n.langPortuguese, 'localName': 'Português', 'isoCode': 'pt'},
-      {'name': l10n.langKorean, 'localName': '한국어', 'isoCode': 'kr'},
-      {'name': l10n.langTurkish, 'localName': 'Türkçe', 'isoCode': 'tr'},
-      {'name': l10n.langDutch, 'localName': 'Nederlands', 'isoCode': 'nl'},
+      {
+        'name': l10n.langJapanese,
+        'nativeName': _getLanguageNameLocale('jp'),
+        'isoCode': 'jp',
+      },
+      {
+        'name': l10n.langItalian,
+        'nativeName': _getLanguageNameLocale('it'),
+        'isoCode': 'it',
+      },
+      {
+        'name': l10n.langPortuguese,
+        'nativeName': _getLanguageNameLocale('pt'),
+        'isoCode': 'pt',
+      },
+      {
+        'name': l10n.langKorean,
+        'nativeName': _getLanguageNameLocale('kr'),
+        'isoCode': 'kr',
+      },
+      {
+        'name': l10n.langTurkish,
+        'nativeName': _getLanguageNameLocale('tr'),
+        'isoCode': 'tr',
+      },
+      {
+        'name': l10n.langDutch,
+        'nativeName': _getLanguageNameLocale('nl'),
+        'isoCode': 'nl',
+      },
     ];
   }
 
@@ -64,8 +110,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     final l10n = AppLocalizations.of(context)!;
     final currentLocale = Localizations.localeOf(context).languageCode;
 
-    final nativeLanguages = _getNativeLanguages(l10n);
-    final learnableLanguages = _getLearnableLanguages(l10n);
+    final displayLanguages = _getDisplayLanguages();
+    final learnableLanguages = _getTargetLanguages(l10n);
 
     // Define styles based on theme
     final surfaceColor =
@@ -119,7 +165,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           IconButton(
                             onPressed: () {
                               unawaited(
-                                  context.read<ThemeCubit>().toggleTheme());
+                                context.read<ThemeCubit>().toggleTheme(),
+                              );
                             },
                             style: IconButton.styleFrom(
                               backgroundColor: cardColor,
@@ -242,7 +289,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                                 fontFamily: 'Plus Jakarta Sans',
                               ),
                               onChanged: _onNativeLanguageChanged,
-                              items: nativeLanguages.map((lang) {
+                              items: displayLanguages.map((lang) {
                                 return DropdownMenuItem(
                                   value: lang['locale'],
                                   child: Row(
@@ -301,7 +348,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   const SizedBox(height: 16),
                   LayoutBuilder(
                     builder: (context, constraints) {
-                      // Calculate responsive crossAxisCount based on available width
+                      // Calculate responsive crossAxisCount based on
+                      // available width
                       final crossAxisCount = constraints.maxWidth > 600
                           ? 3
                           : constraints.maxWidth > 400
@@ -329,7 +377,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
 
                           return GestureDetector(
                             onTap: () => setState(
-                                () => _targetLanguage = lang['isoCode']!),
+                              () => _targetLanguage = lang['isoCode']!,
+                            ),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: isSelected
@@ -382,7 +431,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          lang['localName']!,
+                                          lang['nativeName']!,
                                           style: TextStyle(
                                             fontSize: constraints.maxWidth > 400
                                                 ? 12

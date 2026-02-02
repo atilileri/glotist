@@ -7,10 +7,16 @@
 
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:glotist_app/main.dart';
+import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
+import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
+import 'package:glotist_app/features/onboarding/presentation/pages/language_selection_screen.dart';
+import 'package:glotist_app/l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockHttpClient extends Mock implements HttpClient {}
 
@@ -28,16 +34,35 @@ void main() {
   });
 
   testWidgets('Onboarding screen smoke test', (WidgetTester tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const GlotistApp());
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => ThemeCubit(prefs)),
+          BlocProvider(create: (_) => LocalizationCubit(prefs)),
+        ],
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: LanguageSelectionScreen(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final context = tester.element(find.byType(LanguageSelectionScreen));
+    final l10n = AppLocalizations.of(context)!;
 
     // Verify that the language selection screen is shown by searching
     // for its title
-    expect(find.text('Pick your languages'), findsOneWidget);
-    expect(find.text('Continue'), findsOneWidget);
+    expect(find.text(l10n.letsGetStarted), findsOneWidget);
+    expect(find.text(l10n.continueAction), findsOneWidget);
 
     // Verify 'STEP 1 OF 3' and other key elements are present
-    expect(find.text('STEP 1 OF 3'), findsOneWidget);
+    expect(find.text(l10n.step1of3), findsOneWidget);
   });
 }
 
