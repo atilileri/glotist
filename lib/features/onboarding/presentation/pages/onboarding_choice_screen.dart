@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:glotist_app/core/utils/preview_helper.dart';
 import 'package:go_router/go_router.dart';
 
 /// Screen where users choose their onboarding path.
 class OnboardingChoiceScreen extends StatelessWidget {
   /// Creates an [OnboardingChoiceScreen] instance.
+  @AppPreview(name: 'Onboarding Choice')
   const OnboardingChoiceScreen({super.key});
 
   @override

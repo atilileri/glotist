@@ -6,12 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/theme/app_colors.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
+import 'package:glotist_app/core/utils/preview_helper.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 /// Screen for selecting display and target languages.
 class LanguageSelectionScreen extends StatefulWidget {
   /// Creates a [LanguageSelectionScreen] instance.
+  @AppPreview(name: 'Language Selection')
   const LanguageSelectionScreen({super.key});
 
   @override
