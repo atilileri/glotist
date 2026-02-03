@@ -45,20 +45,28 @@ jobs:
       - name: 🧪 Run Tests
         run: flutter test --coverage
 
-      # 8. Check Code Coverage threshold & Generate HTML
-      - name: 📊 Generate Coverage Report
+      # 8. Check Code Coverage threshold
+      - name: 📊 Check Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v3
+        with:
+          path: coverage/lcov.info
+          min_coverage: 67.0
+          exclude: "**/*.g.dart **/*.freezed.dart **/generated/**"
+
+      # 9. Generate HTML Report
+      - name: 📝 Generate HTML Report
         run: |
           sudo apt-get install -y lcov
           genhtml coverage/lcov.info -o coverage/html
 
-      # 9. Upload Coverage Report
+      # 10. Upload Coverage Report
       - name: 🚀 Upload Coverage Report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/html
 
-      # 10. Upload Golden Test Failures (only on failure)
+      # 11. Upload Golden Test Failures (only on failure)
       - name: 🖼️ Upload Golden Test Failures
         if: failure()
         uses: actions/upload-artifact@v4
