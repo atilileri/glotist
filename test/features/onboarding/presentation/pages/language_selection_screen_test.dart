@@ -64,7 +64,10 @@ void main() {
       expect(find.bySemanticsLabel('Theme toggle'), findsOneWidget);
 
       logVerify('Should render display language dropdown');
-      expect(find.byKey(const Key('native_language_dropdown')), findsOneWidget);
+      expect(
+        find.byKey(const Key('display_language_dropdown')),
+        findsOneWidget,
+      );
       expect(find.text('English (United States)'), findsOneWidget);
 
       logVerify('Should render language grid items');

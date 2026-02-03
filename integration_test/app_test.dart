@@ -12,7 +12,7 @@ void main() {
 
     // 1. Language Selection Screen
     expect(find.text('DISPLAY LANGUAGE'), findsOneWidget);
-    expect(find.byKey(const Key('native_language_dropdown')), findsOneWidget);
+    expect(find.byKey(const Key('display_language_dropdown')), findsOneWidget);
 
     // Take a screenshot of the initial screen
     await binding.convertFlutterSurfaceToImage();

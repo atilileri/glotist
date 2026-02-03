@@ -11,7 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Native Language Selection and Persistence Test', (tester) async {
+  testWidgets('Display Language Selection and Persistence Test',
+      (tester) async {
     // 1. Setup
     SharedPreferences.setMockInitialValues({});
     try {
@@ -48,7 +49,7 @@ void main() {
       debugPrint('Testing selection: $languageName -> $expectedLocaleCode');
 
       // 2. Open Dropdown using Semantic Label
-      final dropdownFinder = find.byKey(const Key('native_language_dropdown'));
+      final dropdownFinder = find.byKey(const Key('display_language_dropdown'));
       expect(dropdownFinder, findsOneWidget);
 
       await tester.tap(dropdownFinder);

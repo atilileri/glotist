@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,7 @@ import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-/// Screen for selecting native and target languages.
+/// Screen for selecting display and target languages.
 class LanguageSelectionScreen extends StatefulWidget {
   /// Creates a [LanguageSelectionScreen] instance.
   const LanguageSelectionScreen({super.key});
@@ -19,9 +20,9 @@ class LanguageSelectionScreen extends StatefulWidget {
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
-  // Static mapping for native language names
-  static const Map<String, String> _nativeLanguageNames = {
-    // Display languages (native interface languages)
+  // Static mapping for language names in their native form
+  static const Map<String, String> _languageNativeNames = {
+    // Display languages (app interface languages)
     'en': 'English (United States)',
     'es': 'Español',
     'fr': 'Français',
@@ -36,20 +37,20 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     'kr': '한국어',
   };
 
-  // Helper to get native language name
-  static String _getLanguageNameLocale(String localeCode) {
-    return _nativeLanguageNames[localeCode] ?? localeCode.toUpperCase();
+  // Helper to get the native name of a language
+  static String _getNativeLanguageName(String localeCode) {
+    return _languageNativeNames[localeCode] ?? localeCode.toUpperCase();
   }
 
   // Helper to generate Display Languages data
   List<Map<String, String>> _getDisplayLanguages() {
     return [
-      {'name': _getLanguageNameLocale('en'), 'isoCode': 'us', 'locale': 'en'},
-      {'name': _getLanguageNameLocale('es'), 'isoCode': 'es', 'locale': 'es'},
-      {'name': _getLanguageNameLocale('fr'), 'isoCode': 'fr', 'locale': 'fr'},
-      {'name': _getLanguageNameLocale('tr'), 'isoCode': 'tr', 'locale': 'tr'},
-      {'name': _getLanguageNameLocale('de'), 'isoCode': 'de', 'locale': 'de'},
-      {'name': _getLanguageNameLocale('nl'), 'isoCode': 'nl', 'locale': 'nl'},
+      {'name': _getNativeLanguageName('en'), 'isoCode': 'us', 'locale': 'en'},
+      {'name': _getNativeLanguageName('es'), 'isoCode': 'es', 'locale': 'es'},
+      {'name': _getNativeLanguageName('fr'), 'isoCode': 'fr', 'locale': 'fr'},
+      {'name': _getNativeLanguageName('tr'), 'isoCode': 'tr', 'locale': 'tr'},
+      {'name': _getNativeLanguageName('de'), 'isoCode': 'de', 'locale': 'de'},
+      {'name': _getNativeLanguageName('nl'), 'isoCode': 'nl', 'locale': 'nl'},
     ];
   }
 
@@ -58,32 +59,32 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     return [
       {
         'name': l10n.langJapanese,
-        'nativeName': _getLanguageNameLocale('jp'),
+        'nativeName': _getNativeLanguageName('jp'),
         'isoCode': 'jp',
       },
       {
         'name': l10n.langItalian,
-        'nativeName': _getLanguageNameLocale('it'),
+        'nativeName': _getNativeLanguageName('it'),
         'isoCode': 'it',
       },
       {
         'name': l10n.langPortuguese,
-        'nativeName': _getLanguageNameLocale('pt'),
+        'nativeName': _getNativeLanguageName('pt'),
         'isoCode': 'pt',
       },
       {
         'name': l10n.langKorean,
-        'nativeName': _getLanguageNameLocale('kr'),
+        'nativeName': _getNativeLanguageName('kr'),
         'isoCode': 'kr',
       },
       {
         'name': l10n.langTurkish,
-        'nativeName': _getLanguageNameLocale('tr'),
+        'nativeName': _getNativeLanguageName('tr'),
         'isoCode': 'tr',
       },
       {
         'name': l10n.langDutch,
-        'nativeName': _getLanguageNameLocale('nl'),
+        'nativeName': _getNativeLanguageName('nl'),
         'isoCode': 'nl',
       },
     ];
@@ -97,7 +98,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     super.initState();
   }
 
-  void _onNativeLanguageChanged(String? newValue) {
+  void _onDisplayLanguageChanged(String? newValue) {
     if (newValue == null) return;
     unawaited(
       context.read<LocalizationCubit>().changeLocale(newValue),
@@ -262,7 +263,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               child: ListView(
                 padding: const EdgeInsets.only(bottom: 120),
                 children: [
-                  // 1. Native Language Section
+                  // 1. Display Language Section
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
@@ -271,7 +272,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                         _sectionTitle(l10n.displayLanguage, subTextColor),
                         const SizedBox(height: 12),
                         Semantics(
-                          label: 'Native language selection',
+                          label: 'Display language selection',
                           container: true,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -285,7 +286,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
-                                key: const Key('native_language_dropdown'),
+                                key: const Key('display_language_dropdown'),
                                 value: currentLocale,
                                 isExpanded: true,
                                 dropdownColor: cardColor,
@@ -299,7 +300,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                                   fontSize: 16,
                                   fontFamily: 'Plus Jakarta Sans',
                                 ),
-                                onChanged: _onNativeLanguageChanged,
+                                onChanged: _onDisplayLanguageChanged,
                                 items: displayLanguages.map((lang) {
                                   return DropdownMenuItem(
                                     value: lang['locale'],

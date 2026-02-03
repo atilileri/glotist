@@ -18,16 +18,7 @@ Public roadmap for contributors. Private notes (personal TODOs) live in
 
 ### Onboarding
 
-- Rename "Native Language" to "App Language"; add flags; show languages in
-  their native form
-- Update language selection to dropdown/input with flags
-- Remove "Other languages" section; gather languages and levels via onboarding
-  conversation
-- Improve UX on language selection screen (titles, welcoming copy)
-
 ### CI/CD
-
-- Add tests to GitHub Actions pipeline
 
 ### UI Design
 
