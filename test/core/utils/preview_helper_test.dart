@@ -283,6 +283,90 @@ void main() {
     });
   });
 
+  group('Private Cubit Integration Tests', () {
+    setUp(() async {
+      logSetup('Initializing private cubit integration tests');
+    });
+
+    tearDown(() {
+      logTeardown('Private cubit integration tests complete');
+    });
+
+    /// Test 1: PreviewWrapper with different constructor parameters.
+    ///
+    /// Steps:
+    /// 1. Create PreviewWrapper with all constructor parameters
+    /// 2. This exercises the constructor (line 14)
+    testWidgets('constructor with all parameters', (tester) async {
+      logStep(1, 'Creating PreviewWrapper with all parameters');
+      const childWidget = Text('Test Child');
+      const customLocale = Locale('fr');
+      const customBrightness = Brightness.dark;
+
+      await tester.pumpWidget(
+        const PreviewWrapper(
+          key: Key('test-key'),
+          locale: customLocale,
+          brightness: customBrightness,
+          child: childWidget,
+        ),
+      );
+
+      logStep(2, 'Verifying widget is rendered');
+      expect(find.text('Test Child'), findsOneWidget);
+      expect(find.byKey(const Key('test-key')), findsOneWidget);
+    });
+
+    /// Test 2: PreviewWrapper with key parameter.
+    ///
+    /// Steps:
+    /// 1. Create PreviewWrapper with key
+    /// 2. Verify the key is properly set
+    testWidgets('constructor with key parameter', (tester) async {
+      logStep(1, 'Creating PreviewWrapper with key');
+      const testKey = Key('preview-wrapper-key');
+      const childWidget = Text('Test Child');
+
+      await tester.pumpWidget(
+        const PreviewWrapper(
+          key: testKey,
+          child: childWidget,
+        ),
+      );
+
+      logStep(2, 'Verifying key is set');
+      expect(find.byKey(testKey), findsOneWidget);
+      expect(find.text('Test Child'), findsOneWidget);
+    });
+
+    /// Test 3: Multiple PreviewWrapper instances with different configurations.
+    ///
+    /// Steps:
+    /// 1. Create multiple instances to exercise provider creation
+    /// 2. This exercises lines 48-51 (provider creation)
+    testWidgets('multiple instances exercise provider creation',
+        (tester) async {
+      logStep(1, 'Creating multiple PreviewWrapper instances');
+
+      await tester.pumpWidget(
+        const PreviewWrapper(
+          child: Text('Instance 1'),
+        ),
+      );
+
+      logStep(2, 'Creating second instance');
+      await tester.pumpWidget(
+        const PreviewWrapper(
+          locale: Locale('es'),
+          child: Text('Instance 2'),
+        ),
+      );
+
+      logStep(3, 'Verifying both instances work');
+      expect(find.text('Instance 2'), findsOneWidget);
+    });
+  });
+
   group('Integration Tests', () {
     setUp(() async {
       logSetup('Initializing integration tests');
