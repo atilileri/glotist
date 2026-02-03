@@ -45,9 +45,23 @@ jobs:
       - name: 🧪 Run Tests
         run: flutter test --coverage
 
-      # 8. (Optional) Check Code Coverage threshold
-      # You can use a tool like 'lcov' to enforce a minimum % 
-      - name: 📊 Check Coverage
+      # 8. Check Code Coverage threshold & Generate HTML
+      - name: 📊 Generate Coverage Report
         run: |
           sudo apt-get install -y lcov
           genhtml coverage/lcov.info -o coverage/html
+
+      # 9. Upload Coverage Report
+      - name: 🚀 Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/html
+
+      # 10. Upload Golden Test Failures (only on failure)
+      - name: 🖼️ Upload Golden Test Failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-test-failures
+          path: test/**/failures/

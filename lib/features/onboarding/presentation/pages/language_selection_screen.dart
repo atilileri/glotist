@@ -6,6 +6,7 @@ import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/theme/app_colors.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
 /// Screen for selecting native and target languages.
 class LanguageSelectionScreen extends StatefulWidget {
@@ -116,8 +117,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     // Define styles based on theme
     final surfaceColor =
         isDark ? AppColors.backgroundDark : theme.scaffoldBackgroundColor;
-    final cardColor = isDark ? AppColors.cardGrey : Colors.white;
-    final borderColor = isDark ? AppColors.borderGrey : Colors.grey.shade300;
+    final cardColor = isDark ? AppColors.cardGrey : Colors.grey.shade50;
+    final borderColor = isDark ? AppColors.borderGrey : Colors.grey.shade100;
     final textColor = isDark ? Colors.white : AppColors.textBlack;
     final subTextColor = isDark ? Colors.grey.shade400 : Colors.grey.shade600;
 
@@ -162,35 +163,39 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                             ),
                           ),
                           // Theme Switch
-                          IconButton(
-                            onPressed: () {
-                              unawaited(
-                                context.read<ThemeCubit>().toggleTheme(),
-                              );
-                            },
-                            style: IconButton.styleFrom(
-                              backgroundColor: cardColor,
-                              padding: const EdgeInsets.all(8),
-                            ),
-                            icon: BlocBuilder<ThemeCubit, ThemeMode>(
-                              builder: (context, themeMode) {
-                                IconData icon;
-                                switch (themeMode) {
-                                  case ThemeMode.system:
-                                    icon = Icons.brightness_auto;
-                                  case ThemeMode.light:
-                                    icon = Icons.light_mode;
-                                  case ThemeMode.dark:
-                                    icon = Icons.dark_mode;
-                                }
-                                return Icon(
-                                  icon,
-                                  color: AppColors.primary,
-                                  size: constraints.maxWidth > 400
-                                      ? 20
-                                      : 16, // Responsive icon
+                          Semantics(
+                            label: 'Theme toggle',
+                            button: true,
+                            child: IconButton(
+                              onPressed: () {
+                                unawaited(
+                                  context.read<ThemeCubit>().toggleTheme(),
                                 );
                               },
+                              style: IconButton.styleFrom(
+                                backgroundColor: cardColor,
+                                padding: const EdgeInsets.all(8),
+                              ),
+                              icon: BlocBuilder<ThemeCubit, ThemeMode>(
+                                builder: (context, themeMode) {
+                                  IconData icon;
+                                  switch (themeMode) {
+                                    case ThemeMode.system:
+                                      icon = Icons.brightness_auto;
+                                    case ThemeMode.light:
+                                      icon = Icons.light_mode;
+                                    case ThemeMode.dark:
+                                      icon = Icons.dark_mode;
+                                  }
+                                  return Icon(
+                                    icon,
+                                    color: AppColors.primary,
+                                    size: constraints.maxWidth > 400
+                                        ? 20
+                                        : 16, // Responsive icon
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -265,47 +270,57 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       children: [
                         _sectionTitle(l10n.displayLanguage, subTextColor),
                         const SizedBox(height: 12),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: cardColor,
-                            border: Border.all(color: borderColor),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: currentLocale,
-                              isExpanded: true,
-                              dropdownColor: cardColor,
-                              icon:
-                                  Icon(Icons.expand_more, color: subTextColor),
-                              style: TextStyle(
-                                color: textColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                fontFamily: 'Plus Jakarta Sans',
+                        Semantics(
+                          label: 'Native language selection',
+                          container: true,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: cardColor,
+                              border: Border.all(color: borderColor),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                key: const Key('native_language_dropdown'),
+                                value: currentLocale,
+                                isExpanded: true,
+                                dropdownColor: cardColor,
+                                icon: Icon(
+                                  Icons.expand_more,
+                                  color: subTextColor,
+                                ),
+                                style: TextStyle(
+                                  color: textColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  fontFamily: 'Plus Jakarta Sans',
+                                ),
+                                onChanged: _onNativeLanguageChanged,
+                                items: displayLanguages.map((lang) {
+                                  return DropdownMenuItem(
+                                    value: lang['locale'],
+                                    child: Row(
+                                      children: [
+                                        CircleFlag(
+                                          lang['isoCode']!,
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Text(
+                                            lang['name']!,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
                               ),
-                              onChanged: _onNativeLanguageChanged,
-                              items: displayLanguages.map((lang) {
-                                return DropdownMenuItem(
-                                  value: lang['locale'],
-                                  child: Row(
-                                    children: [
-                                      // Using a generic globe icon
-                                      Icon(
-                                        Icons.language,
-                                        color: subTextColor,
-                                        size: 20,
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Text(lang['name']!),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
                             ),
                           ),
                         ),
@@ -375,87 +390,95 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           final lang = learnableLanguages[index];
                           final isSelected = _targetLanguage == lang['isoCode'];
 
-                          return GestureDetector(
-                            onTap: () => setState(
-                              () => _targetLanguage = lang['isoCode']!,
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? AppColors.primary.withValues(alpha: 0.1)
-                                    : cardColor,
-                                border: Border.all(
-                                  color: isSelected
-                                      ? AppColors.primary
-                                      : Colors.transparent,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(24),
+                          return Semantics(
+                            label: '${lang['name']} language option'
+                                '${isSelected ? ', selected' : ''}',
+                            button: true,
+                            selected: isSelected,
+                            child: GestureDetector(
+                              onTap: () => setState(
+                                () => _targetLanguage = lang['isoCode']!,
                               ),
-                              child: Stack(
-                                children: [
-                                  Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withValues(alpha: 0.2),
-                                                blurRadius: 8,
-                                                offset: const Offset(0, 4),
-                                              ),
-                                            ],
-                                          ),
-                                          child: CircleFlag(
-                                            lang['isoCode']!,
-                                            size: constraints.maxWidth > 400
-                                                ? 64
-                                                : 48, // Responsive flag size
-                                          ),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Text(
-                                          lang['name']!,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: constraints.maxWidth > 400
-                                                ? 16
-                                                : 14, // Responsive font
-                                            color: textColor,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          lang['nativeName']!,
-                                          style: TextStyle(
-                                            fontSize: constraints.maxWidth > 400
-                                                ? 12
-                                                : 10, // Responsive font
-                                            fontWeight: FontWeight.w500,
-                                            color: isSelected
-                                                ? AppColors.primary
-                                                : subTextColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? AppColors.primary.withValues(alpha: 0.1)
+                                      : cardColor,
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? AppColors.primary
+                                        : borderColor,
+                                    width: 2,
                                   ),
-                                  if (isSelected)
-                                    const Positioned(
-                                      top: 12,
-                                      right: 12,
-                                      child: Icon(
-                                        Icons.check_circle,
-                                        color: AppColors.primary,
-                                        size: 24,
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withValues(alpha: 0.2),
+                                                  blurRadius: 8,
+                                                  offset: const Offset(0, 4),
+                                                ),
+                                              ],
+                                            ),
+                                            child: CircleFlag(
+                                              lang['isoCode']!,
+                                              size: constraints.maxWidth > 400
+                                                  ? 64
+                                                  : 48, // Responsive flag size
+                                            ),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Text(
+                                            lang['name']!,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize:
+                                                  constraints.maxWidth > 400
+                                                      ? 16
+                                                      : 14, // Responsive font
+                                              color: textColor,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            lang['nativeName']!,
+                                            style: TextStyle(
+                                              fontSize:
+                                                  constraints.maxWidth > 400
+                                                      ? 12
+                                                      : 10, // Responsive font
+                                              fontWeight: FontWeight.w500,
+                                              color: isSelected
+                                                  ? AppColors.primary
+                                                  : subTextColor,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                ],
+                                    if (isSelected)
+                                      const Positioned(
+                                        top: 12,
+                                        right: 12,
+                                        child: Icon(
+                                          Icons.check_circle,
+                                          color: AppColors.primary,
+                                          size: 24,
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -467,33 +490,40 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   // See all button
                   Padding(
                     padding: const EdgeInsets.all(24),
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        side: BorderSide(color: borderColor),
-                        backgroundColor: cardColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                    child: Semantics(
+                      label: 'See all languages',
+                      button: true,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          // TODO(atilileri): Implement see all languages
+                          // screen.
+                        },
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          side: BorderSide(color: borderColor),
+                          backgroundColor: cardColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            l10n.seeAllLanguages,
-                            style: TextStyle(
-                              color: subTextColor,
-                              fontWeight: FontWeight.bold,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              l10n.seeAllLanguages,
+                              style: TextStyle(
+                                color: subTextColor,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Icon(
-                            Icons.arrow_forward,
-                            color: subTextColor,
-                            size: 20,
-                          ),
-                        ],
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: subTextColor,
+                              size: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -519,33 +549,41 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
           ),
         ),
         child: SafeArea(
-          child: ElevatedButton(
-            onPressed: () {
-              // Action to continue
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.textBlack,
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              elevation: 4,
-              shadowColor: AppColors.primary.withValues(alpha: 0.4),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  l10n.continueAction,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                  ),
+          child: Semantics(
+            label: 'Continue to next step',
+            button: true,
+            child: ElevatedButton(
+              onPressed: () {
+                context.go('/choice');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.textBlack,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                elevation: 4,
+                shadowColor: AppColors.primary.withValues(alpha: 0.4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
                 ),
-                const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_rounded, size: 20, weight: 800),
-              ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    l10n.continueAction,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    size: 20,
+                    weight: 800,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

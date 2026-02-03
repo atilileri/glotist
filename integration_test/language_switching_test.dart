@@ -34,11 +34,11 @@ void main() {
     // Define test cases: Display Name -> Expected Locale
     // Note: The map order matters if we want to test switching back and forth.
     final testCases = {
-      'Spanish': 'es',
-      'French': 'fr',
-      'Turkish': 'tr',
-      'German': 'de',
-      'Dutch': 'nl',
+      'Español': 'es',
+      'Français': 'fr',
+      'Türkçe': 'tr',
+      'Deutsch': 'de',
+      'Nederlands': 'nl',
       'English (United States)': 'en',
     };
 
@@ -48,31 +48,34 @@ void main() {
 
       debugPrint('Testing selection: $languageName -> $expectedLocaleCode');
 
-      // 2. Open Dropdown
-      // Finding by type DropdownButton<String> might be tricky with generics in
-      // tests sometimes,
-      // but let's try finding the widget that contains the arrow icon which is
-      // typical for dropdowns
-      // or just by Type.
-      final dropdownFinder = find.byType(DropdownButton<String>);
+      // 2. Open Dropdown using Semantic Label
+      final dropdownFinder = find.byKey(const Key('native_language_dropdown'));
       expect(dropdownFinder, findsOneWidget);
 
       await tester.tap(dropdownFinder);
       await tester.pumpAndSettle();
+      // Dropdown menus sometimes take an extra pump to be fully tappable in
+      // integration tests
+      await tester.pump(const Duration(seconds: 1));
 
       // 3. Select Language
-      // We look for the item in the dropdown menu.
-      // Since it's a scrollable list potentially, we might need to scroll it
-      // into view if there are many items.
-      // The list has 6 items, usually fits on screen, but to be safe we can
-      // verify.
-      final itemFinder = find.text(languageName).last;
+      // Debug: print all text widgets if we can't find the item
+      final items = find.text(languageName);
+      if (items.evaluate().isEmpty) {
+        debugPrint('ERROR: Could not find language item: $languageName');
+        debugPrint('Available text widgets:');
+        for (final element in find.byType(Text).evaluate()) {
+          final textWidget = element.widget as Text;
+          debugPrint('  - ${textWidget.data}');
+        }
+      }
 
+      final itemFinder = items.last;
       await tester.tap(itemFinder);
       await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
 
       // 4. Verify Cubit State
-      // Access the cubit from the widget tree
       final context = tester.element(find.byType(LanguageSelectionScreen));
       final cubit = context.read<LocalizationCubit>();
       expect(cubit.state.languageCode, equals(expectedLocaleCode));

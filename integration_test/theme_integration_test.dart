@@ -22,7 +22,8 @@ void main() {
     expect(di.sl<ThemeCubit>().state, equals(ThemeMode.system));
 
     // 2. Toggle to LIGHT
-    final themeButton = find.byType(IconButton).last; // Top right toggle
+    final themeButton =
+        find.bySemanticsLabel('Theme toggle'); // Top right toggle
     await tester.tap(themeButton);
     await tester.pumpAndSettle();
     expect(di.sl<ThemeCubit>().state, equals(ThemeMode.light));

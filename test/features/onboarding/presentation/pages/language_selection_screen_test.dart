@@ -1,301 +1,176 @@
-import 'dart:io';
-
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/features/onboarding/presentation/pages/language_selection_screen.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockHttpClient extends Mock implements HttpClient {}
+import '../../../../helpers/test_helpers.dart';
 
-class MockHttpClientRequest extends Mock implements HttpClientRequest {}
+class MockThemeCubit extends MockCubit<ThemeMode> implements ThemeCubit {}
 
-class MockHttpClientResponse extends Mock implements HttpClientResponse {}
-
-class MockHttpHeaders extends Mock implements HttpHeaders {}
-
-class MockLocalizationCubit extends Mock implements LocalizationCubit {}
-
-class MockThemeCubit extends Mock implements ThemeCubit {}
-
-Future<void> _noopClose(Invocation _) async {}
+class MockLocalizationCubit extends MockCubit<Locale>
+    implements LocalizationCubit {}
 
 void main() {
-  setUpAll(() {
-    GoogleFonts.config.allowRuntimeFetching = false;
-    HttpOverrides.global = TestHttpOverrides();
-    registerFallbackValue(Uri());
-  });
+  late MockThemeCubit mockThemeCubit;
+  late MockLocalizationCubit mockLocalizationCubit;
 
-  testWidgets('screen can be instantiated', (tester) async {
-    // Test that the widget can be created without crashing
-    expect(() => const LanguageSelectionScreen(), returnsNormally);
+  setUp(() {
+    mockThemeCubit = MockThemeCubit();
+    mockLocalizationCubit = MockLocalizationCubit();
 
-    // Test with minimal setup to avoid layout issues
-    await tester.pumpWidget(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => MockLocalizationCubit()),
-          BlocProvider(create: (_) => MockThemeCubit()),
-        ],
-        child: const MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: SizedBox.shrink(), // Use empty home to avoid layout issues
-        ),
-      ),
-    );
-
-    // Verify the app builds
-    expect(find.byType(MaterialApp), findsOneWidget);
-  });
-
-  testWidgets('localization works correctly', (tester) async {
-    // Create a simple widget wrapper just for testing localization
-    await tester.pumpWidget(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => MockLocalizationCubit()),
-          BlocProvider(create: (_) => MockThemeCubit()),
-        ],
-        child: MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: Builder(
-            builder: (context) {
-              final l10n = AppLocalizations.of(context)!;
-              return Column(
-                children: [
-                  Text(l10n.displayLanguage),
-                  Text(l10n.languageToLearn),
-                  Text(l10n.letsGetStarted),
-                  Text(l10n.langEnglishUS),
-                  Text(l10n.langJapanese),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    // Verify localization strings are available
-    final context = tester.element(find.byType(Column));
-    final l10n = AppLocalizations.of(context)!;
-
-    expect(find.text(l10n.displayLanguage), findsOneWidget);
-    expect(find.text(l10n.languageToLearn), findsOneWidget);
-    expect(find.text(l10n.letsGetStarted), findsOneWidget);
-    expect(find.text(l10n.langEnglishUS), findsOneWidget);
-    expect(find.text(l10n.langJapanese), findsOneWidget);
-  });
-
-  testWidgets('changes target language selection', (tester) async {
-    final mockLocalizationCubit = MockLocalizationCubit();
-    final mockThemeCubit = MockThemeCubit();
-
-    // Setup mock behavior
-    when(() => mockLocalizationCubit.state).thenReturn(const Locale('en'));
-    when(() => mockLocalizationCubit.stream)
-        .thenAnswer((_) => const Stream<Locale>.empty());
-    when(mockLocalizationCubit.close).thenAnswer(_noopClose);
     when(() => mockThemeCubit.state).thenReturn(ThemeMode.system);
-    when(() => mockThemeCubit.stream)
-        .thenAnswer((_) => const Stream<ThemeMode>.empty());
-    when(mockThemeCubit.close).thenAnswer(_noopClose);
+    when(() => mockLocalizationCubit.state).thenReturn(const Locale('en'));
+  });
 
-    await tester.pumpWidget(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider<LocalizationCubit>.value(value: mockLocalizationCubit),
-          BlocProvider<ThemeCubit>.value(value: mockThemeCubit),
+  Widget createWidgetUnderTest() {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeCubit>.value(value: mockThemeCubit),
+        BlocProvider<LocalizationCubit>.value(value: mockLocalizationCubit),
+      ],
+      child: const MaterialApp(
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
-        child: const MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: Locale('en'),
-          home: LanguageSelectionScreen(),
-        ),
+        supportedLocales: [
+          Locale('en'),
+          Locale('es'),
+          Locale('fr'),
+          Locale('tr'),
+          Locale('de'),
+          Locale('nl'),
+        ],
+        locale: Locale('en'),
+        home: LanguageSelectionScreen(),
       ),
     );
-    await tester.pumpAndSettle();
+  }
 
-    final context = tester.element(find.byType(LanguageSelectionScreen));
-    final l10n = AppLocalizations.of(context)!;
+  group('LanguageSelectionScreen', () {
+    testWidgets('renders all key UI elements', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
 
-    // Verify language options are present
-    expect(find.text(l10n.langJapanese), findsOneWidget);
-    expect(find.text(l10n.langItalian), findsOneWidget);
-    expect(find.text(l10n.langPortuguese), findsOneWidget);
-    expect(find.text(l10n.langKorean), findsOneWidget);
+      logVerify('Should render theme toggle');
+      expect(find.bySemanticsLabel('Theme toggle'), findsOneWidget);
 
-    // Initially Japanese should be selected (check for check icon)
-    expect(find.byIcon(Icons.check_circle), findsOneWidget);
+      logVerify('Should render display language dropdown');
+      expect(find.byKey(const Key('native_language_dropdown')), findsOneWidget);
+      expect(find.text('English (United States)'), findsOneWidget);
 
-    // Find and tap the Italian language card
-    final italianCardFinder = find.ancestor(
-      of: find.text(l10n.langItalian),
-      matching: find.byType(GestureDetector),
-    );
-    expect(italianCardFinder, findsOneWidget);
+      logVerify('Should render language grid items');
+      // Japanese is default selected in code: String _targetLanguage = 'jp';
+      expect(
+        find.bySemanticsLabel(RegExp('.*Japanese.*selected.*')),
+        findsOneWidget,
+      );
+      expect(find.bySemanticsLabel(RegExp('.*Italian.*')), findsOneWidget);
 
-    await tester.tap(italianCardFinder);
-    await tester.pumpAndSettle();
+      logVerify('Should render Continue button');
+      expect(find.bySemanticsLabel('Continue to next step'), findsOneWidget);
+    });
 
-    // Verify Italian is now selected - should still have one check icon
-    expect(find.byIcon(Icons.check_circle), findsOneWidget);
+    testWidgets('toggling theme calls ThemeCubit.toggleTheme', (tester) async {
+      when(() => mockThemeCubit.toggleTheme()).thenAnswer((_) async {});
 
-    // Find and tap the Portuguese language card
-    final portugueseCardFinder = find.ancestor(
-      of: find.text(l10n.langPortuguese),
-      matching: find.byType(GestureDetector),
-    );
-    expect(portugueseCardFinder, findsOneWidget);
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
 
-    await tester.tap(portugueseCardFinder);
-    await tester.pumpAndSettle();
+      logAction('Tapping theme toggle');
+      await tester.tap(find.bySemanticsLabel('Theme toggle'));
+      await tester.pump();
 
-    // Verify Portuguese is now selected - should still have one check icon
-    expect(find.byIcon(Icons.check_circle), findsOneWidget);
+      verify(() => mockThemeCubit.toggleTheme()).called(1);
+    });
 
-    // Find and tap the Korean language card
-    final koreanCardFinder = find.ancestor(
-      of: find.text(l10n.langKorean),
-      matching: find.byType(GestureDetector),
-    );
-    expect(koreanCardFinder, findsOneWidget);
+    testWidgets(
+        'changing display language calls LocalizationCubit.changeLocale',
+        (tester) async {
+      when(() => mockLocalizationCubit.changeLocale(any()))
+          .thenAnswer((_) async {});
 
-    await tester.tap(koreanCardFinder);
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
 
-    // Verify Korean is now selected - should still have one check icon
-    expect(find.byIcon(Icons.check_circle), findsOneWidget);
+      logAction('Opening dropdown');
+      // Find the dropdown by the current value text
+      final dropdownFinder = find.text('English (United States)');
+      await tester.tap(dropdownFinder);
+      await tester.pumpAndSettle();
 
-    // Find and tap the Japanese language card again
-    final japaneseCardFinder = find.ancestor(
-      of: find.text(l10n.langJapanese),
-      matching: find.byType(GestureDetector),
-    );
-    expect(japaneseCardFinder, findsOneWidget);
+      logAction('Selecting Spanish');
+      final spanishOption = find
+          .text('Español')
+          .last; // last because one might be in the list behind
+      await tester.tap(spanishOption);
+      await tester.pump();
 
-    await tester.tap(japaneseCardFinder);
-    await tester.pumpAndSettle();
+      verify(() => mockLocalizationCubit.changeLocale('es')).called(1);
+    });
 
-    // Verify Japanese is selected again - should still have one check icon
-    expect(find.byIcon(Icons.check_circle), findsOneWidget);
+    testWidgets('selecting a target language updates visual selection',
+        (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Use RegExp for more robust matching of semantic labels
+      Finder bySemantics(String label) {
+        return find.byWidgetPredicate(
+          (widget) => widget is Semantics && widget.properties.label == label,
+          skipOffstage: false,
+        );
+      }
+
+      Finder bySemanticsPattern(RegExp pattern) {
+        return find.byWidgetPredicate(
+          (widget) =>
+              widget is Semantics &&
+              widget.properties.label != null &&
+              pattern.hasMatch(widget.properties.label!),
+          skipOffstage: false,
+        );
+      }
+
+      // Initial state: Japanese selected
+      logVerify('Japanese should be selected initially');
+      expect(bySemantics('Japanese language option, selected'), findsOneWidget);
+      expect(bySemantics('Italian language option'), findsOneWidget);
+
+      logAction('Tapping Italian');
+      final italianFinder = bySemantics('Italian language option');
+      await tester.ensureVisible(italianFinder);
+      // Scroll up to ensure it's not covered by the bottom navigation bar
+      await tester.drag(find.byType(ListView), const Offset(0, -150));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Italiano'));
+      await tester.pumpAndSettle();
+
+      logVerify('Italian should now be selected');
+
+      // Verify Japanese is deselected first to narrow down failure
+      if (tester.any(bySemantics('Japanese language option, selected'))) {
+        fail('Tap failed: Japanese is still selected after tapping Italian');
+      }
+
+      // "Italian language option, selected" - we expect this label now
+      // Re-constructing the expected string or using pattern
+      expect(
+        bySemanticsPattern(RegExp('.*Italian.*selected.*')),
+        findsOneWidget,
+      );
+
+      logVerify('Japanese should NOT be selected');
+      expect(bySemantics('Japanese language option'), findsOneWidget);
+      expect(bySemantics('Japanese language option, selected'), findsNothing);
+    });
   });
 }
-
-class TestHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) =>
-      createMockImageHttpClient(context);
-}
-
-HttpClient createMockImageHttpClient(SecurityContext? _) {
-  final client = MockHttpClient();
-  final request = MockHttpClientRequest();
-  final response = MockHttpClientResponse();
-  final headers = MockHttpHeaders();
-
-  when(() => client.getUrl(any())).thenAnswer((_) async => request);
-  when(() => request.headers).thenReturn(headers);
-  when(request.close).thenAnswer((_) async => response);
-  when(() => response.statusCode).thenReturn(HttpStatus.ok);
-  when(() => response.contentLength).thenReturn(_transparentImage.length);
-  when(() => response.compressionState)
-      .thenReturn(HttpClientResponseCompressionState.notCompressed);
-  when(
-    () => response.listen(
-      any(),
-      cancelOnError: any(named: 'cancelOnError'),
-      onDone: any(named: 'onDone'),
-      onError: any(named: 'onError'),
-    ),
-  ).thenAnswer((invocation) {
-    final onData =
-        invocation.positionalArguments[0] as void Function(List<int>);
-    final onDone = invocation.namedArguments[#onDone] as void Function()?;
-    return Stream<List<int>>.fromIterable([_transparentImage]).listen(
-      onData,
-      onDone: onDone,
-    );
-  });
-
-  return client;
-}
-
-final List<int> _transparentImage = [
-  0x89,
-  0x50,
-  0x4E,
-  0x47,
-  0x0D,
-  0x0A,
-  0x1A,
-  0x0A,
-  0x00,
-  0x00,
-  0x00,
-  0x0D,
-  0x49,
-  0x48,
-  0x44,
-  0x52,
-  0x00,
-  0x00,
-  0x00,
-  0x01,
-  0x00,
-  0x00,
-  0x00,
-  0x01,
-  0x08,
-  0x06,
-  0x00,
-  0x00,
-  0x00,
-  0x1F,
-  0x15,
-  0xC4,
-  0x89,
-  0x00,
-  0x00,
-  0x00,
-  0x0A,
-  0x49,
-  0x44,
-  0x41,
-  0x54,
-  0x78,
-  0x9C,
-  0x63,
-  0x00,
-  0x01,
-  0x00,
-  0x00,
-  0x05,
-  0x00,
-  0x01,
-  0x0D,
-  0x0A,
-  0x2D,
-  0xB4,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x49,
-  0x45,
-  0x4E,
-  0x44,
-  0xAE,
-  0x42,
-  0x60,
-  0x82,
-];
