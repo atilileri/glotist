@@ -90,3 +90,10 @@ ios/Flutter/Generated.xcconfig
 ios/Flutter/flutter_export_environment.sh
 ios/Flutter/Flutter.podspec
 ios/Flutter/.last_build_id
+
+# Coverage reports
+coverage/
+lcov.info
+
+# Golden test failures
+test/**/failures/
