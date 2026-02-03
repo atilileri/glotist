@@ -172,9 +172,9 @@ void main() {
 
         logStep(3, 'Verify persistence');
         await tester.pumpAndSettle();
-        final savedTheme = prefs.getString('theme');
-        logVerify('SharedPreferences should contain "dark"');
-        expect(savedTheme, 'dark');
+        final savedThemeIndex = prefs.getInt('theme_mode');
+        logVerify('SharedPreferences should contain the dark theme index');
+        expect(savedThemeIndex, ThemeMode.dark.index);
 
         await cubit.close();
       },
@@ -198,7 +198,7 @@ void main() {
 
         logVerify('Final state should be light');
         expect(cubit.state, ThemeMode.light);
-        expect(prefs.getString('theme'), 'light');
+        expect(prefs.getInt('theme_mode'), ThemeMode.light.index);
 
         await cubit.close();
       },

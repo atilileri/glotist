@@ -41,4 +41,4 @@ if __name__ == "__main__":
         sys.exit(1)
     else:
         print("SUCCESS: Coverage is above threshold.")
-        sys.exit(1) # Intentional for now to see output in logs or use 0
+        sys.exit(0)
