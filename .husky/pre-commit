@@ -1,10 +1,12 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "Checking project health..."
+echo "💅 Formatting staged files..."
+dart run lint_staged || exit 1
+
+echo "🔍 Running static analysis..."
 flutter analyze || {
   echo "❌ Static analysis failed. Please fix the issues before committing."
   exit 1
 }
 
-dart run lint_staged
