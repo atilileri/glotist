@@ -5,7 +5,7 @@ echo "💅 Formatting staged files..."
 dart run lint_staged || exit 1
 
 echo "🔍 Running static analysis..."
-flutter analyze || {
+flutter analyze --fatal-infos || {
   echo "❌ Static analysis failed. Please fix the issues before committing."
   exit 1
 }

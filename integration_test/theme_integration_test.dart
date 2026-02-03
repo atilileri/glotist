@@ -9,8 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Theme 3-state toggle and persistence test',
-      (WidgetTester tester) async {
+  testWidgets('Theme 3-state toggle and persistence test', (tester) async {
     // 1. Start App (Clean State)
     SharedPreferences.setMockInitialValues({});
     await di.init();

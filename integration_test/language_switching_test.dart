@@ -11,8 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Native Language Selection and Persistence Test',
-      (WidgetTester tester) async {
+  testWidgets('Native Language Selection and Persistence Test', (tester) async {
     // 1. Setup
     SharedPreferences.setMockInitialValues({});
     try {
