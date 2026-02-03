@@ -167,20 +167,28 @@ void main() {
       );
 
       logVerify('AppLocalizations delegate should be present');
-      expect(materialApp.localizationsDelegates,
-          contains(AppLocalizations.delegate),);
+      expect(
+        materialApp.localizationsDelegates,
+        contains(AppLocalizations.delegate),
+      );
 
       logVerify('Material localizations delegate should be present');
-      expect(materialApp.localizationsDelegates,
-          contains(GlobalMaterialLocalizations.delegate),);
+      expect(
+        materialApp.localizationsDelegates,
+        contains(GlobalMaterialLocalizations.delegate),
+      );
 
       logVerify('Widgets localizations delegate should be present');
-      expect(materialApp.localizationsDelegates,
-          contains(GlobalWidgetsLocalizations.delegate),);
+      expect(
+        materialApp.localizationsDelegates,
+        contains(GlobalWidgetsLocalizations.delegate),
+      );
 
       logVerify('Cupertino localizations delegate should be present');
-      expect(materialApp.localizationsDelegates,
-          contains(GlobalCupertinoLocalizations.delegate),);
+      expect(
+        materialApp.localizationsDelegates,
+        contains(GlobalCupertinoLocalizations.delegate),
+      );
     });
 
     /// Test 7: PreviewWrapper supports supported locales.
@@ -201,8 +209,10 @@ void main() {
         find.byType(MaterialApp),
       );
       logVerify('Supported locales should match AppLocalizations');
-      expect(materialApp.supportedLocales,
-          equals(AppLocalizations.supportedLocales),);
+      expect(
+        materialApp.supportedLocales,
+        equals(AppLocalizations.supportedLocales),
+      );
     });
 
     /// Test 8: PreviewWrapper disables debug banner.
