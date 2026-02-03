@@ -1,0 +1,9 @@
+tags:
+  golden:
+    timeout: 2x
+    testOn: chrome
+
+# Default configuration
+timeout: 30s
+testOn: vm
+platforms: [vm]
