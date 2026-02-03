@@ -96,8 +96,11 @@ flutter:
 
 lint_staged:
   'lib/**.dart':
+    - dart fix --apply
     - dart format
   'test/**.dart':
+    - dart fix --apply
     - dart format
   'integration_test/**.dart':
+    - dart fix --apply
     - dart format

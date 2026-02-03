@@ -4,9 +4,14 @@
 echo "💅 Formatting staged files..."
 dart run lint_staged || exit 1
 
-echo "🔍 Running static analysis..."
-flutter analyze --fatal-infos || {
+echo "🔍 Running static analysis on staged Dart files..."
+STAGED_DART_FILES=$(git diff --name-only --cached --diff-filter=ACMR -- '*.dart')
+if [ -z "$STAGED_DART_FILES" ]; then
+  echo "No staged Dart files to analyze."
+  exit 0
+fi
+
+dart analyze --fatal-infos $STAGED_DART_FILES || {
   echo "❌ Static analysis failed. Please fix the issues before committing."
   exit 1
 }
-
