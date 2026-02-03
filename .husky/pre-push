@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-flutter test --coverage && python scripts/verify_coverage.py
+echo "🧪 Running tests and generating coverage..."
+flutter test --coverage && {
+  echo "📊 Verifying coverage threshold..."
+  python scripts/verify_coverage.py
+}
+
