@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:glotist_app/core/di/injection_container.dart' as di;
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:glotist_app/l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   await di.init();
   runApp(const GlotistApp());
 }
