@@ -12,7 +12,10 @@ pubspec.lock
 doc/api/
 
 # dotenv environment variables file
-.env*
+.env
+.env.local
+.env.*
+!.env.example
 
 # Avoid committing generated Javascript files:
 *.dart.js
@@ -77,8 +80,10 @@ build/
 .flutter-plugins-dependencies
 
 # Environment and Secrets
-.env*
-*.env
+.env
+.env.local
+.env.*
+!.env.example
 supabase/.temp/
 
 # Private notes - may contain sensitive info (keys, personal TODOs)
