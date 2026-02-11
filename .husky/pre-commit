@@ -1,5 +1,4 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+
 
 echo "💅 Formatting staged files..."
 dart run lint_staged || exit 1
