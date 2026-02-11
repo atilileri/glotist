@@ -2,6 +2,7 @@
     package="com.example.glotist_app">
    <application
         android:label="glotist_app"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
