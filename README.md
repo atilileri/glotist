@@ -29,6 +29,9 @@ This project is built using a robust and modern technology stack:
 -   **Code Quality**:
     -   `very_good_analysis` for strict linting.
     -   [Husky](https://pub.dev/packages/husky) & [lint_staged](https://pub.dev/packages/lint_staged) for pre-commit hooks.
+-   **Testing**:
+    -   [golden_toolkit](https://pub.dev/packages/golden_toolkit) for visual regression testing.
+    -   [mocktail](https://pub.dev/packages/mocktail) for mocking.
 
 ## 🏁 Getting Started
 

@@ -6,7 +6,8 @@ Thank you for your interest in contributing to Glotist! This document provides g
 
 - Follow the official [Dart Style Guide](https://dart.dev/guides/language/evolutionary-style).
 - Use `very_good_analysis` lints (included in the project).
-- Run `dart format .` before committing.
+- **Pre-commit Hooks**: We use `husky` and `lint_staged` to automatically format and lint code before commits and pushes.
+- Run `dart format .` before committing (this is also handled by hooks).
 
 ## Commit Guidelines
 
@@ -22,7 +23,8 @@ Thank you for your interest in contributing to Glotist! This document provides g
 ## Testing
 
 - Every new feature should include unit tests for its domain and data layers.
-- Widget tests should be provided for major UI components.
+- Widget tests should be provided for major UI components. We use `golden_toolkit` for visual regression tests.
+- **Coverage**: A CI check ensures test coverage does not decrease. Run `flutter test --coverage` locally to check.
 - Run `flutter test` to ensure no regressions.
 
 ## Documentation
