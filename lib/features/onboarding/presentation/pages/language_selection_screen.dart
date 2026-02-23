@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/theme/app_colors.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/core/utils/preview_helper.dart';
+import 'package:glotist_app/features/onboarding/presentation/widgets/display_language_dropdown.dart';
+import 'package:glotist_app/features/onboarding/presentation/widgets/language_grid.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,107 +23,23 @@ class LanguageSelectionScreen extends StatefulWidget {
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
-  // Static mapping for language names in their native form
-  static const Map<String, String> _languageNativeNames = {
-    // Display languages (app interface languages)
-    'en': 'English (United States)',
-    'es': 'Español',
-    'fr': 'Français',
-    'tr': 'Türkçe',
-    'de': 'Deutsch',
-    'nl': 'Nederlands',
-
-    // Target languages (languages to learn)
-    'jp': '日本語',
-    'it': 'Italiano',
-    'pt': 'Português',
-    'kr': '한국어',
-  };
-
-  // Helper to get the native name of a language
-  static String _getNativeLanguageName(String localeCode) {
-    return _languageNativeNames[localeCode] ?? localeCode.toUpperCase();
-  }
-
-  // Helper to generate Display Languages data
-  List<Map<String, String>> _getDisplayLanguages() {
-    return [
-      {'name': _getNativeLanguageName('en'), 'isoCode': 'us', 'locale': 'en'},
-      {'name': _getNativeLanguageName('es'), 'isoCode': 'es', 'locale': 'es'},
-      {'name': _getNativeLanguageName('fr'), 'isoCode': 'fr', 'locale': 'fr'},
-      {'name': _getNativeLanguageName('tr'), 'isoCode': 'tr', 'locale': 'tr'},
-      {'name': _getNativeLanguageName('de'), 'isoCode': 'de', 'locale': 'de'},
-      {'name': _getNativeLanguageName('nl'), 'isoCode': 'nl', 'locale': 'nl'},
-    ];
-  }
-
-  // Helper to generate Learnable Languages data
-  List<Map<String, String>> _getTargetLanguages(AppLocalizations l10n) {
-    return [
-      {
-        'name': l10n.langJapanese,
-        'nativeName': _getNativeLanguageName('jp'),
-        'isoCode': 'jp',
-      },
-      {
-        'name': l10n.langItalian,
-        'nativeName': _getNativeLanguageName('it'),
-        'isoCode': 'it',
-      },
-      {
-        'name': l10n.langPortuguese,
-        'nativeName': _getNativeLanguageName('pt'),
-        'isoCode': 'pt',
-      },
-      {
-        'name': l10n.langKorean,
-        'nativeName': _getNativeLanguageName('kr'),
-        'isoCode': 'kr',
-      },
-      {
-        'name': l10n.langTurkish,
-        'nativeName': _getNativeLanguageName('tr'),
-        'isoCode': 'tr',
-      },
-      {
-        'name': l10n.langDutch,
-        'nativeName': _getNativeLanguageName('nl'),
-        'isoCode': 'nl',
-      },
-    ];
-  }
-
-  // State
-  String _targetLanguage = 'jp'; // Store isoCode
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void _onDisplayLanguageChanged(String? newValue) {
-    if (newValue == null) return;
-    unawaited(
-      context.read<LocalizationCubit>().changeLocale(newValue),
-    );
-  }
+  // Local ephemeral state for selected target language
+  // TODO(agent): do not start with a selected language.
+  // Let the user select one.
+  String _targetLanguageCode = 'jp';
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
-    final currentLocale = Localizations.localeOf(context).languageCode;
 
-    final displayLanguages = _getDisplayLanguages();
-    final learnableLanguages = _getTargetLanguages(l10n);
+    final localizationCubit = context.watch<LocalizationCubit>();
+    final displayLanguages = localizationCubit.displayLanguages;
+    final targetLanguages = localizationCubit.targetLanguages;
 
-    // Define styles based on theme
     final surfaceColor =
         isDark ? AppColors.backgroundDark : theme.scaffoldBackgroundColor;
-    final cardColor = isDark ? AppColors.cardGrey : Colors.grey.shade50;
-    final borderColor = isDark ? AppColors.borderGrey : Colors.grey.shade100;
-    final textColor = isDark ? Colors.white : AppColors.textBlack;
     final subTextColor = isDark ? Colors.grey.shade400 : Colors.grey.shade600;
 
     return Scaffold(
@@ -131,134 +48,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
         child: Column(
           children: [
             // --- Header ---
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Disabled Back Button
-                          IconButton(
-                            onPressed: null,
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: isDark
-                                  ? Colors.grey.shade700
-                                  : Colors.grey.shade300,
-                            ),
-                          ),
-                          Expanded(
-                            child: Center(
-                              child: Text(
-                                l10n.step1of3,
-                                style: TextStyle(
-                                  fontSize: constraints.maxWidth > 400
-                                      ? 10
-                                      : 8, // Responsive font
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: 1.5,
-                                  color: subTextColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          // Theme Switch
-                          Semantics(
-                            label: 'Theme toggle',
-                            button: true,
-                            child: IconButton(
-                              onPressed: () {
-                                unawaited(
-                                  context.read<ThemeCubit>().toggleTheme(),
-                                );
-                              },
-                              style: IconButton.styleFrom(
-                                backgroundColor: cardColor,
-                                padding: const EdgeInsets.all(8),
-                              ),
-                              icon: BlocBuilder<ThemeCubit, ThemeMode>(
-                                builder: (context, themeMode) {
-                                  IconData icon;
-                                  switch (themeMode) {
-                                    case ThemeMode.system:
-                                      icon = Icons.brightness_auto;
-                                    case ThemeMode.light:
-                                      icon = Icons.light_mode;
-                                    case ThemeMode.dark:
-                                      icon = Icons.dark_mode;
-                                  }
-                                  return Icon(
-                                    icon,
-                                    color: AppColors.primary,
-                                    size: constraints.maxWidth > 400
-                                        ? 20
-                                        : 16, // Responsive icon
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      // Progress Bar
-                      Container(
-                        width: double.infinity,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: borderColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: FractionallySizedBox(
-                          alignment: Alignment.centerLeft,
-                          widthFactor: 0.33,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      // Title & Subtitle
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          l10n.letsGetStarted,
-                          style: TextStyle(
-                            fontSize: constraints.maxWidth > 600
-                                ? 28
-                                : constraints.maxWidth > 400
-                                    ? 24
-                                    : 20, // Responsive title
-                            fontWeight: FontWeight.w800,
-                            color: textColor,
-                            height: 1.1,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          l10n.refineExperience,
-                          style: TextStyle(
-                            fontSize: constraints.maxWidth > 400
-                                ? 14
-                                : 12, // Responsive subtitle
-                            color: subTextColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+            _buildHeader(context, isDark, subTextColor, l10n),
 
             // --- Scrollable Content ---
             Expanded(
@@ -273,59 +63,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       children: [
                         _sectionTitle(l10n.displayLanguage, subTextColor),
                         const SizedBox(height: 12),
-                        Semantics(
-                          label: 'Display language selection',
-                          container: true,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: cardColor,
-                              border: Border.all(color: borderColor),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                key: const Key('display_language_dropdown'),
-                                value: currentLocale,
-                                isExpanded: true,
-                                dropdownColor: cardColor,
-                                icon: Icon(
-                                  Icons.expand_more,
-                                  color: subTextColor,
-                                ),
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                  fontFamily: 'Plus Jakarta Sans',
-                                ),
-                                onChanged: _onDisplayLanguageChanged,
-                                items: displayLanguages.map((lang) {
-                                  return DropdownMenuItem(
-                                    value: lang['locale'],
-                                    child: Row(
-                                      children: [
-                                        CircleFlag(
-                                          lang['isoCode']!,
-                                          size: 20,
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: Text(
-                                            lang['name']!,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
+                        DisplayLanguageDropdown(
+                          displayLanguages: displayLanguages,
                         ),
                         const SizedBox(height: 10),
                         Padding(
@@ -364,171 +103,14 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     child: _sectionTitle(l10n.languageToLearn, subTextColor),
                   ),
                   const SizedBox(height: 16),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      // Calculate responsive crossAxisCount based on
-                      // available width
-                      final crossAxisCount = constraints.maxWidth > 600
-                          ? 3
-                          : constraints.maxWidth > 400
-                              ? 2
-                              : 1;
-                      final itemWidth =
-                          (constraints.maxWidth - (crossAxisCount - 1) * 16) /
-                              crossAxisCount;
-
-                      return GridView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: crossAxisCount,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: itemWidth /
-                              (itemWidth * 1.2), // Responsive aspect ratio
-                        ),
-                        itemCount: learnableLanguages.length,
-                        itemBuilder: (context, index) {
-                          final lang = learnableLanguages[index];
-                          final isSelected = _targetLanguage == lang['isoCode'];
-
-                          return Semantics(
-                            label: '${lang['name']} language option'
-                                '${isSelected ? ', selected' : ''}',
-                            button: true,
-                            selected: isSelected,
-                            child: GestureDetector(
-                              onTap: () => setState(
-                                () => _targetLanguage = lang['isoCode']!,
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? AppColors.primary.withValues(alpha: 0.1)
-                                      : cardColor,
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? AppColors.primary
-                                        : borderColor,
-                                    width: 2,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withValues(alpha: 0.2),
-                                                  blurRadius: 8,
-                                                  offset: const Offset(0, 4),
-                                                ),
-                                              ],
-                                            ),
-                                            child: CircleFlag(
-                                              lang['isoCode']!,
-                                              size: constraints.maxWidth > 400
-                                                  ? 64
-                                                  : 48, // Responsive flag size
-                                            ),
-                                          ),
-                                          const SizedBox(height: 16),
-                                          Text(
-                                            lang['name']!,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize:
-                                                  constraints.maxWidth > 400
-                                                      ? 16
-                                                      : 14, // Responsive font
-                                              color: textColor,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            lang['nativeName']!,
-                                            style: TextStyle(
-                                              fontSize:
-                                                  constraints.maxWidth > 400
-                                                      ? 12
-                                                      : 10, // Responsive font
-                                              fontWeight: FontWeight.w500,
-                                              color: isSelected
-                                                  ? AppColors.primary
-                                                  : subTextColor,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    if (isSelected)
-                                      const Positioned(
-                                        top: 12,
-                                        right: 12,
-                                        child: Icon(
-                                          Icons.check_circle,
-                                          color: AppColors.primary,
-                                          size: 24,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                  LanguageGrid(
+                    languages: targetLanguages,
+                    selectedLanguageCode: _targetLanguageCode,
+                    onLanguageSelected: (code) {
+                      setState(() {
+                        _targetLanguageCode = code;
+                      });
                     },
-                  ),
-
-                  // See all button
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Semantics(
-                      label: 'See all languages',
-                      button: true,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          // TODO(atilileri): Implement see all languages
-                          // screen.
-                        },
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: BorderSide(color: borderColor),
-                          backgroundColor: cardColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              l10n.seeAllLanguages,
-                              style: TextStyle(
-                                color: subTextColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: subTextColor,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -590,6 +172,137 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(
+    BuildContext context,
+    bool isDark,
+    Color subTextColor,
+    AppLocalizations l10n,
+  ) {
+    final cardColor = isDark ? AppColors.cardGrey : Colors.grey.shade50;
+    final borderColor = isDark ? AppColors.borderGrey : Colors.grey.shade100;
+    final textColor = isDark ? Colors.white : AppColors.textBlack;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Disabled Back Button
+                  IconButton(
+                    onPressed: null,
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color:
+                          isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        l10n.step1of3,
+                        style: TextStyle(
+                          fontSize: constraints.maxWidth > 400 ? 10 : 8,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.5,
+                          color: subTextColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Theme Switch
+                  Semantics(
+                    label: 'Theme toggle',
+                    button: true,
+                    child: IconButton(
+                      onPressed: () {
+                        unawaited(context.read<ThemeCubit>().toggleTheme());
+                      },
+                      style: IconButton.styleFrom(
+                        backgroundColor: cardColor,
+                        padding: const EdgeInsets.all(8),
+                      ),
+                      icon: BlocBuilder<ThemeCubit, ThemeMode>(
+                        builder: (context, themeMode) {
+                          IconData icon;
+                          switch (themeMode) {
+                            case ThemeMode.system:
+                              icon = Icons.brightness_auto;
+                            case ThemeMode.light:
+                              icon = Icons.light_mode;
+                            case ThemeMode.dark:
+                              icon = Icons.dark_mode;
+                          }
+                          return Icon(
+                            icon,
+                            color: AppColors.primary,
+                            size: constraints.maxWidth > 400 ? 20 : 16,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Progress Bar
+              Container(
+                width: double.infinity,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: borderColor,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: FractionallySizedBox(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: 0.33,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32),
+              // Title & Subtitle
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  l10n.letsGetStarted,
+                  style: TextStyle(
+                    fontSize: constraints.maxWidth > 600
+                        ? 28
+                        : constraints.maxWidth > 400
+                            ? 24
+                            : 20,
+                    fontWeight: FontWeight.w800,
+                    color: textColor,
+                    height: 1.1,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  l10n.refineExperience,
+                  style: TextStyle(
+                    fontSize: constraints.maxWidth > 400 ? 14 : 12,
+                    color: subTextColor,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

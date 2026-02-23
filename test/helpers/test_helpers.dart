@@ -10,6 +10,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
+import 'package:glotist_app/core/models/language_model.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -576,6 +577,15 @@ MockLocalizationCubit createMockLocalizationCubit({
   when(() => cubit.state).thenReturn(initialState);
   when(() => cubit.stream).thenAnswer((_) => Stream.value(initialState));
   when(cubit.close).thenAnswer((_) async {});
+  // TODO(agent): why do we mock this instead of using the real repository?
+  final dummyLanguages = [
+    const LanguageModel(code: 'en', nativeName: 'English', isoCode: 'us'),
+    const LanguageModel(code: 'es', nativeName: 'Español', isoCode: 'es'),
+    const LanguageModel(code: 'jp', nativeName: '日本語', isoCode: 'jp'),
+  ];
+  when(() => cubit.displayLanguages).thenReturn(dummyLanguages);
+  when(() => cubit.targetLanguages).thenReturn(dummyLanguages);
+
   return cubit;
 }
 

@@ -10,8 +10,10 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Theme 3-state toggle and persistence test', (tester) async {
-    // 1. Start App (Clean State)
+    // 1. Initialize Shared Preferences mock
     SharedPreferences.setMockInitialValues({});
+
+    // 3. Initialize dependency injection
     await di.init();
 
     await tester.pumpWidget(const GlotistApp());

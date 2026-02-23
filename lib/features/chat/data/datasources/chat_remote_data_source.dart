@@ -1,4 +1,3 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:glotist_app/features/chat/domain/entities/message.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -12,9 +11,9 @@ abstract class ChatRemoteDataSource {
 class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   /// Creates a [ChatRemoteDataSourceImpl] instance.
   ChatRemoteDataSourceImpl() {
-    final apiKey = dotenv.env['GOOGLE_AI_API_KEY'];
-    if (apiKey == null || apiKey.isEmpty) {
-      throw Exception('GOOGLE_AI_API_KEY not found in .env file');
+    const apiKey = String.fromEnvironment('GOOGLE_AI_API_KEY');
+    if (apiKey.isEmpty) {
+      throw Exception('GOOGLE_AI_API_KEY not found in environment');
     }
     model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
   }

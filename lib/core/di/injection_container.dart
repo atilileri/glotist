@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:glotist_app/core/data/repositories/language_repository.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/services/supabase_service.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
@@ -17,8 +18,9 @@ Future<void> init() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   sl
     ..registerLazySingleton(() => sharedPreferences)
+    ..registerLazySingleton(LanguageRepository.new)
     ..registerFactory(() => ThemeCubit(sl()))
-    ..registerFactory(() => LocalizationCubit(sl()))
+    ..registerFactory(() => LocalizationCubit(sl(), sl()))
     ..registerLazySingleton<ChatRemoteDataSource>(
       ChatRemoteDataSourceImpl.new,
     )

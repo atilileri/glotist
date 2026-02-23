@@ -9,6 +9,7 @@ library;
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:glotist_app/core/data/repositories/language_repository.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,7 @@ void main() {
         prefs = await setupTestSharedPreferences();
 
         logStep(2, 'Creating LocalizationCubit');
-        final cubit = LocalizationCubit(prefs);
+        final cubit = LocalizationCubit(prefs, LanguageRepository());
 
         logVerify('Initial state should be Locale("en")');
         expect(cubit.state, const Locale('en'));
@@ -61,7 +62,7 @@ void main() {
         prefs = await setupTestSharedPreferences({'app_locale': 'es'});
 
         logStep(2, 'Creating LocalizationCubit');
-        final cubit = LocalizationCubit(prefs);
+        final cubit = LocalizationCubit(prefs, LanguageRepository());
         await tester.pumpAndSettle();
 
         logVerify('State should be Locale("es")');
@@ -79,7 +80,7 @@ void main() {
         prefs = await setupTestSharedPreferences({'app_locale': 'tr'});
 
         logStep(2, 'Creating LocalizationCubit');
-        final cubit = LocalizationCubit(prefs);
+        final cubit = LocalizationCubit(prefs, LanguageRepository());
         await tester.pumpAndSettle();
 
         logVerify('State should be Locale("tr")');
@@ -97,7 +98,7 @@ void main() {
         prefs = await setupTestSharedPreferences({'app_locale': 'nl'});
 
         logStep(2, 'Creating LocalizationCubit');
-        final cubit = LocalizationCubit(prefs);
+        final cubit = LocalizationCubit(prefs, LanguageRepository());
         await tester.pumpAndSettle();
 
         logVerify('State should be Locale("nl")');
@@ -119,7 +120,7 @@ void main() {
       (tester) async {
         logStep(1, 'Setting up LocalizationCubit with English');
         prefs = await setupTestSharedPreferences();
-        final cubit = LocalizationCubit(prefs);
+        final cubit = LocalizationCubit(prefs, LanguageRepository());
         expect(cubit.state, const Locale('en'));
 
         logStep(2, 'Change locale to German');
@@ -146,7 +147,7 @@ void main() {
       (tester) async {
         logStep(1, 'Setting up LocalizationCubit');
         prefs = await setupTestSharedPreferences();
-        final cubit = LocalizationCubit(prefs);
+        final cubit = LocalizationCubit(prefs, LanguageRepository());
 
         logStep(2, 'Change locale multiple times');
         logAction('Changing locale: en → es → tr → nl');
@@ -176,7 +177,7 @@ void main() {
         logStep(1, 'Setting up LocalizationCubit with Spanish');
         prefs = await setupTestSharedPreferences({'app_locale': 'es'});
 
-        final cubit = LocalizationCubit(prefs);
+        final cubit = LocalizationCubit(prefs, LanguageRepository());
         await tester.pumpAndSettle();
         expect(cubit.state, const Locale('es'));
 

@@ -24,10 +24,10 @@ dependencies:
   bloc: any
   circle_flags: ^5.0.1
   cupertino_icons: ^1.0.2
+  equatable: ^2.0.8
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
-  flutter_dotenv: ^5.1.0
   flutter_localizations:
     sdk: flutter
   get_it: ^9.2.0

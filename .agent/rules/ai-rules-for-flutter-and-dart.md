@@ -1,5 +1,5 @@
 ---
-trigger: glob
+trigger: always_on
 description: When working with Flutter and Dart
 globs: **/*.dart
 ---

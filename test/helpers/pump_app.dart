@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
+import 'package:glotist_app/core/models/language_model.dart';
 import 'package:glotist_app/core/theme/app_theme.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
@@ -129,4 +130,10 @@ class _FakeLocalizationCubit extends Cubit<Locale>
   @override
   Future<void> changeLocale(String languageCode) async =>
       emit(Locale(languageCode));
+
+  @override
+  List<LanguageModel> get displayLanguages => [];
+
+  @override
+  List<LanguageModel> get targetLanguages => [];
 }
