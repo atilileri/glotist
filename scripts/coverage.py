@@ -74,28 +74,27 @@ def parse_lcov(file_path):
 def print_coverage_report(file_stats, total_lf, total_lh):
     # Calculate max width needed for file names
     max_file_len = max([len(f) for f in file_stats.keys()] + [45])
-    table_width = max_file_len + 15 + 40 # File + Coverage + Functions
+    table_width = max_file_len + 15 + 15 + 10 # File + Coverage + Lines + Missing
     
     separator = "=" * table_width
     print("\n" + separator)
-    print(f"{'File':<{max_file_len}} | {'Coverage':<10} | {'Uncovered Functions'}")
+    print(f"{'File':<{max_file_len}} | {'Coverage':<10} | {'Lines':<12} | {'Missing':<8}")
     print(separator)
     
     for file, stats in sorted(file_stats.items()):
         lf = stats['lines_found']
         lh = stats['lines_hit']
+        missing = lf - lh
         cov = (lh / lf * 100) if lf > 0 else 100.0
         
-        uncovered_funcs = [fn for fn, data in stats['functions'].items() if data['hit'] == 0]
-        uncovered_str = ", ".join(uncovered_funcs) if uncovered_funcs else ""
-        if len(uncovered_str) > 38:
-            uncovered_str = uncovered_str[:35] + "..."
-            
-        print(f"{file:<{max_file_len}} | {cov:>8.2f}% | {uncovered_str}")
+        lines_str = f"{lh}/{lf}"
+        print(f"{file:<{max_file_len}} | {cov:>8.2f}% | {lines_str:>12} | {missing:>7}")
         
     print(separator)
     total_cov = (total_lh / total_lf * 100) if total_lf > 0 else 0.0
-    print(f"{'TOTAL':<{max_file_len}} | {total_cov:>8.2f}% |")
+    total_lines_str = f"{total_lh}/{total_lf}"
+    total_missing = total_lf - total_lh
+    print(f"{'TOTAL':<{max_file_len}} | {total_cov:>8.2f}% | {total_lines_str:>12} | {total_missing:>7}")
     print(separator + "\n")
     return total_cov
 
