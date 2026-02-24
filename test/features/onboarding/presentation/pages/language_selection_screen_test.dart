@@ -90,9 +90,11 @@ void main() {
       expect(find.text('English (United States)'), findsWidgets);
 
       logVerify('Should render language grid items');
-      // Japanese is default selected in code: String _targetLanguage = 'jp';
+      // The first language (English) is default selected in code
       expect(
-        find.bySemanticsLabel(RegExp('.*Japanese.*selected.*')),
+        find.bySemanticsLabel(
+          RegExp(r'.*English \(United States\).*selected.*'),
+        ),
         findsOneWidget,
       );
       expect(find.bySemanticsLabel(RegExp('.*Italian.*')), findsOneWidget);
@@ -162,9 +164,12 @@ void main() {
         );
       }
 
-      // Initial state: Japanese selected
-      logVerify('Japanese should be selected initially');
-      expect(bySemantics('Japanese language option, selected'), findsOneWidget);
+      // Initial state: English selected
+      logVerify('English should be selected initially');
+      expect(
+        bySemantics('English (United States) language option, selected'),
+        findsOneWidget,
+      );
       expect(bySemantics('Italian language option'), findsOneWidget);
 
       logAction('Tapping Italian');
@@ -178,9 +183,11 @@ void main() {
 
       logVerify('Italian should now be selected');
 
-      // Verify Japanese is deselected first to narrow down failure
-      if (tester.any(bySemantics('Japanese language option, selected'))) {
-        fail('Tap failed: Japanese is still selected after tapping Italian');
+      // Verify English is deselected first to narrow down failure
+      if (tester.any(
+        bySemantics('English (United States) language option, selected'),
+      )) {
+        fail('Tap failed: English is still selected after tapping Italian');
       }
 
       // "Italian language option, selected" - we expect this label now
@@ -190,9 +197,25 @@ void main() {
         findsOneWidget,
       );
 
-      logVerify('Japanese should NOT be selected');
-      expect(bySemantics('Japanese language option'), findsOneWidget);
-      expect(bySemantics('Japanese language option, selected'), findsNothing);
+      logVerify('English should NOT be selected');
+      expect(
+        bySemantics('English (United States) language option'),
+        findsOneWidget,
+      );
+      expect(
+        bySemantics('English (United States) language option, selected'),
+        findsNothing,
+      );
+    });
+
+    testWidgets('throws StateError when no target languages are available',
+        (tester) async {
+      when(() => mockLocalizationCubit.targetLanguages).thenReturn([]);
+
+      // Expecting an error when building the widget
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      expect(tester.takeException(), isStateError);
     });
   });
 }

@@ -26,9 +26,7 @@ class LanguageSelectionScreen extends StatefulWidget {
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   // Local ephemeral state for selected target language
-  // TODO(agent): do not start with a selected language.
-  // Let the user select one.
-  String _targetLanguageCode = 'jp';
+  String _targetLanguageCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +37,14 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     final localizationCubit = context.watch<LocalizationCubit>();
     final displayLanguages = localizationCubit.displayLanguages;
     final targetLanguages = localizationCubit.targetLanguages;
+
+    if (targetLanguages.isEmpty) {
+      throw StateError('No target languages available');
+    }
+
+    final effectiveTargetLanguageCode = _targetLanguageCode.isNotEmpty
+        ? _targetLanguageCode
+        : targetLanguages.first.code;
 
     final surfaceColor =
         isDark ? AppColors.backgroundDark : theme.scaffoldBackgroundColor;
@@ -109,7 +115,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   const SizedBox(height: AppSpacing.md),
                   LanguageGrid(
                     languages: targetLanguages,
-                    selectedLanguageCode: _targetLanguageCode,
+                    selectedLanguageCode: effectiveTargetLanguageCode,
                     onLanguageSelected: (code) {
                       setState(() {
                         _targetLanguageCode = code;
