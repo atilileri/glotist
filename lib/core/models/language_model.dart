@@ -7,6 +7,8 @@ class LanguageModel extends Equatable {
     required this.code,
     required this.nativeName,
     required this.isoCode,
+    this.isDisplay = false,
+    this.isTarget = false,
   });
 
   /// The locale code (e.g., 'en', 'tr', 'jp').
@@ -19,6 +21,12 @@ class LanguageModel extends Equatable {
   /// The ISO code used for retrieving the flag icon (e.g., 'us', 'tr', 'jp').
   final String isoCode;
 
+  /// Whether this language is available for the application interface.
+  final bool isDisplay;
+
+  /// Whether this language is available as a target language to learn.
+  final bool isTarget;
+
   @override
-  List<Object?> get props => [code, nativeName, isoCode];
+  List<Object?> get props => [code, nativeName, isoCode, isDisplay, isTarget];
 }

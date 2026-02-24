@@ -32,17 +32,14 @@ class LocalizationCubit extends Cubit<Locale> {
 
   /// Returns the languages available for the app interface.
   List<LanguageModel> get displayLanguages {
-    final all = _languageRepository.getLanguages();
-    // TODO(agent): define a logic inside language_repository and
-    // remove this list. Same for targetLanguages
-    const displayCodes = ['en', 'es', 'fr', 'tr', 'de', 'nl'];
-    return all.where((l) => displayCodes.contains(l.code)).toList();
+    return _languageRepository
+        .getLanguages()
+        .where((l) => l.isDisplay)
+        .toList();
   }
 
   /// Returns the languages available to learn.
   List<LanguageModel> get targetLanguages {
-    final all = _languageRepository.getLanguages();
-    const targetCodes = ['jp', 'it', 'pt', 'kr', 'tr', 'nl'];
-    return all.where((l) => targetCodes.contains(l.code)).toList();
+    return _languageRepository.getLanguages().where((l) => l.isTarget).toList();
   }
 }
