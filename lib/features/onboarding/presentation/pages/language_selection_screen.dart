@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/presentation/widgets/glotist_button.dart';
+import 'package:glotist_app/core/theme/app_breakpoints.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/core/utils/preview_helper.dart';
@@ -175,7 +176,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isSmall = constraints.maxWidth <= 400;
+          final isCompact = constraints.isCompact;
 
           return Column(
             children: [
@@ -195,7 +196,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       child: Text(
                         l10n.step1of3,
                         style: TextStyle(
-                          fontSize: isSmall ? AppSpacing.sm : AppSpacing.s10,
+                          fontSize: isCompact ? AppSpacing.sm : AppSpacing.s10,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1.5,
                           color: colorScheme.onSurfaceVariant,
@@ -229,7 +230,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           return Icon(
                             icon,
                             color: colorScheme.primary,
-                            size: isSmall ? AppSpacing.md : AppSpacing.s20,
+                            size: isCompact ? AppSpacing.md : AppSpacing.s20,
                           );
                         },
                       ),
@@ -264,9 +265,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                 child: Text(
                   l10n.letsGetStarted,
                   style: TextStyle(
-                    fontSize: constraints.maxWidth > 600
+                    fontSize: constraints.isExpanded
                         ? AppSpacing.s28
-                        : isSmall
+                        : isCompact
                             ? AppSpacing.s20
                             : AppSpacing.lg,
                     fontWeight: FontWeight.w800,
@@ -281,7 +282,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                 child: Text(
                   l10n.refineExperience,
                   style: TextStyle(
-                    fontSize: isSmall ? AppSpacing.s12 : AppSpacing.s14,
+                    fontSize: isCompact ? AppSpacing.s12 : AppSpacing.s14,
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),

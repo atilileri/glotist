@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glotist_app/core/models/language_model.dart';
+import 'package:glotist_app/core/theme/app_breakpoints.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/features/onboarding/presentation/widgets/language_option_card.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
@@ -51,11 +52,13 @@ class LanguageGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Calculate responsive crossAxisCount based on available width
-        final crossAxisCount = constraints.maxWidth > 600
-            ? 3
-            : constraints.maxWidth > 400
-                ? 2
-                : 1;
+        final crossAxisCount = constraints.isExpanded
+            ? 4
+            : constraints.isMedium
+                ? 3
+                : constraints.maxWidth > 400
+                    ? 2
+                    : 1;
         final itemWidth =
             (constraints.maxWidth - (crossAxisCount - 1) * 16) / crossAxisCount;
 

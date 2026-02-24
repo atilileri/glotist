@@ -1,6 +1,7 @@
 import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:glotist_app/core/models/language_model.dart';
+import 'package:glotist_app/core/theme/app_breakpoints.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 
 /// A card displaying a language option with its flag and name.
@@ -34,6 +35,7 @@ class LanguageOptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isCompact = maxWidth.isCompactWidth;
 
     return Semantics(
       label: '$localizedName language option${isSelected ? ', selected' : ''}',
@@ -71,9 +73,7 @@ class LanguageOptionCard extends StatelessWidget {
                       ),
                       child: CircleFlag(
                         language.isoCode,
-                        size: maxWidth > 400
-                            ? AppSpacing.section
-                            : AppSpacing.xxl,
+                        size: !isCompact ? AppSpacing.section : AppSpacing.xxl,
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -81,8 +81,7 @@ class LanguageOptionCard extends StatelessWidget {
                       localizedName,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize:
-                            maxWidth > 400 ? AppSpacing.md : AppSpacing.s14,
+                        fontSize: !isCompact ? AppSpacing.md : AppSpacing.s14,
                         color: colorScheme.onSurface,
                       ),
                       textAlign: TextAlign.center,
@@ -91,8 +90,7 @@ class LanguageOptionCard extends StatelessWidget {
                     Text(
                       language.nativeName,
                       style: TextStyle(
-                        fontSize:
-                            maxWidth > 400 ? AppSpacing.s14 : AppSpacing.s12,
+                        fontSize: !isCompact ? AppSpacing.s14 : AppSpacing.s12,
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
