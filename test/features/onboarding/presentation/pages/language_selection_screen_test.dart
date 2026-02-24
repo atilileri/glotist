@@ -86,8 +86,13 @@ void main() {
         find.byKey(const Key('display_language_dropdown')),
         findsOneWidget,
       );
-      // TODO(agent): why this changed from findsOneWidget to findsWidgets?
-      expect(find.text('English (United States)'), findsWidgets);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('display_language_dropdown')),
+          matching: find.text('English (United States)'),
+        ),
+        findsOneWidget,
+      );
 
       logVerify('Should render language grid items');
       // The first language (English) is default selected in code

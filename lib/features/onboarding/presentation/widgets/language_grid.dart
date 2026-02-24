@@ -26,6 +26,8 @@ class LanguageGrid extends StatelessWidget {
   String _getLocalizedName(String code, AppLocalizations l10n) {
     switch (code) {
       // TODO(agent): can't we read the cases from the language_repository?
+      case 'en':
+        return l10n.langEnglishUS;
       case 'jp':
         return l10n.langJapanese;
       case 'it':
