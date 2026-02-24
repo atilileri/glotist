@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:glotist_app/core/di/injection_container.dart';
+import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/features/chat/data/datasources/chat_remote_data_source.dart';
 import 'package:glotist_app/features/chat/domain/entities/message.dart';
 
@@ -112,7 +113,7 @@ class _OnboardingConversationScreenState
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.md),
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final message = _messages[index];
@@ -122,11 +123,11 @@ class _OnboardingConversationScreenState
           ),
           if (_isLoading)
             const Padding(
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(AppSpacing.sm),
               child: LinearProgressIndicator(),
             ),
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppSpacing.sm),
             child: Row(
               children: [
                 Expanded(
@@ -155,13 +156,13 @@ class _OnboardingConversationScreenState
     return Align(
       alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+        padding: const EdgeInsets.all(AppSpacing.s12),
         decoration: BoxDecoration(
           color: message.isUser
               ? Theme.of(context).colorScheme.primaryContainer
               : Theme.of(context).colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.s12),
         ),
         constraints:
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),

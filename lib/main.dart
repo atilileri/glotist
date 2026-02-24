@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:glotist_app/core/di/injection_container.dart' as di;
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
+import 'package:glotist_app/core/presentation/widgets/app_error_boundary.dart';
 import 'package:glotist_app/core/router/app_router.dart';
 import 'package:glotist_app/core/theme/app_theme.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
@@ -10,6 +11,12 @@ import 'package:glotist_app/l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Set up the global error boundary.
+  ErrorWidget.builder = (details) {
+    return AppErrorBoundary(details: details);
+  };
+
   await di.init();
   runApp(const GlotistApp());
 }

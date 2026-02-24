@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/core/utils/preview_helper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,7 +15,7 @@ class OnboardingChoiceScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Start Your Journey')),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -29,7 +30,7 @@ class OnboardingChoiceScreen extends StatelessWidget {
                   await context.push('/conversation');
                 },
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.lg),
               _buildChoiceCard(
                 context,
                 title: 'Quick Start',
@@ -61,23 +62,23 @@ class OnboardingChoiceScreen extends StatelessWidget {
       elevation: 4,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.s12),
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             children: [
               Icon(
                 icon,
-                size: 48,
+                size: AppSpacing.xxl,
                 color: isPrimary ? colorScheme.primary : colorScheme.secondary,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 title,
                 style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 description,
                 style: Theme.of(context).textTheme.bodyMedium,

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
+import 'package:glotist_app/core/presentation/widgets/glotist_button.dart';
 import 'package:glotist_app/core/theme/app_colors.dart';
+import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/core/utils/preview_helper.dart';
 import 'package:glotist_app/features/onboarding/presentation/widgets/display_language_dropdown.dart';
@@ -53,36 +55,37 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             // --- Scrollable Content ---
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.only(bottom: 120),
+                padding: const EdgeInsets.only(bottom: AppSpacing.huge),
                 children: [
                   // 1. Display Language Section
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _sectionTitle(l10n.displayLanguage, subTextColor),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppSpacing.s12),
                         DisplayLanguageDropdown(
                           displayLanguages: displayLanguages,
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: AppSpacing.s10),
                         Padding(
-                          padding: const EdgeInsets.only(left: 4),
+                          padding: const EdgeInsets.only(left: AppSpacing.xs),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(
                                 Icons.info_outline,
-                                size: 14,
+                                size: AppSpacing.s14,
                                 color: subTextColor,
                               ),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: AppSpacing.s6),
                               Expanded(
                                 child: Text(
                                   l10n.displayLanguageDisclaimer,
                                   style: TextStyle(
-                                    fontSize: 11,
+                                    fontSize: AppSpacing.s11,
                                     height: 1.4,
                                     color: subTextColor,
                                     fontWeight: FontWeight.w500,
@@ -97,12 +100,13 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   ),
 
                   // 2. LANGUAGE TO LEARN Section
-                  const SizedBox(height: 40),
+                  const SizedBox(height: AppSpacing.s40),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                     child: _sectionTitle(l10n.languageToLearn, subTextColor),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   LanguageGrid(
                     languages: targetLanguages,
                     selectedLanguageCode: _targetLanguageCode,
@@ -120,7 +124,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
       ),
       // --- Bottom Floating Button ---
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.bottomCenter,
@@ -137,38 +141,12 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
           child: Semantics(
             label: 'Continue to next step',
             button: true,
-            child: ElevatedButton(
+            child: GlotistButton(
               onPressed: () {
                 context.go('/choice');
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.textBlack,
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                elevation: 4,
-                shadowColor: AppColors.primary.withValues(alpha: 0.4),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    l10n.continueAction,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 20,
-                    weight: 800,
-                  ),
-                ],
-              ),
+              text: l10n.continueAction,
+              icon: Icons.arrow_forward_rounded,
             ),
           ),
         ),
@@ -187,7 +165,12 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     final textColor = isDark ? Colors.white : AppColors.textBlack;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+      padding: const EdgeInsets.only(
+        left: AppSpacing.lg,
+        top: AppSpacing.lg,
+        right: AppSpacing.lg,
+        bottom: AppSpacing.md,
+      ),
       child: LayoutBuilder(
         builder: (context, constraints) {
           return Column(
@@ -209,7 +192,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       child: Text(
                         l10n.step1of3,
                         style: TextStyle(
-                          fontSize: constraints.maxWidth > 400 ? 10 : 8,
+                          fontSize: constraints.maxWidth > 400
+                              ? AppSpacing.s10
+                              : AppSpacing.sm,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1.5,
                           color: subTextColor,
@@ -227,7 +212,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       },
                       style: IconButton.styleFrom(
                         backgroundColor: cardColor,
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(AppSpacing.sm),
                       ),
                       icon: BlocBuilder<ThemeCubit, ThemeMode>(
                         builder: (context, themeMode) {
@@ -243,7 +228,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           return Icon(
                             icon,
                             color: AppColors.primary,
-                            size: constraints.maxWidth > 400 ? 20 : 16,
+                            size: constraints.maxWidth > 400
+                                ? AppSpacing.s20
+                                : AppSpacing.md,
                           );
                         },
                       ),
@@ -251,14 +238,14 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.lg),
               // Progress Bar
               Container(
                 width: double.infinity,
-                height: 6,
+                height: AppSpacing.s6,
                 decoration: BoxDecoration(
                   color: borderColor,
-                  borderRadius: BorderRadius.circular(100),
+                  borderRadius: BorderRadius.circular(AppSpacing.pill),
                 ),
                 child: FractionallySizedBox(
                   alignment: Alignment.centerLeft,
@@ -266,12 +253,12 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(100),
+                      borderRadius: BorderRadius.circular(AppSpacing.pill),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xl),
               // Title & Subtitle
               Align(
                 alignment: Alignment.centerLeft,
@@ -279,23 +266,25 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   l10n.letsGetStarted,
                   style: TextStyle(
                     fontSize: constraints.maxWidth > 600
-                        ? 28
+                        ? AppSpacing.s28
                         : constraints.maxWidth > 400
-                            ? 24
-                            : 20,
+                            ? AppSpacing.lg
+                            : AppSpacing.s20,
                     fontWeight: FontWeight.w800,
                     color: textColor,
                     height: 1.1,
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   l10n.refineExperience,
                   style: TextStyle(
-                    fontSize: constraints.maxWidth > 400 ? 14 : 12,
+                    fontSize: constraints.maxWidth > 400
+                        ? AppSpacing.s14
+                        : AppSpacing.s12,
                     color: subTextColor,
                   ),
                 ),
@@ -311,7 +300,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     return Text(
       title,
       style: TextStyle(
-        fontSize: 11,
+        fontSize: AppSpacing.s11,
         fontWeight: FontWeight.w800,
         letterSpacing: 1.2,
         color: color,

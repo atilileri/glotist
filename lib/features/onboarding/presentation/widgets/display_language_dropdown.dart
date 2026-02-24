@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/models/language_model.dart';
 import 'package:glotist_app/core/theme/app_colors.dart';
+import 'package:glotist_app/core/theme/app_spacing.dart';
 
 /// A dropdown selector for the display language.
 class DisplayLanguageDropdown extends StatelessWidget {
@@ -74,7 +75,7 @@ class DisplayLanguageDropdown extends StatelessWidget {
                       lang.isoCode,
                       size: 20,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppSpacing.s12),
                     Expanded(
                       child: Text(
                         lang.nativeName,

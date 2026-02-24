@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glotist_app/core/models/language_model.dart';
+import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/features/onboarding/presentation/widgets/language_option_card.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
 
@@ -58,7 +59,7 @@ class LanguageGrid extends StatelessWidget {
             (constraints.maxWidth - (crossAxisCount - 1) * 16) / crossAxisCount;
 
         return GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

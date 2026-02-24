@@ -2,6 +2,7 @@ import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:glotist_app/core/models/language_model.dart';
 import 'package:glotist_app/core/theme/app_colors.dart';
+import 'package:glotist_app/core/theme/app_spacing.dart';
 
 /// A card displaying a language option with its flag and name.
 class LanguageOptionCard extends StatelessWidget {
@@ -78,7 +79,7 @@ class LanguageOptionCard extends StatelessWidget {
                         size: maxWidth > 400 ? 64 : 48,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.md),
                     Text(
                       localizedName,
                       style: TextStyle(
@@ -88,7 +89,7 @@ class LanguageOptionCard extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
                       language.nativeName,
                       style: TextStyle(
@@ -106,7 +107,7 @@ class LanguageOptionCard extends StatelessWidget {
                   top: 12,
                   right: 12,
                   child: Container(
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(AppSpacing.xs),
                     decoration: const BoxDecoration(
                       color: AppColors.primary,
                       shape: BoxShape.circle,
