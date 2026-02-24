@@ -1,4 +1,8 @@
-# AGENTS.md
+---
+trigger: always_on
+---
+
+# Project Specific Guidelines
 
 ## Overview
 This file contains custom instructions and architectural rules specifically tailored for the **Glotist** Flutter project. All AI agents working on this project must strictly adhere to these rules to ensure consistency, maintainability, and correct architectural alignment.
