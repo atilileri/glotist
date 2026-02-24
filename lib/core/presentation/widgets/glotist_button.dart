@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glotist_app/core/theme/app_colors.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 
 /// A beautifully styled, universal button for the Glotist application.
@@ -31,35 +30,29 @@ class GlotistButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isPrimary ? AppColors.primary : AppColors.cardGrey,
-        foregroundColor: isPrimary ? AppColors.textBlack : AppColors.textWhite,
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.s20),
+        backgroundColor: isPrimary
+            ? colorScheme.primary
+            : colorScheme.surfaceContainerHighest,
+        foregroundColor:
+            isPrimary ? colorScheme.onPrimary : colorScheme.onSurface,
         elevation: isPrimary ? 4 : 0,
         shadowColor:
-            isPrimary ? AppColors.primary.withValues(alpha: 0.4) : null,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.lg), // 24
-        ),
+            isPrimary ? colorScheme.primary.withValues(alpha: 0.4) : null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: AppSpacing.md,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          Text(text),
           if (icon != null) ...[
             const SizedBox(width: AppSpacing.sm),
             Icon(
               icon,
               size: AppSpacing.s20,
-              weight: 800,
             ),
           ],
         ],

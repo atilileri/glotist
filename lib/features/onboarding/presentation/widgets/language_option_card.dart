@@ -1,7 +1,6 @@
 import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:glotist_app/core/models/language_model.dart';
-import 'package:glotist_app/core/theme/app_colors.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 
 /// A card displaying a language option with its flag and name.
@@ -34,11 +33,7 @@ class LanguageOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    final cardColor = isDark ? AppColors.cardGrey : Colors.grey.shade50;
-    final borderColor = isDark ? AppColors.borderGrey : Colors.grey.shade100;
-    final textColor = isDark ? Colors.white : AppColors.textBlack;
+    final colorScheme = theme.colorScheme;
 
     return Semantics(
       label: '$localizedName language option${isSelected ? ', selected' : ''}',
@@ -49,13 +44,13 @@ class LanguageOptionCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: isSelected
-                ? AppColors.primary.withValues(alpha: 0.1)
-                : cardColor,
+                ? colorScheme.primary.withValues(alpha: 0.1)
+                : colorScheme.surfaceContainerHighest,
             border: Border.all(
-              color: isSelected ? AppColors.primary : borderColor,
+              color: isSelected ? colorScheme.primary : colorScheme.outline,
               width: 2,
             ),
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(AppSpacing.lg),
           ),
           child: Stack(
             children: [
@@ -76,7 +71,9 @@ class LanguageOptionCard extends StatelessWidget {
                       ),
                       child: CircleFlag(
                         language.isoCode,
-                        size: maxWidth > 400 ? 64 : 48,
+                        size: maxWidth > 400
+                            ? AppSpacing.section
+                            : AppSpacing.xxl,
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -84,8 +81,9 @@ class LanguageOptionCard extends StatelessWidget {
                       localizedName,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: maxWidth > 400 ? 16 : 14,
-                        color: textColor,
+                        fontSize:
+                            maxWidth > 400 ? AppSpacing.md : AppSpacing.s14,
+                        color: colorScheme.onSurface,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -93,10 +91,9 @@ class LanguageOptionCard extends StatelessWidget {
                     Text(
                       language.nativeName,
                       style: TextStyle(
-                        fontSize: maxWidth > 400 ? 14 : 12,
-                        color: isDark
-                            ? Colors.grey.shade400
-                            : Colors.grey.shade600,
+                        fontSize:
+                            maxWidth > 400 ? AppSpacing.s14 : AppSpacing.s12,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -104,18 +101,18 @@ class LanguageOptionCard extends StatelessWidget {
               ),
               if (isSelected)
                 Positioned(
-                  top: 12,
-                  right: 12,
+                  top: AppSpacing.s12,
+                  right: AppSpacing.s12,
                   child: Container(
                     padding: const EdgeInsets.all(AppSpacing.xs),
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
                       Icons.check,
                       color: Colors.white,
-                      size: 16,
+                      size: AppSpacing.md,
                     ),
                   ),
                 ),

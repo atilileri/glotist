@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/models/language_model.dart';
-import 'package:glotist_app/core/theme/app_colors.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 
 /// A dropdown selector for the display language.
@@ -22,41 +21,36 @@ class DisplayLanguageDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
     final currentLocale = Localizations.localeOf(context).languageCode;
-
-    final cardColor = isDark ? AppColors.cardGrey : Colors.grey.shade50;
-    final borderColor = isDark ? AppColors.borderGrey : Colors.grey.shade100;
-    final textColor = isDark ? Colors.white : AppColors.textBlack;
-    final subTextColor = isDark ? Colors.grey.shade400 : Colors.grey.shade600;
 
     return Semantics(
       label: 'Display language selection',
       container: true,
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 4,
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.xxs,
         ),
         decoration: BoxDecoration(
-          color: cardColor,
-          border: Border.all(color: borderColor),
-          borderRadius: BorderRadius.circular(16),
+          color: colorScheme.surfaceContainerHighest,
+          border: Border.all(color: colorScheme.outline),
+          borderRadius: BorderRadius.circular(AppSpacing.md),
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
             key: const Key('display_language_dropdown'),
             value: currentLocale,
             isExpanded: true,
-            dropdownColor: cardColor,
+            dropdownColor: colorScheme.surfaceContainerHighest,
             icon: Icon(
               Icons.expand_more,
-              color: subTextColor,
+              color: colorScheme.onSurfaceVariant,
             ),
             style: TextStyle(
-              color: textColor,
+              color: colorScheme.onSurface,
               fontWeight: FontWeight.w600,
-              fontSize: 16,
+              fontSize: AppSpacing.md,
               fontFamily: 'Plus Jakarta Sans',
             ),
             onChanged: (newValue) {
@@ -73,13 +67,16 @@ class DisplayLanguageDropdown extends StatelessWidget {
                   children: [
                     CircleFlag(
                       lang.isoCode,
-                      size: 20,
+                      size: AppSpacing.s20,
                     ),
                     const SizedBox(width: AppSpacing.s12),
                     Expanded(
                       child: Text(
                         lang.nativeName,
                         overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                     ),
                   ],
