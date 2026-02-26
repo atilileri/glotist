@@ -6,14 +6,14 @@ import 'package:google_fonts/google_fonts.dart';
 /// Manages the application-wide theme configuration.
 class AppTheme {
   /// Configuration for the light theme.
-  /// Configuration for the light theme.
   static ThemeData get lightTheme {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.primary,
       primary: AppColors.primary,
+      onPrimary: Colors.white,
       surface: Colors.white,
       onSurface: AppColors.textBlack,
-      outline: AppColors.borderGrey,
+      outline: Colors.grey.shade100,
       surfaceContainerHighest: Colors.grey.shade50,
       onSurfaceVariant: Colors.grey.shade600,
     );
