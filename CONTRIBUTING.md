@@ -19,6 +19,8 @@ Thank you for your interest in contributing to Glotist! This document provides g
 - Always follow the Clean Architecture layers when adding new features.
 - Keep the `domain` layer free of external dependencies (except for basic dart/flutter packages if essential).
 - Place shared logic in `lib/core`.
+- **Responsive Layouts**: Use the `AppBreakpoints` utility and extensions (`context.isMobile`, `context.isTablet`, etc.) instead of hardcoded screen width checks. This ensures consistency across different device sizes.
+- **Theming & Spacing**: Adhere strictly to the centralized theme and `AppSpacing` tokens. Never hardcode colors or magic numbers for layout.
 
 ## Testing
 

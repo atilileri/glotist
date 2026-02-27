@@ -26,9 +26,11 @@ This project is built using a robust and modern technology stack:
 -   **AI Integration**: [Google Generative AI](https://pub.dev/packages/google_generative_ai) (Gemini API)
 -   **Dependency Injection**: [get_it](https://pub.dev/packages/get_it)
 -   **Typography**: [google_fonts](https://pub.dev/packages/google_fonts)
+-   **UI Assets**: [circle_flags](https://pub.dev/packages/circle_flags) for round language flags.
 -   **Code Quality**:
     -   `very_good_analysis` for strict linting.
-    -   [Husky](https://pub.dev/packages/husky) & [lint_staged](https://pub.dev/packages/lint_staged) for pre-commit hooks.
+    -   `flutter_lints` for baseline code quality.
+    -   [Husky](https://pub.dev/packages/husky) & [lint_staged](https://pub.dev/packages/lint_staged) for pre-commit hooks (checks formatting, fixable issues, and CI/CD compatibility).
 -   **Testing**:
     -   [golden_toolkit](https://pub.dev/packages/golden_toolkit) for visual regression testing.
     -   [mocktail](https://pub.dev/packages/mocktail) for mocking.
