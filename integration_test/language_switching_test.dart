@@ -81,4 +81,60 @@ void main() {
       expect(cubit.state.languageCode, equals(expectedLocaleCode));
     }
   });
+
+  testWidgets('Conversation screen l10n strings update with locale change',
+      (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    try {
+      await di.init();
+    } on Exception catch (_) {
+      // Ignore if already initialized
+    }
+
+    await tester.pumpWidget(const GlotistApp());
+    await tester.pumpAndSettle();
+
+    // Navigate to conversation screen
+    final continueButton = find.bySemanticsLabel('Continue to next step');
+    await tester.tap(continueButton);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    // Verify English strings on conversation screen
+    expect(find.text('Profile Setup'), findsOneWidget);
+    expect(find.text('Skip'), findsOneWidget);
+    expect(find.text('Interests'), findsOneWidget);
+    expect(find.text('Level'), findsOneWidget);
+    expect(find.text('Purpose'), findsOneWidget);
+    expect(find.text('Type a message...'), findsOneWidget);
+
+    // Go back to change language
+    final backButton = find.byIcon(Icons.arrow_back);
+    await tester.tap(backButton);
+    await tester.pumpAndSettle();
+
+    // Switch to Turkish
+    final dropdownFinder = find.byKey(const Key('display_language_dropdown'));
+    await tester.tap(dropdownFinder);
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+
+    final turkishItem = find.text('Türkçe').last;
+    await tester.tap(turkishItem);
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+
+    // Navigate to conversation again
+    await tester.tap(continueButton);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    // Verify Turkish strings
+    expect(find.text('Profil Kurulumu'), findsOneWidget);
+    expect(find.text('Atla'), findsOneWidget);
+    expect(find.text('İlgi Alanları'), findsOneWidget);
+    expect(find.text('Seviye'), findsOneWidget);
+    expect(find.text('Amaç'), findsOneWidget);
+    expect(find.text('Bir mesaj yazın...'), findsOneWidget);
+  });
 }

@@ -2,18 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:glotist_app/core/di/injection_container.dart';
+import 'package:glotist_app/core/presentation/widgets/chat_input_bar.dart';
+import 'package:glotist_app/core/presentation/widgets/chat_message_bubble.dart';
+import 'package:glotist_app/core/presentation/widgets/onboarding_substep_indicator.dart';
+import 'package:glotist_app/core/presentation/widgets/onboarding_top_bar.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
+import 'package:glotist_app/core/theme/theme_extensions.dart';
 import 'package:glotist_app/features/chat/data/datasources/chat_remote_data_source.dart';
 import 'package:glotist_app/features/chat/domain/entities/message.dart';
+import 'package:glotist_app/l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+
+/// Path to the AI avatar asset used in chat bubbles.
+const _aiAvatarAsset = 'assets/images/ai_avatar.png';
+
+/// Temporary delay in seconds to visualize the typing animation.
+const _typingDelaySeconds = 5;
 
 /// Screen for the onboarding conversation with the AI agent.
 ///
-// TODO(atilileri): Implement gathering additional language information and
-// proficiency levels through conversation that were previously collected in
-// the "Other Languages" section. This should ask users about:
-// - Additional languages they know
-// - Their proficiency level in each language
-// - Their learning goals for each language
+/// This is the second screen in the onboarding flow, following the
+/// language selection screen. It uses a chat-based interface to collect
+/// user interests, proficiency level, and learning purpose.
 class OnboardingConversationScreen extends StatefulWidget {
   /// Creates an [OnboardingConversationScreen] instance.
   const OnboardingConversationScreen({super.key});
@@ -30,44 +40,57 @@ class _OnboardingConversationScreenState
   final List<Message> _messages = [];
   bool _isLoading = false;
 
-  /// Chat data source.
-  ///
-  /// In a production app, this would be accessed via a Bloc/Cubit.
+  // TODO(atilileri): just for demo purposes. will be removed later.
+  Timer? _welcomeTimer;
   late final ChatRemoteDataSource _chatSource;
 
   @override
   void initState() {
     super.initState();
     _chatSource = sl<ChatRemoteDataSource>();
-    _addSystemMessage(
-      "Hello! I'm your Onboarding Agent. Let's create your personalized "
-      'curriculum. What languages do you know?',
+    _addAiMessage(
+      "Let's make sure I teach you what you care about.",
     );
+    // Simulate a follow-up question after a brief delay.
+    _welcomeTimer = Timer(const Duration(milliseconds: 800), () {
+      if (mounted) {
+        _addAiMessage(
+          'What are your favorite hobbies? I can use them to personalize '
+          'your lessons!',
+        );
+      }
+    });
   }
 
-  /// Adds a system message to the chat list.
-  void _addSystemMessage(String content) {
+  @override
+  void dispose() {
+    _welcomeTimer?.cancel();
+    _controller.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  /// Adds an AI message to the chat list.
+  void _addAiMessage(String content) {
     setState(() {
       _messages.add(
         Message(
-          id: DateTime.now().toString(),
+          id: DateTime.now().microsecondsSinceEpoch.toString(),
           content: content,
           isUser: false,
           timestamp: DateTime.now(),
         ),
       );
     });
+    _scrollToBottom();
   }
 
-  /// Sends the user's message to the AI agent and awaits a response.
-  Future<void> _sendMessage() async {
-    final text = _controller.text.trim();
-    if (text.isEmpty) return;
-
+  /// Sends the user's message and fetches an AI response.
+  Future<void> _sendMessage(String text) async {
     setState(() {
       _messages.add(
         Message(
-          id: DateTime.now().toString(),
+          id: DateTime.now().microsecondsSinceEpoch.toString(),
           content: text,
           isUser: true,
           timestamp: DateTime.now(),
@@ -76,12 +99,20 @@ class _OnboardingConversationScreenState
       _isLoading = true;
       _controller.clear();
     });
+    _scrollToBottom();
 
     try {
+      // Temporary artificial delay to visualize typing animation.
+      await Future<void>.delayed(
+        const Duration(seconds: _typingDelaySeconds),
+      );
+
       final response = await _chatSource.sendMessage(text);
-      setState(() {
-        _messages.add(response);
-      });
+      if (mounted) {
+        setState(() {
+          _messages.add(response);
+        });
+      }
     } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -93,6 +124,14 @@ class _OnboardingConversationScreenState
         setState(() {
           _isLoading = false;
         });
+        _scrollToBottom();
+      }
+    }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
         unawaited(
           _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
@@ -101,73 +140,205 @@ class _OnboardingConversationScreenState
           ),
         );
       }
-    }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = context.colorScheme;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Onboarding Assistant')),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(AppSpacing.md),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return _buildMessageBubble(message);
-              },
+      backgroundColor: colorScheme.surface,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            // Top bar
+            OnboardingTopBar(
+              title: l10n.profileSetup,
+              progress: 0.66,
+              onBack: () => context.pop(),
+              trailing: _SkipPillButton(
+                label: l10n.skip,
+                onPressed: () {
+                  // TODO(atilileri): Implement skip action
+                },
+              ),
             ),
-          ),
-          if (_isLoading)
-            const Padding(
-              padding: EdgeInsets.all(AppSpacing.sm),
-              child: LinearProgressIndicator(),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.sm),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Type your message...',
-                      border: OutlineInputBorder(),
-                    ),
-                    onSubmitted: (_) => _sendMessage(),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _isLoading ? null : _sendMessage,
-                ),
+
+            // Substep indicator
+            OnboardingSubstepIndicator(
+              currentSubstep: 1,
+              labels: [
+                l10n.substepInterests,
+                l10n.substepLevel,
+                l10n.substepPurpose,
               ],
             ),
-          ),
-        ],
+
+            // Chat messages
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.sm,
+                ),
+                itemCount: _messages.length + (_isLoading ? 1 : 0),
+                itemBuilder: (context, index) {
+                  // Typing indicator as last item when loading
+                  if (index == _messages.length) {
+                    return const _TypingIndicator();
+                  }
+
+                  final message = _messages[index];
+                  return ChatMessageBubble(
+                    message: message,
+                    avatarAsset: message.isUser ? null : _aiAvatarAsset,
+                    statusText: _statusForMessage(index),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+
+      // Input bar
+      bottomNavigationBar: ChatInputBar(
+        controller: _controller,
+        hintText: l10n.typeAMessage,
+        enabled: !_isLoading,
+        onSubmitted: _sendMessage,
       ),
     );
   }
 
-  Widget _buildMessageBubble(Message message) {
-    return Align(
-      alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-        padding: const EdgeInsets.all(AppSpacing.s12),
-        decoration: BoxDecoration(
-          color: message.isUser
-              ? Theme.of(context).colorScheme.primaryContainer
-              : Theme.of(context).colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(AppSpacing.s12),
+  /// Returns status text for user messages, or null.
+  String? _statusForMessage(int index) {
+    if (!_messages[index].isUser) return null;
+
+    // Simple heuristic: first user message gets "INTERESTS NOTED",
+    // subsequent ones get "ADDED".
+    final userMessageIndex =
+        _messages.sublist(0, index + 1).where((m) => m.isUser).length;
+    if (userMessageIndex == 1) return 'INTERESTS NOTED';
+    return 'ADDED';
+  }
+}
+
+/// Small pill-shaped "Skip" button for the top bar trailing slot.
+class _SkipPillButton extends StatelessWidget {
+  const _SkipPillButton({
+    required this.label,
+    required this.onPressed,
+  });
+
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
+    return Material(
+      color: colorScheme.primary,
+      borderRadius: BorderRadius.circular(AppSpacing.pill),
+      elevation: 2,
+      shadowColor: colorScheme.primary.withValues(alpha: 0.2),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(AppSpacing.pill),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: AppSpacing.s12,
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onPrimary,
+            ),
+          ),
         ),
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        child: Text(message.content),
       ),
+    );
+  }
+}
+
+/// Animated typing indicator shown when the AI is composing a response.
+class _TypingIndicator extends StatelessWidget {
+  const _TypingIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+        child: _PulsingText(
+          text: 'TYPING...',
+          style: TextStyle(
+            fontSize: AppSpacing.s10,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 2,
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Text widget with a subtle pulsing opacity animation.
+class _PulsingText extends StatefulWidget {
+  const _PulsingText({
+    required this.text,
+    required this.style,
+  });
+
+  final String text;
+  final TextStyle style;
+
+  @override
+  State<_PulsingText> createState() => _PulsingTextState();
+}
+
+class _PulsingTextState extends State<_PulsingText>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      // Duration of one pulse cycle (fade in/out).
+      duration: const Duration(milliseconds: 1200),
+    );
+    unawaited(_animationController.repeat(reverse: true));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: Tween<double>(begin: 0.3, end: 1).animate(
+        CurvedAnimation(
+          parent: _animationController,
+          curve: Curves.easeInOut,
+        ),
+      ),
+      child: Text(widget.text, style: widget.style),
     );
   }
 }

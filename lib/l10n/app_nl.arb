@@ -19,5 +19,11 @@
   "langJapanese": "Japans",
   "langItalian": "Italiaans",
   "langPortuguese": "Portugees",
-  "langKorean": "Koreaans"
+  "langKorean": "Koreaans",
+  "profileSetup": "Profiel instellen",
+  "skip": "Overslaan",
+  "substepInterests": "Interesses",
+  "substepLevel": "Niveau",
+  "substepPurpose": "Doel",
+  "typeAMessage": "Typ een bericht..."
 }

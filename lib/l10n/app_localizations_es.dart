@@ -69,4 +69,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get langKorean => 'Coreano';
+
+  @override
+  String get profileSetup => 'Configurar perfil';
+
+  @override
+  String get skip => 'Omitir';
+
+  @override
+  String get substepInterests => 'Intereses';
+
+  @override
+  String get substepLevel => 'Nivel';
+
+  @override
+  String get substepPurpose => 'Propósito';
+
+  @override
+  String get typeAMessage => 'Escribe un mensaje...';
 }

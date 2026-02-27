@@ -225,6 +225,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Korean'**
   String get langKorean;
+
+  /// No description provided for @profileSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Setup'**
+  String get profileSetup;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @substepInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get substepInterests;
+
+  /// No description provided for @substepLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get substepLevel;
+
+  /// No description provided for @substepPurpose.
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose'**
+  String get substepPurpose;
+
+  /// No description provided for @typeAMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message...'**
+  String get typeAMessage;
 }
 
 class _AppLocalizationsDelegate

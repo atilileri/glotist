@@ -19,5 +19,11 @@
   "langJapanese": "Japonais",
   "langItalian": "Italien",
   "langPortuguese": "Portugais",
-  "langKorean": "Coréen"
+  "langKorean": "Coréen",
+  "profileSetup": "Configuration du profil",
+  "skip": "Passer",
+  "substepInterests": "Intérêts",
+  "substepLevel": "Niveau",
+  "substepPurpose": "Objectif",
+  "typeAMessage": "Écrire un message..."
 }

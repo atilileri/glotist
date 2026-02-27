@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:glotist_app/core/di/injection_container.dart' as di;
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
-import 'package:glotist_app/main.dart'; // Imports main to access dependencies
+import 'package:glotist_app/main.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,5 +48,52 @@ void main() {
     await tester.pumpWidget(const GlotistApp());
     await tester.pumpAndSettle();
     expect(di.sl<ThemeCubit>().state, equals(ThemeMode.system));
+  });
+
+  testWidgets('Conversation screen renders in all theme modes', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+
+    try {
+      await di.init();
+    } on Exception catch (_) {
+      // Ignore if already initialized
+    }
+
+    await tester.pumpWidget(const GlotistApp());
+    await tester.pumpAndSettle();
+
+    // Navigate to conversation screen
+    final continueButton = find.bySemanticsLabel('Continue to next step');
+    await tester.tap(continueButton);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    // Verify we are on the conversation screen
+    expect(find.text('Profile Setup'), findsOneWidget);
+    expect(find.text('Skip'), findsOneWidget);
+
+    // Go back to language selection
+    final backButton = find.byIcon(Icons.arrow_back);
+    await tester.tap(backButton);
+    await tester.pumpAndSettle();
+
+    // Toggle theme to dark
+    final themeButton = find.bySemanticsLabel('Theme toggle');
+    await tester.tap(themeButton); // -> light
+    await tester.pumpAndSettle();
+    await tester.tap(themeButton); // -> dark
+    await tester.pumpAndSettle();
+
+    // Navigate to conversation again
+    await tester.tap(continueButton);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    // Verify conversation screen renders without issues in dark mode
+    expect(find.text('Profile Setup'), findsOneWidget);
+    expect(find.text('Skip'), findsOneWidget);
+    expect(find.text('Interests'), findsOneWidget);
+    expect(find.text('Level'), findsOneWidget);
+    expect(find.text('Purpose'), findsOneWidget);
   });
 }

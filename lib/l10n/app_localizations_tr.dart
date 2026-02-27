@@ -68,4 +68,22 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get langKorean => 'Korece';
+
+  @override
+  String get profileSetup => 'Profil Kurulumu';
+
+  @override
+  String get skip => 'Atla';
+
+  @override
+  String get substepInterests => 'İlgi Alanları';
+
+  @override
+  String get substepLevel => 'Seviye';
+
+  @override
+  String get substepPurpose => 'Amaç';
+
+  @override
+  String get typeAMessage => 'Bir mesaj yazın...';
 }

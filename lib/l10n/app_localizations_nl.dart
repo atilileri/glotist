@@ -68,4 +68,22 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get langKorean => 'Koreaans';
+
+  @override
+  String get profileSetup => 'Profiel instellen';
+
+  @override
+  String get skip => 'Overslaan';
+
+  @override
+  String get substepInterests => 'Interesses';
+
+  @override
+  String get substepLevel => 'Niveau';
+
+  @override
+  String get substepPurpose => 'Doel';
+
+  @override
+  String get typeAMessage => 'Typ een bericht...';
 }

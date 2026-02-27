@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/presentation/widgets/glotist_button.dart';
 import 'package:glotist_app/core/presentation/widgets/glotist_secondary_button.dart';
-import 'package:glotist_app/core/theme/app_breakpoints.dart';
+import 'package:glotist_app/core/presentation/widgets/onboarding_top_bar.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
 import 'package:glotist_app/core/utils/preview_helper.dart';
@@ -53,7 +53,42 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
         child: Column(
           children: [
             // --- Header ---
-            _buildHeader(context, colorScheme, l10n),
+            OnboardingTopBar(
+              title: l10n.step1of3,
+              progress: 0.33,
+              trailing: Semantics(
+                label: 'Theme toggle',
+                button: true,
+                child: IconButton(
+                  onPressed: () {
+                    unawaited(context.read<ThemeCubit>().toggleTheme());
+                  },
+                  style: IconButton.styleFrom(
+                    backgroundColor: colorScheme.surfaceContainerHighest,
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                  ),
+                  icon: BlocBuilder<ThemeCubit, ThemeMode>(
+                    builder: (context, themeMode) {
+                      IconData icon;
+                      switch (themeMode) {
+                        case ThemeMode.system:
+                          icon = Icons.brightness_auto;
+                        case ThemeMode.light:
+                          icon = Icons.light_mode;
+                        case ThemeMode.dark:
+                          icon = Icons.dark_mode;
+                      }
+                      return Icon(
+                        icon,
+                        color: colorScheme.primary,
+                        size: AppSpacing.s20,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
 
             // --- Scrollable Content ---
             Expanded(
@@ -166,145 +201,13 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             button: true,
             child: GlotistButton(
               onPressed: () {
-                context.go('/choice');
+                unawaited(context.push('/conversation'));
               },
               text: l10n.continueAction,
               icon: Icons.arrow_forward_rounded,
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(
-    BuildContext context,
-    ColorScheme colorScheme,
-    AppLocalizations l10n,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: AppSpacing.lg,
-        top: AppSpacing.lg,
-        right: AppSpacing.lg,
-        bottom: AppSpacing.md,
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final isCompact = constraints.isCompact;
-
-          return Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Disabled Back Button
-                  IconButton(
-                    onPressed: null,
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: colorScheme.onSurface.withValues(alpha: 0.1),
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        l10n.step1of3,
-                        style: TextStyle(
-                          fontSize: isCompact ? AppSpacing.sm : AppSpacing.s10,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.5,
-                          color: colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Theme Switch
-                  Semantics(
-                    label: 'Theme toggle',
-                    button: true,
-                    child: IconButton(
-                      onPressed: () {
-                        unawaited(context.read<ThemeCubit>().toggleTheme());
-                      },
-                      style: IconButton.styleFrom(
-                        backgroundColor: colorScheme.surfaceContainerHighest,
-                        padding: const EdgeInsets.all(AppSpacing.sm),
-                      ),
-                      icon: BlocBuilder<ThemeCubit, ThemeMode>(
-                        builder: (context, themeMode) {
-                          IconData icon;
-                          switch (themeMode) {
-                            case ThemeMode.system:
-                              icon = Icons.brightness_auto;
-                            case ThemeMode.light:
-                              icon = Icons.light_mode;
-                            case ThemeMode.dark:
-                              icon = Icons.dark_mode;
-                          }
-                          return Icon(
-                            icon,
-                            color: colorScheme.primary,
-                            size: isCompact ? AppSpacing.md : AppSpacing.s20,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              // Progress Bar
-              Container(
-                width: double.infinity,
-                height: AppSpacing.s6,
-                decoration: BoxDecoration(
-                  color: colorScheme.outline,
-                  borderRadius: BorderRadius.circular(AppSpacing.pill),
-                ),
-                child: FractionallySizedBox(
-                  alignment: Alignment.centerLeft,
-                  widthFactor: 0.33,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: colorScheme.primary,
-                      borderRadius: BorderRadius.circular(AppSpacing.pill),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              // Title & Subtitle
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  l10n.letsGetStarted,
-                  style: TextStyle(
-                    fontSize: constraints.isExpanded
-                        ? AppSpacing.s28
-                        : isCompact
-                            ? AppSpacing.s20
-                            : AppSpacing.lg,
-                    fontWeight: FontWeight.w800,
-                    color: colorScheme.onSurface,
-                    height: 1.1,
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  l10n.refineExperience,
-                  style: TextStyle(
-                    fontSize: isCompact ? AppSpacing.s12 : AppSpacing.s14,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
       ),
     );
   }

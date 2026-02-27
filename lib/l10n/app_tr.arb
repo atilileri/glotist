@@ -19,5 +19,11 @@
   "langJapanese": "Japonca",
   "langItalian": "İtalyanca",
   "langPortuguese": "Portekizce",
-  "langKorean": "Korece"
+  "langKorean": "Korece",
+  "profileSetup": "Profil Kurulumu",
+  "skip": "Atla",
+  "substepInterests": "İlgi Alanları",
+  "substepLevel": "Seviye",
+  "substepPurpose": "Amaç",
+  "typeAMessage": "Bir mesaj yazın..."
 }
