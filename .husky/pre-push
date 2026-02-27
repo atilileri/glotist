@@ -1,8 +1,5 @@
 
 
 echo "🧪 Running tests and generating coverage..."
-flutter test --coverage && {
-  echo "📊 Verifying coverage threshold..."
-  python scripts/verify_coverage.py
-}
+python scripts/coverage.py
 
