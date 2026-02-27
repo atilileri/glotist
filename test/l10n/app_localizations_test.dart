@@ -24,7 +24,7 @@ void main() {
             await AppLocalizations.delegate.load(const Locale('en'));
 
         expect(localizations.appTitle, 'Glotist');
-        expect(localizations.step1of3, 'STEP 1 OF 3');
+        expect(localizations.languageSelectionTitle, 'Languages');
         expect(localizations.letsGetStarted, "Let's get started");
         expect(
           localizations.refineExperience,
@@ -69,7 +69,7 @@ lookupAppLocalizations works and returns non-empty strings for ${locale.language
           // baseline integration check that the generating tool worked
           // properly.
           expect(localizations.appTitle, isNotEmpty);
-          expect(localizations.step1of3, isNotEmpty);
+          expect(localizations.languageSelectionTitle, isNotEmpty);
           expect(localizations.letsGetStarted, isNotEmpty);
           expect(localizations.refineExperience, isNotEmpty);
           expect(localizations.displayLanguage, isNotEmpty);
