@@ -12,7 +12,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get appTitle => 'Glotist';
 
   @override
-  String get step1of3 => 'STAP 1 VAN 3';
+  String get languageSelectionTitle => 'Talen';
 
   @override
   String get letsGetStarted => 'Laten we beginnen';

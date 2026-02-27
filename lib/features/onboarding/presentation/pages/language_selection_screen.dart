@@ -54,7 +54,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
           children: [
             // --- Header ---
             OnboardingTopBar(
-              title: l10n.step1of3,
+              title: l10n.languageSelectionTitle,
               progress: 0.33,
               trailing: Semantics(
                 label: 'Theme toggle',

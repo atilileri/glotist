@@ -12,7 +12,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appTitle => 'Glotist';
 
   @override
-  String get step1of3 => 'ADIM 1 / 3';
+  String get languageSelectionTitle => 'Diller';
 
   @override
   String get letsGetStarted => 'Haydi başlayalım';

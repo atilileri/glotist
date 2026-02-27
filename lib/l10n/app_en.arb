@@ -4,7 +4,7 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "step1of3": "STEP 1 OF 3",
+  "languageSelectionTitle": "Languages",
   "letsGetStarted": "Let's get started",
   "refineExperience": "Refine your language learning experience",
   "displayLanguage": "DISPLAY LANGUAGE",

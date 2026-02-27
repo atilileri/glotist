@@ -1,7 +1,7 @@
 {
   "@@locale": "es",
   "appTitle": "Glotist",
-  "step1of3": "PASO 1 DE 3",
+  "languageSelectionTitle": "Idiomas",
   "letsGetStarted": "Empecemos",
   "refineExperience": "Refina tu experiencia de aprendizaje de idiomas.",
   "displayLanguage": "IDIOMA DE PANTALLA",

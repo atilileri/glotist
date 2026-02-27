@@ -112,11 +112,11 @@ abstract class AppLocalizations {
   /// **'Glotist'**
   String get appTitle;
 
-  /// No description provided for @step1of3.
+  /// No description provided for @languageSelectionTitle.
   ///
   /// In en, this message translates to:
-  /// **'STEP 1 OF 3'**
-  String get step1of3;
+  /// **'Languages'**
+  String get languageSelectionTitle;
 
   /// No description provided for @letsGetStarted.
   ///
