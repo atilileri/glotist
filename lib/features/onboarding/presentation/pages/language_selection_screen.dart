@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glotist_app/core/localization/cubit/localization_cubit.dart';
 import 'package:glotist_app/core/presentation/widgets/glotist_button.dart';
+import 'package:glotist_app/core/presentation/widgets/glotist_secondary_button.dart';
 import 'package:glotist_app/core/theme/app_breakpoints.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/core/theme/cubit/theme_cubit.dart';
@@ -123,6 +124,20 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                         _targetLanguageCode = code;
                       });
                     },
+                  ),
+
+                  // 3. See All Button
+                  const SizedBox(height: AppSpacing.md),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    child: GlotistSecondaryButton(
+                      onPressed: () {
+                        // TODO(atilileri): Implement see all languages
+                      },
+                      text: l10n.seeAllLanguages,
+                      icon: Icons.arrow_forward_rounded,
+                    ),
                   ),
                 ],
               ),
