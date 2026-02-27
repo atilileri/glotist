@@ -69,7 +69,7 @@ class AppTheme {
       // Contrast color for primary in dark mode.
       onPrimary: Colors.black,
       // Dark background for screens.
-      surface: AppColors.cardGrey,
+      surface: AppColors.backgroundDark,
       // White text for readability in dark mode.
       onSurface: AppColors.textWhite,
       // Darker border color for containers.

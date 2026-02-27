@@ -46,7 +46,10 @@ class LanguageOptionCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: isSelected
-                ? colorScheme.primary.withValues(alpha: 0.1)
+                ? Color.alphaBlend(
+                    colorScheme.primary.withValues(alpha: 0.15),
+                    colorScheme.surfaceContainerHighest,
+                  )
                 : colorScheme.surfaceContainerHighest,
             border: Border.all(
               color: isSelected ? colorScheme.primary : colorScheme.outline,
