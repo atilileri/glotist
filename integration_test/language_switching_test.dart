@@ -17,7 +17,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     try {
       await di.init();
-    } on Exception catch (_) {
+    } on Object catch (_) {
       // Ignore if already initialized
     }
 
@@ -87,7 +87,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     try {
       await di.init();
-    } on Exception catch (_) {
+    } on Object catch (_) {
       // Ignore if already initialized
     }
 
@@ -100,6 +100,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
 
+    debugPrint('Verifying initial English strings on conversation screen');
     // Verify English strings on conversation screen
     expect(find.text('Profile Setup'), findsOneWidget);
     expect(find.text('Skip'), findsOneWidget);
@@ -108,6 +109,7 @@ void main() {
     expect(find.text('Purpose'), findsOneWidget);
     expect(find.text('Type a message...'), findsOneWidget);
 
+    debugPrint('Switching to Turkish');
     // Go back to change language
     final backButton = find.byIcon(Icons.arrow_back);
     await tester.tap(backButton);
@@ -129,6 +131,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
 
+    debugPrint('Verifying Turkish strings');
     // Verify Turkish strings
     expect(find.text('Profil Kurulumu'), findsOneWidget);
     expect(find.text('Atla'), findsOneWidget);
@@ -136,5 +139,34 @@ void main() {
     expect(find.text('Seviye'), findsOneWidget);
     expect(find.text('Amaç'), findsOneWidget);
     expect(find.text('Bir mesaj yazın...'), findsOneWidget);
+
+    debugPrint('Switching to Dutch');
+    // Go back to change language again
+    await tester.tap(backButton);
+    await tester.pumpAndSettle();
+
+    // Switch to Dutch
+    await tester.tap(dropdownFinder);
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+
+    final dutchItem = find.text('Nederlands').last;
+    await tester.tap(dutchItem);
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+
+    // Navigate to conversation again
+    await tester.tap(continueButton);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    debugPrint('Verifying Dutch strings');
+    // Verify Dutch strings
+    expect(find.text('Profiel instellen'), findsOneWidget);
+    expect(find.text('Overslaan'), findsOneWidget);
+    expect(find.text('Interesses'), findsOneWidget);
+    expect(find.text('Niveau'), findsOneWidget);
+    expect(find.text('Doel'), findsOneWidget);
+    expect(find.text('Typ een bericht...'), findsOneWidget);
   });
 }

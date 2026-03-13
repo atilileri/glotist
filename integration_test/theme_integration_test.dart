@@ -14,15 +14,21 @@ void main() {
     SharedPreferences.setMockInitialValues({});
 
     // 3. Initialize dependency injection
-    await di.init();
+    try {
+      await di.init();
+    } on Object catch (_) {
+      // Ignore if already initialized
+    }
 
     await tester.pumpWidget(const GlotistApp());
     await tester.pumpAndSettle();
 
     // Verify initial is System
+    debugPrint('Initial theme: System');
     expect(di.sl<ThemeCubit>().state, equals(ThemeMode.system));
 
     // 2. Toggle to LIGHT
+    debugPrint('Toggling to Light mode');
     final themeButton =
         find.bySemanticsLabel('Theme toggle'); // Top right toggle
     await tester.tap(themeButton);
@@ -30,16 +36,19 @@ void main() {
     expect(di.sl<ThemeCubit>().state, equals(ThemeMode.light));
 
     // 3. Toggle to DARK
+    debugPrint('Toggling to Dark mode');
     await tester.tap(themeButton);
     await tester.pumpAndSettle();
     expect(di.sl<ThemeCubit>().state, equals(ThemeMode.dark));
 
     // 4. Persistence Test (Restart in Dark)
+    debugPrint('Persistence test: Restarting in Dark mode');
     await tester.pumpWidget(const GlotistApp()); // Simulated restart
     await tester.pumpAndSettle();
     expect(di.sl<ThemeCubit>().state, equals(ThemeMode.dark));
 
     // 5. Toggle to SYSTEM
+    debugPrint('Toggling back to System mode');
     await tester.tap(themeButton);
     await tester.pumpAndSettle();
     expect(di.sl<ThemeCubit>().state, equals(ThemeMode.system));
@@ -55,11 +64,16 @@ void main() {
 
     try {
       await di.init();
-    } on Exception catch (_) {
+    } on Object catch (_) {
       // Ignore if already initialized
     }
 
     await tester.pumpWidget(const GlotistApp());
+    await tester.pumpAndSettle();
+
+    // Set theme to light (starts as system by default)
+    final themeButton = find.bySemanticsLabel('Theme toggle');
+    await tester.tap(themeButton);
     await tester.pumpAndSettle();
 
     // Navigate to conversation screen
@@ -68,9 +82,13 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
 
-    // Verify we are on the conversation screen
+    debugPrint('Verifying conversation screen in Light mode');
+    // Verify conversation screen renders without issues in light mode
     expect(find.text('Profile Setup'), findsOneWidget);
     expect(find.text('Skip'), findsOneWidget);
+    expect(find.text('Interests'), findsOneWidget);
+    expect(find.text('Level'), findsOneWidget);
+    expect(find.text('Purpose'), findsOneWidget);
 
     // Go back to language selection
     final backButton = find.byIcon(Icons.arrow_back);
@@ -78,10 +96,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Toggle theme to dark
-    final themeButton = find.bySemanticsLabel('Theme toggle');
-    await tester.tap(themeButton); // -> light
-    await tester.pumpAndSettle();
-    await tester.tap(themeButton); // -> dark
+    await tester.tap(themeButton);
     await tester.pumpAndSettle();
 
     // Navigate to conversation again
@@ -89,6 +104,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
 
+    debugPrint('Verifying conversation screen in Dark mode');
     // Verify conversation screen renders without issues in dark mode
     expect(find.text('Profile Setup'), findsOneWidget);
     expect(find.text('Skip'), findsOneWidget);
