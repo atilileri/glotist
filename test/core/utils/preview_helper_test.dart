@@ -87,7 +87,7 @@ void main() {
 
       await tester.pumpWidget(
         const PreviewWrapper(
-          brightness: Brightness.dark,
+          themeMode: ThemeMode.dark,
           child: childWidget,
         ),
       );
@@ -119,8 +119,8 @@ void main() {
       final materialApp = tester.widget<MaterialApp>(
         find.byType(MaterialApp),
       );
-      logVerify('Theme mode should be light');
-      expect(materialApp.themeMode, equals(ThemeMode.light));
+      logVerify('Theme mode should be system (default)');
+      expect(materialApp.themeMode, equals(ThemeMode.system));
     });
 
     /// Test 5: PreviewWrapper provides required cubits.
@@ -301,13 +301,12 @@ void main() {
       logStep(1, 'Creating PreviewWrapper with all parameters');
       const childWidget = Text('Test Child');
       const customLocale = Locale('fr');
-      const customBrightness = Brightness.dark;
 
       await tester.pumpWidget(
         const PreviewWrapper(
           key: Key('test-key'),
           locale: customLocale,
-          brightness: customBrightness,
+          themeMode: ThemeMode.dark,
           child: childWidget,
         ),
       );
@@ -389,7 +388,7 @@ void main() {
       await tester.pumpWidget(
         const PreviewWrapper(
           locale: Locale('es'),
-          brightness: Brightness.dark,
+          themeMode: ThemeMode.dark,
           child: childWidget,
         ),
       );
@@ -441,7 +440,7 @@ void main() {
       final materialApp1 = tester.widget<MaterialApp>(
         find.byType(MaterialApp),
       );
-      expect(materialApp1.themeMode, equals(ThemeMode.light));
+      expect(materialApp1.themeMode, equals(ThemeMode.system));
       expect(materialApp1.locale, equals(const Locale('en')));
 
       logStep(3, 'Creating second PreviewWrapper with dark theme');
@@ -449,7 +448,7 @@ void main() {
 
       await tester.pumpWidget(
         const PreviewWrapper(
-          brightness: Brightness.dark,
+          themeMode: ThemeMode.dark,
           locale: Locale('es'),
           child: childWidget2,
         ),
@@ -483,12 +482,12 @@ void main() {
       final materialApp = tester.widget<MaterialApp>(
         find.byType(MaterialApp),
       );
-      expect(materialApp.themeMode, equals(ThemeMode.light));
+      expect(materialApp.themeMode, equals(ThemeMode.system));
 
       logStep(3, 'Rebuilding with different theme');
       await tester.pumpWidget(
         const PreviewWrapper(
-          brightness: Brightness.dark,
+          themeMode: ThemeMode.dark,
           child: childWidget,
         ),
       );

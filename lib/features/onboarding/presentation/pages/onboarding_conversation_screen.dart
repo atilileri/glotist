@@ -8,6 +8,7 @@ import 'package:glotist_app/core/presentation/widgets/onboarding_substep_indicat
 import 'package:glotist_app/core/presentation/widgets/onboarding_top_bar.dart';
 import 'package:glotist_app/core/theme/app_spacing.dart';
 import 'package:glotist_app/core/theme/theme_extensions.dart';
+import 'package:glotist_app/core/utils/preview_helper.dart';
 import 'package:glotist_app/features/chat/data/datasources/chat_remote_data_source.dart';
 import 'package:glotist_app/features/chat/domain/entities/message.dart';
 import 'package:glotist_app/l10n/app_localizations.dart';
@@ -26,6 +27,8 @@ const _typingDelaySeconds = 5;
 /// user interests, proficiency level, and learning purpose.
 class OnboardingConversationScreen extends StatefulWidget {
   /// Creates an [OnboardingConversationScreen] instance.
+  @AppPreview(name: 'Conversation Screen - Light', brightness: Brightness.light)
+  @AppPreview(name: 'Conversation Screen - Dark', brightness: Brightness.dark)
   const OnboardingConversationScreen({super.key});
 
   @override

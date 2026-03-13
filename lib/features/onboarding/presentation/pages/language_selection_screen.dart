@@ -17,7 +17,8 @@ import 'package:go_router/go_router.dart';
 /// Screen for selecting display and target languages.
 class LanguageSelectionScreen extends StatefulWidget {
   /// Creates a [LanguageSelectionScreen] instance.
-  @AppPreview(name: 'Language Selection')
+  @AppPreview(name: 'Language Selection - Light', brightness: Brightness.light)
+  @AppPreview(name: 'Language Selection - Dark', brightness: Brightness.dark)
   const LanguageSelectionScreen({super.key});
 
   @override
