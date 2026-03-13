@@ -40,7 +40,9 @@ dependencies:
   supabase_flutter: ^2.12.0
 dev_dependencies:
   bloc_test: ^10.0.0
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.7
   flutter_test:
     sdk: flutter
   golden_toolkit: ^0.15.0
@@ -105,3 +107,16 @@ lint_staged:
   'integration_test/**.dart':
     - dart fix --apply
     - dart format
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/app_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default:21
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/splash_icon.jpg"
+  android_12:
+    image: "assets/images/splash_icon.jpg"
